@@ -9,6 +9,7 @@ import {
   CarouselItem,
 } from "@/components/ui/carousel";
 import Autoplay from "embla-carousel-autoplay";
+import { useGetItemsQuery } from "@/services/endpoints/items-endpoints";
 
 const recentItems = [
   {
@@ -77,6 +78,10 @@ export default function RecentItems() {
   const plugin = React.useRef(
     Autoplay({ delay: 3000, stopOnInteraction: true })
   );
+
+  const { data: itemsData, isLoading } = useGetItemsQuery({});
+
+  console.log(itemsData?.results);
 
   return (
     <div className="mx-auto mt-10 lg:pt-20 mb-10">
