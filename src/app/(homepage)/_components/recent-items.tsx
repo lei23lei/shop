@@ -7,8 +7,6 @@ import {
   Carousel,
   CarouselContent,
   CarouselItem,
-  CarouselNext,
-  CarouselPrevious,
 } from "@/components/ui/carousel";
 import Autoplay from "embla-carousel-autoplay";
 
@@ -92,7 +90,7 @@ export default function RecentItems() {
         className="w-full"
       >
         <CarouselContent className="mx-0 mr-4 md:mr-0 md:mx-2 lg:mx-4">
-          {recentItems.map((item, index) => (
+          {recentItems.map((item) => (
             <CarouselItem
               key={item.id}
               className="basis-1/2 md:basis-1/3 lg:basis-1/4 xl:basis-1/5"

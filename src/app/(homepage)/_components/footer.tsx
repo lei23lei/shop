@@ -5,11 +5,9 @@ import Link from "next/link";
 import { ImFacebook2 } from "react-icons/im";
 import { GrInstagram, GrLinkedin } from "react-icons/gr";
 import { usePathname } from "next/navigation";
-import Image from "next/image";
 
 export default function Footer() {
   const pathname = usePathname();
-  const links = [{ href: "/mytrips", label: "My Trips" }];
 
   const scrollToTop = () => {
     window.scrollTo({
