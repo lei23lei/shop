@@ -41,7 +41,7 @@ export default function Content() {
           }`}
       >
         <Image
-          src="/images/image2.webp"
+          src="/images/image2.avif"
           width={700}
           height={700}
           alt="experience"
