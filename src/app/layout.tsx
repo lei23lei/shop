@@ -31,9 +31,11 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable}  overflow-x-hidden antialiased`}
       >
         <StoreProvider>
-          <UserBar />
-          <div className="pt-28">{children}</div>
-          <Footer />
+          <>
+            <UserBar />
+            <div className="pt-28">{children}</div>
+            <Footer />
+          </>
         </StoreProvider>
       </body>
     </html>
