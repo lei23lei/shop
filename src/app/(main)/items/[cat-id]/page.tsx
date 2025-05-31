@@ -17,18 +17,47 @@ import LoadingItems from "@/components/items-loading";
 import {
   Pagination,
   PaginationContent,
-  PaginationEllipsis,
   PaginationItem,
   PaginationLink,
   PaginationNext,
   PaginationPrevious,
 } from "@/components/ui/pagination";
+import Link from "next/link";
 
-export default function ItemsPage() {
+// Helper function to find category info
+const findCategoryInfo = (catId: number) => {
+  for (const category of categories) {
+    const subcategory = category.subcategories.find((sub) => sub.id === catId);
+    if (subcategory) {
+      return {
+        category: category.name,
+        subcategory: subcategory.name,
+        categoryId: category.id,
+      };
+    }
+  }
+  return null;
+};
+
+export default function ItemsPage({
+  params,
+}: {
+  params: Promise<{ "cat-id": string }>;
+}) {
+  const resolvedParams = React.use(params);
   const [page, setPage] = React.useState(1);
-  const { data: itemsData, isLoading } = useGetItemsQuery({
-    page,
-  });
+  const categoryInfo = findCategoryInfo(Number(resolvedParams["cat-id"]));
+
+  const { data: itemsData, isLoading } = useGetItemsQuery(
+    {
+      page,
+      category: Number(resolvedParams["cat-id"]),
+      page_size: 12,
+    },
+    {
+      skip: !resolvedParams["cat-id"],
+    }
+  );
 
   const totalPages = itemsData ? Math.ceil(itemsData.count / 12) : 0;
 
@@ -40,20 +69,41 @@ export default function ItemsPage() {
   return (
     <div className="container mx-auto py-2 px-0 lg:px-6 xl:px-10 2xl:px-16">
       <div className="flex flex-col gap-4 py-4 px-4 lg:px-0">
-        <h2>Men collections</h2>
+        <h2>
+          {categoryInfo
+            ? `${categoryInfo.category} - ${categoryInfo.subcategory}`
+            : "Items"}
+        </h2>
         <p className="text-sm text-muted-foreground">
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam,
-          quos.
+          Browse our collection of {categoryInfo?.subcategory.toLowerCase()}{" "}
+          items.
         </p>
         <Breadcrumb>
           <BreadcrumbList>
             <BreadcrumbItem>
               <BreadcrumbLink href="/">Home</BreadcrumbLink>
             </BreadcrumbItem>
-            <BreadcrumbSeparator />
-            <BreadcrumbItem>
-              <BreadcrumbPage>Items</BreadcrumbPage>
-            </BreadcrumbItem>
+
+            {categoryInfo && (
+              <>
+                <BreadcrumbSeparator />
+                <BreadcrumbItem>
+                  <BreadcrumbLink href={`/items/${categoryInfo.categoryId}`}>
+                    {categoryInfo.category}
+                  </BreadcrumbLink>
+                </BreadcrumbItem>
+                {categoryInfo.subcategory !== "All" && (
+                  <>
+                    <BreadcrumbSeparator />
+                    <BreadcrumbItem>
+                      <BreadcrumbPage>
+                        {categoryInfo.subcategory}
+                      </BreadcrumbPage>
+                    </BreadcrumbItem>
+                  </>
+                )}
+              </>
+            )}
           </BreadcrumbList>
         </Breadcrumb>
       </div>
@@ -68,17 +118,22 @@ export default function ItemsPage() {
         )}
       {/* items */}
       {!isLoading && itemsData && itemsData?.count > 0 && (
-        <div className="flex border-t  min-h-[600px] border-border pt-2">
-          <div className="hidden lg:block pl-4 w-60  space-y-2">
-            {categories[0].subcategories.map((subcategory) => (
-              <div
-                key={subcategory.id}
-                className="group relative cursor-pointer w-fit"
-              >
-                <h4 className="font-medium pb-1">{subcategory.name}</h4>
-                <div className="absolute bottom-0 left-0 h-[3px] w-0 bg-black transition-all duration-300 group-hover:w-full" />
-              </div>
-            ))}
+        <div className="flex border-t min-h-[600px] border-border pt-2">
+          <div className="hidden lg:block pl-4 w-60 py-2 space-y-3">
+            {categoryInfo &&
+              categories
+                .find((c) => c.id === categoryInfo.categoryId)
+                ?.subcategories.map((subcategory) => (
+                  <div
+                    key={subcategory.id}
+                    className="group relative cursor-pointer w-fit"
+                  >
+                    <Link href={`/items/${subcategory.id}`} className="block">
+                      <h4 className="font-medium pb-1">{subcategory.name}</h4>
+                      <div className="absolute bottom-0 left-0 h-[3px] w-0 bg-black transition-all duration-300 group-hover:w-full" />
+                    </Link>
+                  </div>
+                ))}
           </div>
           <div className="flex-1 p-4">
             <div className="grid grid-cols-2 md:grid-cols-3 2xl:grid-cols-4 gap-4">
@@ -114,8 +169,8 @@ export default function ItemsPage() {
         </div>
       )}
       {/* Pagination Controls */}
-      {totalPages > 1 && (
-        <div className="my-4  flex justify-center">
+      {!isLoading && totalPages >= 1 && (
+        <div className="my-4 flex justify-center">
           <Pagination>
             <PaginationContent>
               <PaginationItem>
@@ -130,7 +185,7 @@ export default function ItemsPage() {
                 />
               </PaginationItem>
 
-              {Array.from({ length: totalPages }, (_, i) => i + 1).map(
+              {Array.from({ length: totalPages || 1 }, (_, i) => i + 1).map(
                 (pageNum) => (
                   <PaginationItem key={pageNum}>
                     <PaginationLink
@@ -154,9 +209,11 @@ export default function ItemsPage() {
                     e.preventDefault();
                     if (page < totalPages) handlePageChange(page + 1);
                   }}
-                  aria-disabled={page === totalPages}
+                  aria-disabled={page === (totalPages || 1)}
                   className={
-                    page === totalPages ? "pointer-events-none opacity-50" : ""
+                    page === (totalPages || 1)
+                      ? "pointer-events-none opacity-50"
+                      : ""
                   }
                 />
               </PaginationItem>
