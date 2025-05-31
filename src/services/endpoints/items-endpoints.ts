@@ -10,11 +10,7 @@ export interface getItemsResponse {
     description: string;
     price: string;
     categories: string[];
-    images: {
-      id: number;
-      image_url: string;
-      is_primary: boolean;
-    }[];
+    image: string;
     created_at: string;
   }[];
 }

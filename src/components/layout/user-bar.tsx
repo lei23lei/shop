@@ -42,7 +42,7 @@ export default function UserBar() {
 
   return (
     <div
-      className={`fixed flex  flex-col top-0 left-0 right-0 bg-gray-200 z-50 transition-transform duration-300 ${
+      className={`fixed flex flex-col top-0 left-0 right-0 bg-gray-200 z-50 transition-transform duration-300 ${
         visible ? "translate-y-0" : "-translate-y-full"
       }`}
     >
@@ -56,7 +56,7 @@ export default function UserBar() {
           </Button>
         </div>
       </div>
-      <div className="flex   relative flex-row justify-between h-14 items-center w-full mx-auto px-10">
+      <div className="flex relative flex-row justify-between h-14 items-center w-full mx-auto px-10">
         <div className="flex space-x-4 items-center">
           {categories.map((category) => (
             <div
@@ -97,12 +97,6 @@ export default function UserBar() {
           >
             <div className="flex flex-col w-40 h-full">
               <div className="flex flex-col  pl-6 pt-4">
-                <div
-                  key={categories.find((c) => c.id === activeCategory)?.id}
-                  className="hover:bg-background rounded-md px-4 py-2 cursor-pointer"
-                >
-                  All
-                </div>
                 {categories
                   .find((c) => c.id === activeCategory)
                   ?.subcategories?.map((subcategory) => (

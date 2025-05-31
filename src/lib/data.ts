@@ -5,6 +5,10 @@ export const categories = [
     image: "/images/men.jpg",
     subcategories: [
       {
+        name: "All",
+        id: 1,
+      },
+      {
         name: "Top",
         id: 5,
       },
@@ -23,6 +27,10 @@ export const categories = [
     name: "Women",
     image: "/images/women.jpg",
     subcategories: [
+      {
+        name: "All",
+        id: 2,
+      },
       {
         name: "Top",
         id: 8,
@@ -43,6 +51,10 @@ export const categories = [
     image: "/images/food.jpg",
     subcategories: [
       {
+        name: "All",
+        id: 3,
+      },
+      {
         name: "Eat",
         id: 11,
       },
@@ -57,6 +69,10 @@ export const categories = [
     image: "/images/others.webp",
     id: 4,
     subcategories: [
+      {
+        name: "All",
+        id: 4,
+      },
       {
         name: "Furniture",
         id: 13,

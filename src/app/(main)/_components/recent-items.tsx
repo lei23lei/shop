@@ -55,7 +55,7 @@ export default function RecentItems() {
                   <CardContent className="flex flex-col p-2 md:p-3">
                     <div className="relative aspect-square overflow-hidden rounded-lg">
                       <Image
-                        src={item.images[0]?.image_url || "/placeholder.jpg"}
+                        src={item.image || "/placeholder.jpg"}
                         alt={item.name}
                         fill
                         className="object-cover"
