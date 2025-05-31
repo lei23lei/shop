@@ -12,7 +12,7 @@ import {
 } from "@/components/ui/carousel";
 import Autoplay from "embla-carousel-autoplay";
 import { useGetItemsQuery } from "@/services/endpoints/items-endpoints";
-import { Skeleton } from "@/components/ui/skeleton";
+import LoadingSpin from "@/components/loading-spin";
 
 export default function RecentItems() {
   const plugin = React.useRef(
@@ -25,25 +25,8 @@ export default function RecentItems() {
     return (
       <div className="mx-auto mt-10 lg:pt-20 mb-8">
         <h2 className="px-14 mb-4">Recent Items</h2>
-        <div className="relative px-6 lg:px-14">
-          <div className="flex gap-4">
-            {Array.from({ length: 2 }).map((_, i) => (
-              <div key={i} className="w-[200px]">
-                <Card className="overflow-hidden transition-shadow duration-200">
-                  <CardContent className="flex flex-col p-2 md:p-3">
-                    <div className="relative overflow-hidden rounded-lg">
-                      <Skeleton className="aspect-square rounded-lg" />
-                    </div>
-                    <div className="mt-4 space-y-1">
-                      <Skeleton className="h-5 w-3/4" />
-                      <Skeleton className="h-4 w-1/2" />
-                      <Skeleton className="h-5 w-1/4" />
-                    </div>
-                  </CardContent>
-                </Card>
-              </div>
-            ))}
-          </div>
+        <div className="flex justify-center min-h-[300px] items-center">
+          <LoadingSpin />
         </div>
       </div>
     );
