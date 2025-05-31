@@ -17,7 +17,7 @@ export default function Header() {
   ];
 
   const plugin = React.useRef(
-    Autoplay({ delay: 3000, stopOnInteraction: true })
+    Autoplay({ delay: 300000, stopOnInteraction: true })
   );
 
   return (
