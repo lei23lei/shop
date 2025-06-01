@@ -2,14 +2,6 @@
 
 import React from "react";
 import Image from "next/image";
-import {
-  Breadcrumb,
-  BreadcrumbItem,
-  BreadcrumbLink,
-  BreadcrumbList,
-  BreadcrumbPage,
-  BreadcrumbSeparator,
-} from "@/components/ui/breadcrumb";
 import { Card, CardContent } from "@/components/ui/card";
 import { categories } from "@/lib/data";
 import { useGetItemsQuery } from "@/services/endpoints/items-endpoints";
@@ -23,6 +15,7 @@ import {
   PaginationPrevious,
 } from "@/components/ui/pagination";
 import Link from "next/link";
+import BreadcrumbNavigation from "@/components/layout/breadcrumb";
 
 // Helper function to find category info
 const findCategoryInfo = (catId: number) => {
@@ -78,34 +71,7 @@ export default function ItemsPage({
           Browse our collection of {categoryInfo?.subcategory.toLowerCase()}{" "}
           items.
         </p>
-        <Breadcrumb>
-          <BreadcrumbList>
-            <BreadcrumbItem>
-              <BreadcrumbLink href="/">Home</BreadcrumbLink>
-            </BreadcrumbItem>
-
-            {categoryInfo && (
-              <>
-                <BreadcrumbSeparator />
-                <BreadcrumbItem>
-                  <BreadcrumbLink href={`/items/${categoryInfo.categoryId}`}>
-                    {categoryInfo.category}
-                  </BreadcrumbLink>
-                </BreadcrumbItem>
-                {categoryInfo.subcategory !== "All" && (
-                  <>
-                    <BreadcrumbSeparator />
-                    <BreadcrumbItem>
-                      <BreadcrumbPage>
-                        {categoryInfo.subcategory}
-                      </BreadcrumbPage>
-                    </BreadcrumbItem>
-                  </>
-                )}
-              </>
-            )}
-          </BreadcrumbList>
-        </Breadcrumb>
+        <BreadcrumbNavigation categoryId={Number(resolvedParams["cat-id"])} />
       </div>
       {/* loading */}
       {isLoading && <LoadingItems />}
@@ -138,31 +104,32 @@ export default function ItemsPage({
           <div className="flex-1 p-4">
             <div className="grid grid-cols-2 md:grid-cols-3 2xl:grid-cols-4 gap-4">
               {itemsData?.results.map((item) => (
-                <Card
-                  key={item.id}
-                  className="overflow-hidden transition-shadow duration-200 hover:shadow-lg cursor-pointer"
-                >
-                  <CardContent className="p-0">
-                    <div className="relative aspect-square">
-                      <Image
-                        src={item.image || "/placeholder.jpg"}
-                        alt={item.name}
-                        fill
-                        className="object-cover"
-                      />
-                    </div>
-                    <div className="p-2 md:p-4 space-y-2">
-                      <h4 className="font-medium line-clamp-1">{item.name}</h4>
-                      <p className="text-sm text-muted-foreground line-clamp-1">
-                        {item.categories[0]}
-                      </p>
-                      <p className="text-sm text-muted-foreground line-clamp-1">
-                        {item.description}
-                      </p>
-                      <p className="font-medium">${item.price}</p>
-                    </div>
-                  </CardContent>
-                </Card>
+                <Link href={`/items-detail/${item.id}`} key={item.id}>
+                  <Card className="overflow-hidden transition-shadow duration-200 hover:shadow-lg cursor-pointer">
+                    <CardContent className="p-0">
+                      <div className="relative aspect-square">
+                        <Image
+                          src={item.image || "/placeholder.jpg"}
+                          alt={item.name}
+                          fill
+                          className="object-cover"
+                        />
+                      </div>
+                      <div className="p-2 md:p-4 space-y-2">
+                        <h4 className="font-medium line-clamp-1">
+                          {item.name}
+                        </h4>
+                        <p className="text-sm text-muted-foreground line-clamp-1">
+                          {item.categories[0]}
+                        </p>
+                        <p className="text-sm text-muted-foreground line-clamp-1">
+                          {item.description}
+                        </p>
+                        <p className="font-medium">${item.price}</p>
+                      </div>
+                    </CardContent>
+                  </Card>
+                </Link>
               ))}
             </div>
           </div>

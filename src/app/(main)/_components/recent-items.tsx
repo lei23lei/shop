@@ -2,6 +2,7 @@
 
 import * as React from "react";
 import Image from "next/image";
+import Link from "next/link";
 import { Card, CardContent } from "@/components/ui/card";
 import {
   Carousel,
@@ -58,7 +59,7 @@ export default function RecentItems() {
               key={item.id}
               className="basis-1/2 md:basis-1/3 lg:basis-1/4 xl:basis-1/5"
             >
-              <div className="">
+              <Link href={`/items-detail/${item.id}`}>
                 <Card className="overflow-hidden transition-shadow duration-200 hover:shadow-lg cursor-pointer">
                   <CardContent className="flex flex-col p-2 md:p-3">
                     <div className="relative aspect-square overflow-hidden rounded-lg">
@@ -79,7 +80,7 @@ export default function RecentItems() {
                     </div>
                   </CardContent>
                 </Card>
-              </div>
+              </Link>
             </CarouselItem>
           ))}
         </CarouselContent>

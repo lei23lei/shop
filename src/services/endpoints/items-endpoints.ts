@@ -26,6 +26,39 @@ interface GetItemsParams {
   page_size?: number;
 }
 
+export interface ItemDetail {
+  id: number;
+  name: string;
+  price: string;
+  description: string | null;
+  created_at: string;
+  updated_at: string;
+  categories: {
+    id: number;
+    name: string;
+  }[];
+  details: {
+    color: string;
+    detail: string | null;
+  } | null;
+  sizes: {
+    size: string;
+    quantity: number;
+  }[];
+  images: {
+    id: number;
+    image_url: string;
+    is_primary: boolean;
+  }[];
+  detail_images: {
+    id: number;
+    image_url: string;
+    display_order: number;
+  }[];
+}
+
+// url : http://localhost:8000/api/items/1/
+
 export const itemsApi = api.injectEndpoints({
   endpoints: (builder) => ({
     getItems: builder.query<getItemsResponse, GetItemsParams>({
@@ -52,9 +85,13 @@ export const itemsApi = api.injectEndpoints({
       },
       providesTags: ["Items"],
     }),
+    getItemDetail: builder.query<ItemDetail, number>({
+      query: (id) => `/items/${id}/`,
+      providesTags: (result, error, id) => [{ type: "Items", id }],
+    }),
   }),
 });
 
-export const { useGetItemsQuery } = itemsApi;
+export const { useGetItemsQuery, useGetItemDetailQuery } = itemsApi;
 
 // http://127.0.0.1:8000/items/items/
