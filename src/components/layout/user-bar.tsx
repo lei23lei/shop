@@ -36,9 +36,13 @@ export default function UserBar() {
       }
 
       if (Math.abs(prevScrollPos - currentScrollPos) > SCROLL_THRESHOLD) {
-        setVisible(prevScrollPos > currentScrollPos);
+        const isScrollingUp = prevScrollPos > currentScrollPos;
+        setVisible(isScrollingUp);
+        if (!isScrollingUp) {
+          setIsMobileMenuOpen(false);
+          setActiveCategory(null);
+        }
         setPrevScrollPos(currentScrollPos);
-        setActiveCategory(null);
       }
     };
 
@@ -83,7 +87,7 @@ export default function UserBar() {
 
         <div className="flex md:hidden items-center justify-center space-x-4">
           <form
-            className="relative"
+            className="relative "
             onSubmit={(e: FormEvent) => {
               e.preventDefault();
               if (searchQuery.trim()) {
@@ -97,8 +101,8 @@ export default function UserBar() {
             <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
             <Input
               type="search"
-              placeholder="Search..."
-              className="w-[200px] pl-8 bg-white/80"
+              placeholder="Search"
+              className="w-[110px] pl-8 bg-white/80 focus:w-[200px] transition-all duration-400 ease-in-out"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
             />
@@ -126,11 +130,15 @@ export default function UserBar() {
 
       {/* Mobile Menu */}
       <div
-        className={`md:hidden bg-gray-200 h-screen overflow-hidden transition-all duration-300 ease-in-out ${
-          isMobileMenuOpen ? "max-h-[500px]" : "max-h-0"
+        className={`md:hidden bg-gray-200 overflow-hidden transition-all duration-500 ease-in-out ${
+          isMobileMenuOpen ? "h-[calc(100vh-72px)]" : "h-0"
         }`}
       >
-        <div className="px-3 py-4">
+        <div
+          className={`px-3  transition-opacity duration-300 ${
+            isMobileMenuOpen ? "opacity-100" : "opacity-0"
+          }`}
+        >
           <Accordion type="single" collapsible className="w-full pb-4">
             {categories.map((category) => (
               <AccordionItem value={category.id.toString()} key={category.id}>
@@ -138,7 +146,7 @@ export default function UserBar() {
                   {category.name}
                 </AccordionTrigger>
                 <AccordionContent>
-                  <div className="flex flex-col space-y-2 pl-4">
+                  <div className="flex flex-col  pl-4">
                     {category.subcategories.map((subcategory) => (
                       <Link
                         key={subcategory.id}
@@ -158,7 +166,7 @@ export default function UserBar() {
             ))}
           </Accordion>
           <div className="border-t border-gray-300 pt-4">
-            <h5 className="text-md ">Account</h5>
+            <h5 className="text-md">Account</h5>
           </div>
         </div>
       </div>
@@ -203,7 +211,7 @@ export default function UserBar() {
             <Input
               type="search"
               placeholder="Search..."
-              className="w-[200px] pl-8 bg-white/80"
+              className="w-[200px] pl-8 bg-white/80 focus:w-[400px] transition-all duration-400 ease-in-out"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
             />
