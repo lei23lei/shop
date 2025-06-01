@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { Suspense } from "react";
 import Image from "next/image";
 import { Card, CardContent } from "@/components/ui/card";
 import { useGetItemsQuery } from "@/services/endpoints/items-endpoints";
@@ -16,7 +16,7 @@ import {
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 
-export default function ItemsPage() {
+function ItemsContent() {
   const searchParams = useSearchParams();
   const [page, setPage] = React.useState(1);
 
@@ -150,5 +150,13 @@ export default function ItemsPage() {
         </div>
       )}
     </div>
+  );
+}
+
+export default function ItemsPage() {
+  return (
+    <Suspense fallback={<LoadingItems />}>
+      <ItemsContent />
+    </Suspense>
   );
 }

@@ -33,7 +33,7 @@ export default function RootLayout({
         <StoreProvider>
           <>
             <UserBar />
-            <div className="pt-28">{children}</div>
+            <div className="pt-[72px] md:pt-28">{children}</div>
             <Footer />
           </>
         </StoreProvider>
