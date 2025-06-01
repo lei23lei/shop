@@ -87,7 +87,7 @@ export default function UserBar() {
             alt="Logo"
             width={150}
             height={150}
-            className="w-48 hidden md:block mt-4 "
+            className="w-60 hidden md:block mt-4 "
           />
           <Image
             src="/images/icon.png"
@@ -185,7 +185,7 @@ export default function UserBar() {
       </div>
 
       {/* Desktop Menu */}
-      <div className="hidden md:flex relative flex-row justify-between h-14 items-center w-full mx-auto px-10">
+      <div className="hidden md:flex relative flex-row justify-between h-16 items-center w-full mx-auto px-10">
         <div className="flex space-x-4 items-center">
           {categories.map((category) => (
             <div
@@ -234,7 +234,7 @@ export default function UserBar() {
         {/* expandable categories */}
         {activeCategory !== null && (
           <div
-            className="hidden md:flex absolute  rounded-b-sm flex-row left-0 top-14 w-[600px] h-[290px] bg-neutral-300/75 shadow-lg 
+            className="hidden md:flex absolute  rounded-b-sm flex-row left-0 top-16 w-[600px] h-[290px] bg-neutral-300/75 shadow-lg 
             transform transition-all duration-300 ease-in-out opacity-100 translate-y-0 space-x-6
             origin-top animate-in fade-in slide-in-from-top-2"
           >
