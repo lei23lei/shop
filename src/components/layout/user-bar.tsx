@@ -1,18 +1,21 @@
 "use client";
 
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState, useRef, FormEvent } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Search, ShoppingBasket } from "lucide-react";
 import { categories } from "@/lib/data";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 export default function UserBar() {
   const [prevScrollPos, setPrevScrollPos] = useState(0);
   const [visible, setVisible] = useState(true);
   const [activeCategory, setActiveCategory] = useState<number | null>(null);
+  const [searchQuery, setSearchQuery] = useState("");
   const menuRef = useRef<HTMLDivElement>(null);
+  const router = useRouter();
   const SCROLL_THRESHOLD = 100;
 
   useEffect(() => {
@@ -95,14 +98,27 @@ export default function UserBar() {
           ))}
         </div>
         <div className="flex items-center space-x-4">
-          <div className="relative">
+          <form
+            className="relative"
+            onSubmit={(e: FormEvent) => {
+              e.preventDefault();
+              if (searchQuery.trim()) {
+                router.push(
+                  `/items/?search=${encodeURIComponent(searchQuery.trim())}`
+                );
+                setSearchQuery("");
+              }
+            }}
+          >
             <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
             <Input
               type="search"
               placeholder="Search..."
               className="w-[200px] pl-8 bg-white/80"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
             />
-          </div>
+          </form>
           <ShoppingBasket className="h-5 w-5 cursor-pointer" />
         </div>
         {/* expandable categories */}

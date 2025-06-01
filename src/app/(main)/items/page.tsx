@@ -3,7 +3,6 @@
 import React from "react";
 import Image from "next/image";
 import { Card, CardContent } from "@/components/ui/card";
-import { categories } from "@/lib/data";
 import { useGetItemsQuery } from "@/services/endpoints/items-endpoints";
 import LoadingItems from "@/components/items-loading";
 import {
@@ -15,51 +14,20 @@ import {
   PaginationPrevious,
 } from "@/components/ui/pagination";
 import Link from "next/link";
-import BreadcrumbNavigation from "@/components/layout/breadcrumb";
 import { useSearchParams } from "next/navigation";
 
-// Helper function to find category info
-const findCategoryInfo = (catId: number) => {
-  for (const category of categories) {
-    const subcategory = category.subcategories.find((sub) => sub.id === catId);
-    if (subcategory) {
-      return {
-        category: category.name,
-        subcategory: subcategory.name,
-        categoryId: category.id,
-      };
-    }
-  }
-  return null;
-};
-
-export default function ItemsPage({
-  params,
-}: {
-  params: Promise<{ "cat-id": string }>;
-}) {
-  const resolvedParams = React.use(params);
+export default function ItemsPage() {
   const searchParams = useSearchParams();
   const [page, setPage] = React.useState(1);
 
-  const categoryId = Number(resolvedParams["cat-id"]);
   const search = searchParams.get("search");
-  const categoryInfo = findCategoryInfo(categoryId);
-
-  console.log("Category ID:", categoryId);
   console.log("Search query:", search);
 
-  const { data: itemsData, isLoading } = useGetItemsQuery(
-    {
-      page,
-      category: categoryId,
-      search: search || undefined,
-      page_size: 12,
-    },
-    {
-      skip: !resolvedParams["cat-id"],
-    }
-  );
+  const { data: itemsData, isLoading } = useGetItemsQuery({
+    page,
+    search: search || undefined,
+    page_size: 12,
+  });
 
   const totalPages = itemsData ? Math.ceil(itemsData.count / 12) : 0;
 
@@ -71,30 +39,17 @@ export default function ItemsPage({
   return (
     <div className="container mx-auto py-2 px-0 lg:px-6 xl:px-10 2xl:px-16">
       <div className="flex flex-col gap-4 py-4 px-4 lg:px-0">
-        <h2>
-          {search
-            ? `Search Results for "${search}"${
-                categoryInfo ? ` in ${categoryInfo.subcategory}` : ""
-              }`
-            : categoryInfo
-            ? `${categoryInfo.category} - ${categoryInfo.subcategory}`
-            : "Items"}
-        </h2>
+        <h2>{search ? `Search Results for "${search}"` : "All Items"}</h2>
         <p className="text-sm text-muted-foreground">
           {search
-            ? `Showing results for "${search}"${
-                categoryInfo
-                  ? ` in ${categoryInfo.subcategory.toLowerCase()}`
-                  : ""
-              }`
-            : `Browse our collection of ${
-                categoryInfo?.subcategory.toLowerCase() || ""
-              } items.`}
+            ? `Showing results for "${search}"`
+            : "Browse our collection of items."}
         </p>
-        <BreadcrumbNavigation categoryId={categoryId} />
       </div>
+
       {/* loading */}
       {isLoading && <LoadingItems />}
+
       {/* no items */}
       {!isLoading &&
         (itemsData?.results.length === 0 || itemsData?.count === 0) && (
@@ -102,25 +57,10 @@ export default function ItemsPage({
             <h2>No items found</h2>
           </div>
         )}
+
       {/* items */}
       {!isLoading && itemsData && itemsData?.count > 0 && (
         <div className="flex border-t min-h-[600px] border-border pt-2">
-          <div className="hidden lg:block pl-4 w-60 py-2 space-y-3">
-            {categoryInfo &&
-              categories
-                .find((c) => c.id === categoryInfo.categoryId)
-                ?.subcategories.map((subcategory) => (
-                  <div
-                    key={subcategory.id}
-                    className="group relative cursor-pointer w-fit"
-                  >
-                    <Link href={`/items/${subcategory.id}`} className="block">
-                      <h4 className="font-medium pb-1">{subcategory.name}</h4>
-                      <div className="absolute bottom-0 left-0 h-[3px] w-0 bg-black transition-all duration-300 group-hover:w-full" />
-                    </Link>
-                  </div>
-                ))}
-          </div>
           <div className="flex-1 p-4">
             <div className="grid grid-cols-2 md:grid-cols-3 2xl:grid-cols-4 gap-4">
               {itemsData?.results.map((item) => (
@@ -155,6 +95,7 @@ export default function ItemsPage({
           </div>
         </div>
       )}
+
       {/* Pagination Controls */}
       {!isLoading && totalPages >= 1 && (
         <div className="my-4 flex justify-center">
