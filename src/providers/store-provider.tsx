@@ -3,10 +3,6 @@
 import { Provider } from "react-redux";
 import { store } from "@/store/store";
 
-interface StoreProviderProps {
-  children: JSX.Element;
-}
-
-export function StoreProvider({ children }: StoreProviderProps) {
+export function StoreProvider({ children }: { children: React.ReactNode }) {
   return <Provider store={store}>{children}</Provider>;
 }
