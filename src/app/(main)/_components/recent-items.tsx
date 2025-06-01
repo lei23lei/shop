@@ -15,17 +15,27 @@ import Autoplay from "embla-carousel-autoplay";
 import { useGetItemsQuery } from "@/services/endpoints/items-endpoints";
 import LoadingSpin from "@/components/loading-spin";
 
-export default function RecentItems() {
+interface RecentItemsProps {
+  name?: string;
+  cat_id?: number;
+}
+
+export default function RecentItems({
+  name = "Recent Items",
+  cat_id,
+}: RecentItemsProps) {
   const plugin = React.useRef(
     Autoplay({ delay: 3000, stopOnInteraction: true })
   );
 
-  const { data: itemsData, isLoading } = useGetItemsQuery({});
+  const { data: itemsData, isLoading } = useGetItemsQuery({
+    category: cat_id,
+  });
 
   if (isLoading || !itemsData?.results) {
     return (
-      <div className="mx-auto mt-10 lg:pt-20 mb-8">
-        <h2 className="px-14 mb-4">Recent Items</h2>
+      <div className="mx-auto mt-2 lg:pt-20 mb-8">
+        <h2 className="px-14 mb-4">{name}</h2>
         <div className="flex justify-center min-h-[300px] items-center">
           <LoadingSpin />
         </div>
@@ -35,16 +45,16 @@ export default function RecentItems() {
 
   if (itemsData.results.length === 0) {
     return (
-      <div className="mx-auto mt-10 lg:pt-20 mb-10">
-        <h2 className="px-14 mb-4">Recent Items</h2>
+      <div className="mx-auto mt-2 lg:pt-20 mb-10">
+        <h2 className="px-14 mb-4">{name}</h2>
         <p className="px-14">No items found</p>
       </div>
     );
   }
 
   return (
-    <div className="mx-auto mt-10 lg:pt-20 mb-8">
-      <h2 className="px-14 mb-4">Recent Items</h2>
+    <div className="mx-auto mt-2 lg:pt-20 mb-8">
+      <h2 className="px-14 mb-4">{name}</h2>
       <Carousel
         opts={{
           align: "start",
