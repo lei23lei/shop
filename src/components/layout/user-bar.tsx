@@ -81,9 +81,22 @@ export default function UserBar() {
       ref={menuRef}
     >
       <div className="px-3 md:px-10 h-[72px] md:h-14 flex items-center justify-between">
-        <div className="flex items-center space-x-4">
-          <h3>Logo</h3>
-        </div>
+        <Link href="/">
+          <Image
+            src="/images/icon-full.png"
+            alt="Logo"
+            width={150}
+            height={150}
+            className="w-48 hidden md:block mt-4 "
+          />
+          <Image
+            src="/images/icon.png"
+            alt="Logo"
+            width={150}
+            height={150}
+            className="w-16 md:hidden  "
+          />
+        </Link>
 
         <div className="flex md:hidden items-center justify-center space-x-4">
           <form
