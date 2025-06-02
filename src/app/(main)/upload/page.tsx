@@ -18,6 +18,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { categories } from "@/lib/data";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Plus, X } from "lucide-react";
+import { CldUploadWidget } from "next-cloudinary";
 
 const formSchema = z.object({
   name: z.string().min(1, "Name is required"),
@@ -33,8 +34,9 @@ const formSchema = z.object({
       quantity: z.number().min(0, "Quantity must be a positive number"),
     })
   ),
-  images: z.array(z.string()).min(1, "At least one image is required"),
+  images: z.array(z.string()).optional(),
   detailImages: z.array(z.string()).optional(),
+  displayImage: z.string().optional(),
 });
 
 export default function UploadPage() {
@@ -45,6 +47,7 @@ export default function UploadPage() {
   );
   const [images, setImages] = useState<string[]>([]);
   const [detailImages, setDetailImages] = useState<string[]>([]);
+  const [displayImage, setDisplayImage] = useState<string>("");
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -59,6 +62,7 @@ export default function UploadPage() {
       sizes: [{ size: "", quantity: 0 }],
       images: [],
       detailImages: [],
+      displayImage: "",
     },
   });
 
@@ -80,24 +84,49 @@ export default function UploadPage() {
     }
   };
 
-  const handleImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const files = e.target.files;
-    if (files) {
-      const newImages = Array.from(files).map((file) =>
-        URL.createObjectURL(file)
-      );
-      setImages([...images, ...newImages]);
-      form.setValue("images", [...images, ...newImages]);
+  const handleDisplayImageUpload = (result: any) => {
+    console.log("Display Image Upload Result:", result);
+    const uploadInfo = result.info;
+    if (uploadInfo?.secure_url) {
+      const imageUrl = uploadInfo.secure_url;
+      console.log("Setting display image URL:", imageUrl);
+      setDisplayImage(imageUrl);
+      form.setValue("displayImage", imageUrl);
+      console.log("Updated form values:", form.getValues());
     }
   };
 
-  const handleDetailImageUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const files = e.target.files;
-    if (files) {
-      const newImages = Array.from(files).map((file) =>
-        URL.createObjectURL(file)
-      );
-      setDetailImages([...detailImages, ...newImages]);
+  const handleImageUpload = (result: any) => {
+    console.log("Additional Image Upload Result:", result);
+    const uploadInfo = result.info;
+    if (uploadInfo?.secure_url) {
+      const imageUrl = uploadInfo.secure_url;
+      console.log("Adding additional image URL:", imageUrl);
+      console.log("Current images:", images);
+      // Get current images and append new one
+      const currentImages = form.getValues("images") || [];
+      const newImages = [...currentImages, imageUrl];
+      console.log("New images array before update:", newImages);
+      setImages(newImages);
+      form.setValue("images", newImages, { shouldValidate: true });
+      console.log("Updated images array:", newImages);
+    }
+  };
+
+  const handleDetailImageUpload = (result: any) => {
+    console.log("Detail Image Upload Result:", result);
+    const uploadInfo = result.info;
+    if (uploadInfo?.secure_url) {
+      const imageUrl = uploadInfo.secure_url;
+      console.log("Adding detail image URL:", imageUrl);
+      console.log("Current detail images:", detailImages);
+      // Get current detail images and append new one
+      const currentDetailImages = form.getValues("detailImages") || [];
+      const newDetailImages = [...currentDetailImages, imageUrl];
+      console.log("New detail images array before update:", newDetailImages);
+      setDetailImages(newDetailImages);
+      form.setValue("detailImages", newDetailImages, { shouldValidate: true });
+      console.log("Updated detail images array:", newDetailImages);
     }
   };
 
@@ -116,6 +145,18 @@ export default function UploadPage() {
 
   const handleSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
+      console.log("Current images state:", images);
+      console.log("Current form values:", values);
+
+      // Check if we have images in either state or form values
+      const hasImages =
+        images.length > 0 || (values.images && values.images.length > 0);
+
+      if (!hasImages) {
+        alert("Please upload at least one image");
+        return;
+      }
+
       // Get the selected category and subcategory names
       const selectedCategoryData = categories.find(
         (c) => c.id === selectedCategory
@@ -126,15 +167,22 @@ export default function UploadPage() {
 
       // Ensure we have valid category and subcategory IDs
       if (!selectedCategory || !selectedSubcategory) {
-        throw new Error("Please select both category and subcategory");
+        alert("Please select both category and subcategory");
+        return;
       }
 
       // Filter out empty sizes before submission
       const validSizes = sizes.filter((size) => size.size.trim() !== "");
 
+      if (validSizes.length === 0) {
+        alert("Please add at least one size");
+        return;
+      }
+
       const formData = {
         ...values,
         categories: [selectedCategory, selectedSubcategory],
+        displayImage: displayImage,
         images: images.filter(Boolean),
         detailImages: detailImages.filter(Boolean),
         sizes: validSizes.map((size) => ({
@@ -143,19 +191,11 @@ export default function UploadPage() {
         })),
       };
 
-      // Remove any undefined or null values from the formData
-      const cleanedFormData = Object.fromEntries(
-        Object.entries(formData).filter(([_, value]) => {
-          if (Array.isArray(value)) {
-            return value.length > 0;
-          }
-          return value !== null && value !== undefined && value !== "";
-        })
-      );
-
-      console.log("Form Data:", JSON.stringify(cleanedFormData, null, 2));
+      console.log("Submitting Form Data:", JSON.stringify(formData, null, 2));
+      // Here you would typically send the data to your backend
     } catch (error) {
       console.error("Error submitting form:", error);
+      alert("Error submitting form. Please check all required fields.");
     }
   };
 
@@ -431,9 +471,75 @@ export default function UploadPage() {
                 </Button>
               </div>
 
+              {/* Display Image */}
+              <div className="space-y-4">
+                <h3 className="text-lg font-medium">Display Image</h3>
+                <div className="grid grid-cols-1 gap-4">
+                  <CldUploadWidget
+                    uploadPreset="myshop"
+                    onUpload={handleDisplayImageUpload}
+                    options={{
+                      maxFiles: 1,
+                      sources: ["local", "url", "camera"],
+                      clientAllowedFormats: ["jpg", "jpeg", "png", "gif"],
+                      maxFileSize: 10000000,
+                      styles: {
+                        palette: {
+                          window: "#FFFFFF",
+                          windowBorder: "#90A0B3",
+                          tabIcon: "#0078FF",
+                          menuIcons: "#5A616A",
+                          textDark: "#000000",
+                          textLight: "#FFFFFF",
+                          link: "#0078FF",
+                          action: "#FF620C",
+                          inactiveTabIcon: "#0E2F5A",
+                          error: "#F44235",
+                          inProgress: "#0078FF",
+                          complete: "#20B832",
+                          sourceBg: "#E4EBF1",
+                        },
+                        frame: {
+                          background: "#0078FF",
+                        },
+                      },
+                    }}
+                    onSuccess={(result) => {
+                      console.log("Upload success:", result);
+                      handleDisplayImageUpload(result);
+                    }}
+                    onError={(error) => {
+                      console.error("Upload error:", error);
+                    }}
+                  >
+                    {({ open }) => (
+                      <div className="flex flex-col items-center gap-4">
+                        {displayImage && (
+                          <div className="relative aspect-square w-full max-w-[300px]">
+                            <img
+                              src={displayImage}
+                              alt="Display image"
+                              className="object-cover w-full h-full rounded-lg"
+                            />
+                          </div>
+                        )}
+                        <Button
+                          type="button"
+                          variant="outline"
+                          onClick={() => open()}
+                          className="w-full"
+                        >
+                          Upload Display Image
+                        </Button>
+                      </div>
+                    )}
+                  </CldUploadWidget>
+                </div>
+              </div>
+
               {/* Images */}
               <div className="space-y-4">
-                <h3 className="text-lg font-medium">Images</h3>
+                <h3 className="text-lg font-medium">Additional Images</h3>
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                   {images.map((image, index) => (
                     <div key={index} className="relative aspect-square">
@@ -445,12 +551,63 @@ export default function UploadPage() {
                     </div>
                   ))}
                 </div>
-                <Input
-                  type="file"
-                  accept="image/*"
-                  multiple
-                  onChange={handleImageUpload}
-                />
+                <CldUploadWidget
+                  uploadPreset="myshop"
+                  onSuccess={(result) => {
+                    console.log("Upload success:", result);
+                    handleImageUpload(result);
+                  }}
+                  onError={(error) => {
+                    console.error("Upload error:", error);
+                  }}
+                  options={{
+                    maxFiles: 5,
+                    sources: ["local", "url", "camera"],
+                    clientAllowedFormats: ["jpg", "jpeg", "png", "gif"],
+                    maxFileSize: 10000000,
+                    styles: {
+                      palette: {
+                        window: "#FFFFFF",
+                        windowBorder: "#90A0B3",
+                        tabIcon: "#0078FF",
+                        menuIcons: "#5A616A",
+                        textDark: "#000000",
+                        textLight: "#FFFFFF",
+                        link: "#0078FF",
+                        action: "#FF620C",
+                        inactiveTabIcon: "#0E2F5A",
+                        error: "#F44235",
+                        inProgress: "#0078FF",
+                        complete: "#20B832",
+                        sourceBg: "#E4EBF1",
+                      },
+                    },
+                  }}
+                >
+                  {({ open }) => (
+                    <div className="flex flex-col gap-4">
+                      <Button
+                        type="button"
+                        variant="outline"
+                        onClick={() => open()}
+                        className="w-full"
+                      >
+                        Upload Additional Images
+                      </Button>
+                      {/* <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                        {images.map((image, index) => (
+                          <div key={index} className="relative aspect-square">
+                            <img
+                              src={image}
+                              alt={`Item image ${index + 1}`}
+                              className="object-cover w-full h-full rounded-lg"
+                            />
+                          </div>
+                        ))}
+                      </div> */}
+                    </div>
+                  )}
+                </CldUploadWidget>
               </div>
 
               {/* Detail Images */}
@@ -467,12 +624,63 @@ export default function UploadPage() {
                     </div>
                   ))}
                 </div>
-                <Input
-                  type="file"
-                  accept="image/*"
-                  multiple
-                  onChange={handleDetailImageUpload}
-                />
+                <CldUploadWidget
+                  uploadPreset="myshop"
+                  onSuccess={(result) => {
+                    console.log("Upload success:", result);
+                    handleDetailImageUpload(result);
+                  }}
+                  onError={(error) => {
+                    console.error("Upload error:", error);
+                  }}
+                  options={{
+                    maxFiles: 5,
+                    sources: ["local", "url", "camera"],
+                    clientAllowedFormats: ["jpg", "jpeg", "png", "gif"],
+                    maxFileSize: 10000000,
+                    styles: {
+                      palette: {
+                        window: "#FFFFFF",
+                        windowBorder: "#90A0B3",
+                        tabIcon: "#0078FF",
+                        menuIcons: "#5A616A",
+                        textDark: "#000000",
+                        textLight: "#FFFFFF",
+                        link: "#0078FF",
+                        action: "#FF620C",
+                        inactiveTabIcon: "#0E2F5A",
+                        error: "#F44235",
+                        inProgress: "#0078FF",
+                        complete: "#20B832",
+                        sourceBg: "#E4EBF1",
+                      },
+                    },
+                  }}
+                >
+                  {({ open }) => (
+                    <div className="flex flex-col gap-4">
+                      <Button
+                        type="button"
+                        variant="outline"
+                        onClick={() => open()}
+                        className="w-full"
+                      >
+                        Upload Detail Images
+                      </Button>
+                      {/* <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                        {detailImages.map((image, index) => (
+                          <div key={index} className="relative aspect-square">
+                            <img
+                              src={image}
+                              alt={`Detail image ${index + 1}`}
+                              className="object-cover w-full h-full rounded-lg"
+                            />
+                          </div>
+                        ))}
+                      </div> */}
+                    </div>
+                  )}
+                </CldUploadWidget>
               </div>
 
               <Button type="submit" className="w-full">
