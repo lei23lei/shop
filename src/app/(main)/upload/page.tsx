@@ -19,6 +19,7 @@ import { categories } from "@/lib/data";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Plus, X } from "lucide-react";
 import { CldUploadWidget } from "next-cloudinary";
+import { useCreateItemMutation } from "@/services/endpoints/items-endpoints";
 
 const formSchema = z.object({
   name: z.string().min(1, "Name is required"),
@@ -48,6 +49,7 @@ export default function UploadPage() {
   const [images, setImages] = useState<string[]>([]);
   const [detailImages, setDetailImages] = useState<string[]>([]);
   const [displayImage, setDisplayImage] = useState<string>("");
+  const [createItem, { isLoading }] = useCreateItemMutation();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -148,7 +150,6 @@ export default function UploadPage() {
       console.log("Current images state:", images);
       console.log("Current form values:", values);
 
-      // Check if we have images in either state or form values
       const hasImages =
         images.length > 0 || (values.images && values.images.length > 0);
 
@@ -157,21 +158,11 @@ export default function UploadPage() {
         return;
       }
 
-      // Get the selected category and subcategory names
-      const selectedCategoryData = categories.find(
-        (c) => c.id === selectedCategory
-      );
-      const selectedSubcategoryData = selectedCategoryData?.subcategories.find(
-        (s) => s.id === selectedSubcategory
-      );
-
-      // Ensure we have valid category and subcategory IDs
       if (!selectedCategory || !selectedSubcategory) {
         alert("Please select both category and subcategory");
         return;
       }
 
-      // Filter out empty sizes before submission
       const validSizes = sizes.filter((size) => size.size.trim() !== "");
 
       if (validSizes.length === 0) {
@@ -179,20 +170,38 @@ export default function UploadPage() {
         return;
       }
 
-      const formData = {
-        ...values,
+      // Destructure to remove parent_category_id and category_id
+      const { parent_category_id, category_id, ...rest } = values;
+
+      const requestData = {
+        ...rest,
         categories: [selectedCategory, selectedSubcategory],
-        displayImage: displayImage,
+        details: {
+          color: values.color,
+          detail: values.detail || undefined,
+        },
+        display_image: displayImage,
         images: images.filter(Boolean),
-        detailImages: detailImages.filter(Boolean),
+        detail_images: detailImages.filter(Boolean),
         sizes: validSizes.map((size) => ({
           size: size.size.trim(),
           quantity: size.quantity || 0,
         })),
       };
 
-      console.log("Submitting Form Data:", JSON.stringify(formData, null, 2));
-      // Here you would typically send the data to your backend
+      console.log(
+        "Submitting Form Data:",
+        JSON.stringify(requestData, null, 2)
+      );
+
+      try {
+        const response = await createItem(requestData).unwrap();
+        console.log("Item created successfully:", response);
+        // You might want to redirect to the item detail page or show a success message
+      } catch (error) {
+        console.error("Failed to create item:", error);
+        alert("Failed to create item. Please try again.");
+      }
     } catch (error) {
       console.error("Error submitting form:", error);
       alert("Error submitting form. Please check all required fields.");
@@ -683,8 +692,8 @@ export default function UploadPage() {
                 </CldUploadWidget>
               </div>
 
-              <Button type="submit" className="w-full">
-                Upload Item
+              <Button type="submit" className="w-full" disabled={isLoading}>
+                {isLoading ? "Uploading..." : "Upload Item"}
               </Button>
             </form>
           </Form>

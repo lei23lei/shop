@@ -59,6 +59,28 @@ export interface ItemDetail {
 
 // url : http://localhost:8000/api/items/1/
 
+// POST /api/items/
+// write me a interface based on my form data
+
+// POST /api/items/
+export interface CreateItemRequest {
+  name: string;
+  price: number;
+  description: string;
+  categories: number[]; // [parentCategoryId, subcategoryId]
+  details: {
+    color: string;
+    detail?: string;
+  };
+  sizes: {
+    size: string;
+    quantity: number;
+  }[];
+  images: string[];
+  detail_images: string[];
+  display_image: string;
+}
+
 export const itemsApi = api.injectEndpoints({
   endpoints: (builder) => ({
     getItems: builder.query<getItemsResponse, GetItemsParams>({
@@ -89,9 +111,21 @@ export const itemsApi = api.injectEndpoints({
       query: (id) => `/items/${id}/`,
       providesTags: (result, error, id) => [{ type: "Items", id }],
     }),
+    createItem: builder.mutation<ItemDetail, CreateItemRequest>({
+      query: (data) => ({
+        url: "/items/",
+        method: "POST",
+        body: data,
+      }),
+      invalidatesTags: ["Items"],
+    }),
   }),
 });
 
-export const { useGetItemsQuery, useGetItemDetailQuery } = itemsApi;
+export const {
+  useGetItemsQuery,
+  useGetItemDetailQuery,
+  useCreateItemMutation,
+} = itemsApi;
 
 // http://127.0.0.1:8000/items/items/

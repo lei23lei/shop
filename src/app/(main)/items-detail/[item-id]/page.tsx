@@ -36,11 +36,11 @@ export default function ItemDetailPage({
       b.is_primary ? 1 : -1
     );
 
-    const sortedDetailImages = [...itemDetail.detail_images].sort(
-      (a, b) => a.display_order - b.display_order
-    );
+    // const sortedDetailImages = [...itemDetail.detail_images].sort(
+    //   (a, b) => a.display_order - b.display_order
+    // );
 
-    return [...sortedImages, ...sortedDetailImages];
+    return [...sortedImages];
   }, [itemDetail]);
 
   if (isLoading) {
@@ -237,6 +237,18 @@ export default function ItemDetailPage({
                 promises to redefine sustainability for the modern age.
               </p>
             )}
+          </div>
+        )}
+        {/* detail iamges */}
+        {itemDetail.detail_images.length > 0 && (
+          <div className="space-y-2 w-full pt-10">
+            <Image
+              src={itemDetail.detail_images[0].image_url}
+              alt={itemDetail.name}
+              width={100}
+              height={100}
+              className="w-full h-full object-cover"
+            />
           </div>
         )}
       </div>
