@@ -23,11 +23,17 @@ function ItemsContent() {
   const search = searchParams.get("search");
   console.log("Search query:", search);
 
-  const { data: itemsData, isLoading } = useGetItemsQuery({
+  const {
+    data: itemsData,
+    isLoading,
+    isError,
+  } = useGetItemsQuery({
     page,
     search: search || undefined,
     page_size: 12,
   });
+
+  console.log("isError", isError);
 
   const totalPages = itemsData ? Math.ceil(itemsData.count / 12) : 0;
 
