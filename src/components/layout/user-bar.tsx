@@ -135,9 +135,11 @@ export default function UserBar() {
         </div>
 
         <div className="hidden md:flex items-center space-x-4">
-          <Button variant="outline" className="text-foreground">
-            Account
-          </Button>
+          <Link href="/login">
+            <Button variant="outline" className="text-foreground">
+              Account
+            </Button>
+          </Link>
         </div>
       </div>
 
@@ -178,9 +180,11 @@ export default function UserBar() {
               </AccordionItem>
             ))}
           </Accordion>
-          <div className="border-t border-gray-300 pt-4">
-            <h5 className="text-md">Account</h5>
-          </div>
+          <Link href="/login">
+            <div className="border-t border-gray-300 pt-4">
+              <h5 className="text-md">Account</h5>
+            </div>
+          </Link>
         </div>
       </div>
 
