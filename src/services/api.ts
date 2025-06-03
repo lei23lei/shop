@@ -8,6 +8,13 @@ export const api = createApi({
   baseQuery: fetchBaseQuery({
     baseUrl: API_URL,
     credentials: "include",
+    prepareHeaders: (headers) => {
+      const token = localStorage.getItem("access_token");
+      if (token) {
+        headers.set("Authorization", `Bearer ${token}`);
+      }
+      return headers;
+    },
   }),
   endpoints: () => ({}),
   tagTypes: ["Items"],

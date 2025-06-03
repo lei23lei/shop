@@ -23,6 +23,9 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
+import { useAuth } from "@/contexts/auth-context";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
 
 const formSchema = z.object({
   email: z.string().email({
@@ -34,6 +37,11 @@ const formSchema = z.object({
 });
 
 export function LoginForm() {
+  const router = useRouter();
+  const { login } = useAuth();
+  const [isLoading, setIsLoading] = useState(false);
+  const [loginError, setLoginError] = useState<string>("");
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -42,9 +50,23 @@ export function LoginForm() {
     },
   });
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    // TODO: Implement your login logic here
-    console.log(values);
+  async function onSubmit(values: z.infer<typeof formSchema>) {
+    try {
+      setIsLoading(true);
+      await login(values.email, values.password);
+      router.push("/");
+    } catch (error: any) {
+      console.log("Login error:", error);
+      const errorMessage =
+        error?.data?.error || "Login failed. Please try again.";
+      setLoginError(errorMessage);
+      form.setError("email", {
+        type: "manual",
+        message: errorMessage,
+      });
+    } finally {
+      setIsLoading(false);
+    }
   }
 
   return (
@@ -93,8 +115,8 @@ export function LoginForm() {
                 Forgot password?
               </Button>
             </div>
-            <Button type="submit" className="w-full">
-              Sign in
+            <Button type="submit" className="w-full" disabled={isLoading}>
+              {isLoading ? "Signing in..." : "Sign in"}
             </Button>
           </form>
         </Form>

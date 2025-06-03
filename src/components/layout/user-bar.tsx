@@ -8,6 +8,7 @@ import { categories } from "@/lib/data";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { useAuth } from "@/contexts/auth-context";
 import {
   Accordion,
   AccordionContent,
@@ -16,6 +17,7 @@ import {
 } from "@/components/ui/accordion";
 
 export default function UserBar() {
+  const { user } = useAuth();
   const [prevScrollPos, setPrevScrollPos] = useState(0);
   const [visible, setVisible] = useState(true);
   const [activeCategory, setActiveCategory] = useState<number | null>(null);
@@ -26,6 +28,22 @@ export default function UserBar() {
   const SCROLL_THRESHOLD = 100;
 
   useEffect(() => {
+    console.log("User Information:", {
+      user,
+      isLoggedIn: !!user,
+      userDetails: user
+        ? {
+            id: user.id,
+            email: user.email,
+            firstName: user.first_name,
+            lastName: user.last_name,
+            phoneNumber: user.phone_number,
+            address: user.address,
+            isSuperuser: user.is_superuser,
+          }
+        : null,
+    });
+
     const handleScroll = () => {
       const currentScrollPos = window.scrollY;
 
@@ -59,7 +77,7 @@ export default function UserBar() {
       window.removeEventListener("scroll", handleScroll);
       document.removeEventListener("mousedown", handleClickOutside);
     };
-  }, [prevScrollPos]);
+  }, [prevScrollPos, user]);
 
   const handleCategoryClick = (categoryId: number) => {
     setActiveCategory(activeCategory === categoryId ? null : categoryId);

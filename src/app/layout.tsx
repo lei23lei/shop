@@ -1,9 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
-import { StoreProvider } from "@/providers/store-provider";
-import UserBar from "@/components/layout/user-bar";
-import Footer from "@/components/layout/footer";
+import RootLayoutClient from "./(main)/root-layout-client";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -44,13 +42,7 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} bg-background overflow-x-hidden antialiased`}
       >
-        <StoreProvider>
-          <>
-            <UserBar />
-            <div className="pt-[72px] md:pt-[120px]">{children}</div>
-            <Footer />
-          </>
-        </StoreProvider>
+        <RootLayoutClient>{children}</RootLayoutClient>
       </body>
     </html>
   );
