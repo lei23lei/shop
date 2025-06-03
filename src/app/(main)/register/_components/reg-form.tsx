@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useState, useEffect } from "react";
 import {
   Card,
   CardContent,
@@ -22,6 +22,8 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { CheckCircle2, Circle } from "lucide-react";
+import { useRegisterMutation } from "@/services/endpoints/account-endpoints";
+import { useRouter } from "next/navigation";
 
 const formSchema = z
   .object({
@@ -44,6 +46,25 @@ const formSchema = z
   });
 
 export default function RegForm() {
+  const router = useRouter();
+  const [register, { isLoading, error }] = useRegisterMutation();
+  const [countdown, setCountdown] = useState(3);
+  const [isSuccess, setIsSuccess] = useState(false);
+
+  useEffect(() => {
+    let timer: NodeJS.Timeout;
+    if (isSuccess && countdown > 0) {
+      timer = setInterval(() => {
+        setCountdown((prev) => prev - 1);
+      }, 1000);
+    } else if (isSuccess && countdown === 0) {
+      router.push("/login");
+    }
+    return () => {
+      if (timer) clearInterval(timer);
+    };
+  }, [isSuccess, countdown, router]);
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -58,9 +79,37 @@ export default function RegForm() {
   const hasLetter = /[A-Za-z]/.test(password || "");
   const hasNumber = /\d/.test(password || "");
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    // TODO: Implement your registration logic here
-    console.log(values);
+  async function onSubmit(values: z.infer<typeof formSchema>) {
+    try {
+      const response = await register({
+        email: values.email,
+        password: values.password,
+      }).unwrap();
+
+      setIsSuccess(true);
+    } catch (error: any) {
+      console.log("Registration error:", error);
+      const errorMessage =
+        error?.data?.error || "Registration failed. Please try again.";
+      form.setError("email", {
+        type: "manual",
+        message: errorMessage,
+      });
+    }
+  }
+
+  if (isSuccess) {
+    return (
+      <div className="flex flex-col items-center justify-center min-h-[300px] space-y-4">
+        <CheckCircle2 className="h-12 w-12 text-green-500 animate-pulse" />
+        <h2 className="text-2xl font-bold text-green-600">
+          Registration Successful!
+        </h2>
+        <p className="text-muted-foreground">
+          Redirecting to login page in {countdown} seconds...
+        </p>
+      </div>
+    );
   }
 
   return (
@@ -166,8 +215,8 @@ export default function RegForm() {
                 </li>
               </ul>
             </div>
-            <Button type="submit" className="w-full">
-              Create account
+            <Button type="submit" className="w-full" disabled={isLoading}>
+              {isLoading ? "Creating account..." : "Create account"}
             </Button>
           </form>
         </Form>
