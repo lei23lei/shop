@@ -153,11 +153,19 @@ export default function UserBar() {
         </div>
 
         <div className="hidden md:flex items-center space-x-4">
-          <Link href="/login">
-            <Button variant="outline" className="text-foreground">
-              Account
-            </Button>
-          </Link>
+          {user ? (
+            <Link href="/myaccount">
+              <Button variant="outline" className="text-foreground">
+                {user.email}
+              </Button>
+            </Link>
+          ) : (
+            <Link href="/login">
+              <Button variant="outline" className="text-foreground">
+                Login
+              </Button>
+            </Link>
+          )}
         </div>
       </div>
 
@@ -200,7 +208,7 @@ export default function UserBar() {
           </Accordion>
           <Link href="/login">
             <div className="border-t border-gray-300 pt-4">
-              <h5 className="text-md">Account</h5>
+              <h5 className="text-md">Login</h5>
             </div>
           </Link>
         </div>
