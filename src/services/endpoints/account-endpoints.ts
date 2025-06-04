@@ -43,6 +43,23 @@ interface VerifyResponse {
   };
 }
 
+interface ResetPasswordRequest {
+  token: string;
+  new_password: string;
+}
+
+interface ResetPasswordResponse {
+  message: string;
+}
+
+interface ForgotPasswordRequest {
+  email: string;
+}
+
+interface ForgotPasswordResponse {
+  message: string;
+}
+
 export const accountApi = api.injectEndpoints({
   endpoints: (builder) => ({
     register: builder.mutation<RegisterResponse, RegisterRequest>({
@@ -63,6 +80,26 @@ export const accountApi = api.injectEndpoints({
       query: () => ({
         url: "/verify/",
         method: "GET",
+      }),
+    }),
+    resetPassword: builder.mutation<
+      ResetPasswordResponse,
+      ResetPasswordRequest
+    >({
+      query: (data) => ({
+        url: "/reset-password/",
+        method: "POST",
+        body: data,
+      }),
+    }),
+    forgotPassword: builder.mutation<
+      ForgotPasswordResponse,
+      ForgotPasswordRequest
+    >({
+      query: (data) => ({
+        url: "/forgot-password/",
+        method: "POST",
+        body: data,
       }),
     }),
   }),
@@ -121,5 +158,24 @@ export const accountApi = api.injectEndpoints({
 //     "error": "Invalid email or password"
 // }
 
-export const { useRegisterMutation, useLoginMutation, useVerifyQuery } =
-  accountApi;
+// http://localhost:8000/api/reset-password/
+// method POST
+// body:{
+// "token": "your-reset-token-here",
+// "new_password": "your-new-password-here"
+// }
+
+// POST http://localhost:8000/api/forgot-password/
+// body:
+// {
+//     "email": "user@example.com"
+// }
+// response:
+
+export const {
+  useRegisterMutation,
+  useLoginMutation,
+  useVerifyQuery,
+  useResetPasswordMutation,
+  useForgotPasswordMutation,
+} = accountApi;
