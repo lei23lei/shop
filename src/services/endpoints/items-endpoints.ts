@@ -119,6 +119,13 @@ export const itemsApi = api.injectEndpoints({
       }),
       invalidatesTags: ["Items"],
     }),
+    deleteItem: builder.mutation<{ message: string }, number>({
+      query: (id) => ({
+        url: `/items/${id}/`,
+        method: "DELETE",
+      }),
+      invalidatesTags: (result, error, id) => [{ type: "Items", id }, "Items"],
+    }),
   }),
 });
 
@@ -126,6 +133,7 @@ export const {
   useGetItemsQuery,
   useGetItemDetailQuery,
   useCreateItemMutation,
+  useDeleteItemMutation,
 } = itemsApi;
 
 // http://127.0.0.1:8000/items/items/

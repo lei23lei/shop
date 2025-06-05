@@ -23,11 +23,14 @@ export default function UserBar() {
   const [activeCategory, setActiveCategory] = useState<number | null>(null);
   const [searchQuery, setSearchQuery] = useState("");
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isClient, setIsClient] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
   const router = useRouter();
   const SCROLL_THRESHOLD = 100;
 
   useEffect(() => {
+    setIsClient(true);
+
     console.log("User Information:", {
       user,
       isLoggedIn: !!user,
@@ -153,18 +156,22 @@ export default function UserBar() {
         </div>
 
         <div className="hidden md:flex items-center space-x-4">
-          {user ? (
-            <Link href="/myaccount">
-              <Button variant="outline" className="text-foreground">
-                {user.email}
-              </Button>
-            </Link>
-          ) : (
-            <Link href="/login">
-              <Button variant="outline" className="text-foreground">
-                Login
-              </Button>
-            </Link>
+          {isClient && (
+            <>
+              {user ? (
+                <Link href="/myaccount">
+                  <Button variant="outline" className="text-foreground">
+                    {user.email}
+                  </Button>
+                </Link>
+              ) : (
+                <Link href="/login">
+                  <Button variant="outline" className="text-foreground">
+                    Login
+                  </Button>
+                </Link>
+              )}
+            </>
           )}
         </div>
       </div>

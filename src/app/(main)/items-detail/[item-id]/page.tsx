@@ -227,15 +227,15 @@ export default function ItemDetailPage({
             <h3 className="font-medium">Details</h3>
 
             {itemDetail.details.detail && (
-              // <p className="text-neutral-600">{itemDetail.details.detail}</p>
-              <p className="text-muted-foreground">
-                Introducing the Quantum Widget, a revolutionary device that
-                harnesses zero-point energy to power your entire home with a
-                single button press. Its sleek, futuristic design blends
-                seamlessly into any decor while silently generating limitless
-                clean energy. Available now for pre-order, this game-changer
-                promises to redefine sustainability for the modern age.
-              </p>
+              <p className="text-neutral-600">{itemDetail.details.detail}</p>
+              // <p className="text-muted-foreground">
+              //   Introducing the Quantum Widget, a revolutionary device that
+              //   harnesses zero-point energy to power your entire home with a
+              //   single button press. Its sleek, futuristic design blends
+              //   seamlessly into any decor while silently generating limitless
+              //   clean energy. Available now for pre-order, this game-changer
+              //   promises to redefine sustainability for the modern age.
+              // </p>
             )}
           </div>
         )}
