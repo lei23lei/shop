@@ -2,7 +2,11 @@
 
 import React from "react";
 import Image from "next/image";
-import { useGetItemDetailQuery } from "@/services/endpoints/items-endpoints";
+import {
+  useGetItemDetailQuery,
+  useDeleteItemMutation,
+} from "@/services/endpoints/items-endpoints";
+import { useRouter } from "next/navigation";
 import LoadingSpin from "@/components/loading-spin";
 import BreadcrumbNavigation from "@/components/layout/breadcrumb";
 import { Button } from "@/components/ui/button";
@@ -14,16 +18,37 @@ import {
   DialogTrigger,
   DialogTitle,
 } from "@/components/ui/dialog";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
+import ReactMarkdown from "react-markdown";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
 
 export default function ItemDetailPage({
   params,
 }: {
   params: Promise<{ "item-id": string }>;
 }) {
+  const router = useRouter();
   const resolvedParams = React.use(params);
   const { data: itemDetail, isLoading } = useGetItemDetailQuery(
     Number(resolvedParams["item-id"])
   );
+  const [deleteItem] = useDeleteItemMutation();
+  const [isDeleting, setIsDeleting] = React.useState(false);
 
   const [selectedImage, setSelectedImage] = React.useState<number>(0);
   const [dialogOpen, setDialogOpen] = React.useState(false);
@@ -190,6 +215,47 @@ export default function ItemDetailPage({
                     <span className="text-sm">{itemDetail.details.color}</span>
                   </div>
                 )}
+
+                {/* Delete Button */}
+                <AlertDialog>
+                  <AlertDialogTrigger asChild>
+                    <Button variant="destructive" className="w-full">
+                      Delete Item
+                    </Button>
+                  </AlertDialogTrigger>
+                  <AlertDialogContent>
+                    <AlertDialogHeader>
+                      <AlertDialogTitle>Are you sure?</AlertDialogTitle>
+                      <AlertDialogDescription>
+                        This action cannot be undone. This will permanently
+                        delete the item "{itemDetail.name}" and all its
+                        associated data.
+                      </AlertDialogDescription>
+                    </AlertDialogHeader>
+                    <AlertDialogFooter>
+                      <AlertDialogCancel>Cancel</AlertDialogCancel>
+                      <AlertDialogAction
+                        onClick={async () => {
+                          try {
+                            setIsDeleting(true);
+                            await deleteItem(
+                              Number(resolvedParams["item-id"])
+                            ).unwrap();
+                            router.push("/items");
+                          } catch (error) {
+                            console.error("Failed to delete item:", error);
+                          } finally {
+                            setIsDeleting(false);
+                          }
+                        }}
+                        disabled={isDeleting}
+                        className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+                      >
+                        {isDeleting ? "Deleting..." : "Delete"}
+                      </AlertDialogAction>
+                    </AlertDialogFooter>
+                  </AlertDialogContent>
+                </AlertDialog>
               </div>
 
               <div className="space-y-6">
@@ -223,20 +289,21 @@ export default function ItemDetailPage({
         </div>
         {/* Details (Color and Additional Details) */}
         {itemDetail.details && (
-          <div className="space-y-2 pt-10">
-            <h3 className="font-medium">Details</h3>
-
-            {itemDetail.details.detail && (
-              <p className="text-neutral-600">{itemDetail.details.detail}</p>
-              // <p className="text-muted-foreground">
-              //   Introducing the Quantum Widget, a revolutionary device that
-              //   harnesses zero-point energy to power your entire home with a
-              //   single button press. Its sleek, futuristic design blends
-              //   seamlessly into any decor while silently generating limitless
-              //   clean energy. Available now for pre-order, this game-changer
-              //   promises to redefine sustainability for the modern age.
-              // </p>
-            )}
+          <div className="pt-10">
+            <Accordion type="single" collapsible className="w-full">
+              <AccordionItem value="details">
+                <AccordionTrigger className="text-2xl font-medium">
+                  Details
+                </AccordionTrigger>
+                <AccordionContent>
+                  {itemDetail.details.detail && (
+                    <div className="prose prose-sm max-w-none leading-8">
+                      <ReactMarkdown>{itemDetail.details.detail}</ReactMarkdown>
+                    </div>
+                  )}
+                </AccordionContent>
+              </AccordionItem>
+            </Accordion>
           </div>
         )}
         {/* detail iamges */}

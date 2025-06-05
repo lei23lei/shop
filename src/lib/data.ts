@@ -89,6 +89,10 @@ export const categories = [
         name: "Electronics",
         id: 14,
       },
+      {
+        name: "Accessories",
+        id: 15,
+      },
     ],
   },
 ];

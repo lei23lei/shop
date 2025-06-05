@@ -237,6 +237,23 @@ export default function UploadPage() {
     form.setValue("sizes", newSizes, { shouldValidate: true });
   };
 
+  const removeDisplayImage = () => {
+    setDisplayImage("");
+    form.setValue("displayImage", "");
+  };
+
+  const removeImage = (index: number) => {
+    const newImages = images.filter((_, i) => i !== index);
+    setImages(newImages);
+    form.setValue("images", newImages);
+  };
+
+  const removeDetailImage = (index: number) => {
+    const newDetailImages = detailImages.filter((_, i) => i !== index);
+    setDetailImages(newDetailImages);
+    form.setValue("detailImages", newDetailImages);
+  };
+
   // Update the form submission handler
   const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -524,12 +541,19 @@ export default function UploadPage() {
                     {({ open }) => (
                       <div className="flex flex-col items-center gap-4">
                         {displayImage && (
-                          <div className="relative aspect-square w-full max-w-[300px]">
+                          <div className="relative aspect-square w-full max-w-[300px] group">
                             <img
                               src={displayImage}
                               alt="Display image"
                               className="object-cover w-full h-full rounded-lg"
                             />
+                            <button
+                              type="button"
+                              onClick={removeDisplayImage}
+                              className="absolute top-2 right-2 p-1 bg-black/50 hover:bg-black/70 rounded-full text-white opacity-0 group-hover:opacity-100 transition-opacity"
+                            >
+                              <X className="h-4 w-4" />
+                            </button>
                           </div>
                         )}
                         <Button
@@ -551,12 +575,19 @@ export default function UploadPage() {
                 <h3 className="text-lg font-medium">Additional Images</h3>
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                   {images.map((image, index) => (
-                    <div key={index} className="relative aspect-square">
+                    <div key={index} className="relative aspect-square group">
                       <img
                         src={image}
                         alt={`Item image ${index + 1}`}
                         className="object-cover w-full h-full rounded-lg"
                       />
+                      <button
+                        type="button"
+                        onClick={() => removeImage(index)}
+                        className="absolute top-2 right-2 p-1 bg-black/50 hover:bg-black/70 rounded-full text-white opacity-0 group-hover:opacity-100 transition-opacity"
+                      >
+                        <X className="h-4 w-4" />
+                      </button>
                     </div>
                   ))}
                 </div>
@@ -603,17 +634,6 @@ export default function UploadPage() {
                       >
                         Upload Additional Images
                       </Button>
-                      {/* <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                        {images.map((image, index) => (
-                          <div key={index} className="relative aspect-square">
-                            <img
-                              src={image}
-                              alt={`Item image ${index + 1}`}
-                              className="object-cover w-full h-full rounded-lg"
-                            />
-                          </div>
-                        ))}
-                      </div> */}
                     </div>
                   )}
                 </CldUploadWidget>
@@ -624,12 +644,19 @@ export default function UploadPage() {
                 <h3 className="text-lg font-medium">Detail Images</h3>
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                   {detailImages.map((image, index) => (
-                    <div key={index} className="relative aspect-square">
+                    <div key={index} className="relative aspect-square group">
                       <img
                         src={image}
                         alt={`Detail image ${index + 1}`}
                         className="object-cover w-full h-full rounded-lg"
                       />
+                      <button
+                        type="button"
+                        onClick={() => removeDetailImage(index)}
+                        className="absolute top-2 right-2 p-1 bg-black/50 hover:bg-black/70 rounded-full text-white opacity-0 group-hover:opacity-100 transition-opacity"
+                      >
+                        <X className="h-4 w-4" />
+                      </button>
                     </div>
                   ))}
                 </div>
@@ -676,17 +703,6 @@ export default function UploadPage() {
                       >
                         Upload Detail Images
                       </Button>
-                      {/* <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                        {detailImages.map((image, index) => (
-                          <div key={index} className="relative aspect-square">
-                            <img
-                              src={image}
-                              alt={`Detail image ${index + 1}`}
-                              className="object-cover w-full h-full rounded-lg"
-                            />
-                          </div>
-                        ))}
-                      </div> */}
                     </div>
                   )}
                 </CldUploadWidget>
