@@ -91,6 +91,21 @@ interface CartCountResponse {
   total_items: number;
 }
 
+interface CartItem {
+  id: number;
+  name: string;
+  price: string;
+  size: string;
+  quantity: number;
+  image_url: string | null;
+  category: string | null;
+}
+
+interface GetCartResponse {
+  items: CartItem[];
+  total_items: number;
+}
+
 export const accountApi = api.injectEndpoints({
   endpoints: (builder) => ({
     register: builder.mutation<RegisterResponse, RegisterRequest>({
@@ -133,24 +148,16 @@ export const accountApi = api.injectEndpoints({
         body: data,
       }),
     }),
-    updateCartItem: builder.mutation<
-      UpdateCartItemResponse,
-      UpdateCartItemRequest
-    >({
-      query: (data) => ({
-        url: "/cart/update/",
-        method: "PUT",
-        body: data,
-      }),
-      invalidatesTags: [{ type: "Items", id: "CART_COUNT" }],
-    }),
     addToCart: builder.mutation<AddToCartResponse, AddToCartRequest>({
       query: (data) => ({
         url: "/cart/",
         method: "POST",
         body: data,
       }),
-      invalidatesTags: [{ type: "Items", id: "CART_COUNT" }],
+      invalidatesTags: [
+        { type: "Items", id: "CART" },
+        { type: "Items", id: "CART_COUNT" },
+      ],
     }),
     getCartCount: builder.query<CartCountResponse, void>({
       query: () => ({
@@ -159,6 +166,13 @@ export const accountApi = api.injectEndpoints({
       }),
       providesTags: (result) =>
         result ? [{ type: "Items", id: "CART_COUNT" }] : [],
+    }),
+    getCart: builder.query<GetCartResponse, void>({
+      query: () => ({
+        url: "/cart/",
+        method: "GET",
+      }),
+      providesTags: (result) => (result ? [{ type: "Items", id: "CART" }] : []),
     }),
   }),
 });
@@ -169,7 +183,7 @@ export const {
   useVerifyQuery,
   useResetPasswordMutation,
   useForgotPasswordMutation,
-  useUpdateCartItemMutation,
   useAddToCartMutation,
   useGetCartCountQuery,
+  useGetCartQuery,
 } = accountApi;

@@ -9,18 +9,25 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/contexts/auth-context";
-import { useGetCartCountQuery } from "@/services/endpoints/account-endpoints";
+import {
+  useGetCartCountQuery,
+  useGetCartQuery,
+} from "@/services/endpoints/account-endpoints";
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
+import { toast } from "sonner";
 
 export default function UserBar() {
   const { user } = useAuth();
   const { data: cartCount } = useGetCartCountQuery(undefined, {
     skip: !user, // Skip the query if user is not logged in
+  });
+  const { data: cartData } = useGetCartQuery(undefined, {
+    skip: !user,
   });
   const [prevScrollPos, setPrevScrollPos] = useState(0);
   const [visible, setVisible] = useState(true);
@@ -146,7 +153,16 @@ export default function UserBar() {
             />
           </form>
           <div className="relative">
-            <ShoppingCart className="h-5 w-5 cursor-pointer" />
+            <ShoppingCart
+              className="h-5 w-5 cursor-pointer"
+              onClick={() => {
+                if (cartData) {
+                  console.log("Cart Items:", cartData.items);
+                  console.log("Total Items:", cartData.total_items);
+                  toast.info(`Cart has ${cartData.total_items} items`);
+                }
+              }}
+            />
             {user && cartCount && cartCount.total_items > 0 && (
               <span className="absolute -top-2 -right-2 bg-neutral-800 text-white text-xs rounded-full w-4 h-4 flex items-center justify-center">
                 {cartCount.total_items}
@@ -279,7 +295,16 @@ export default function UserBar() {
             />
           </form>
           <div className="relative">
-            <ShoppingCart className="h-5 w-5 cursor-pointer" />
+            <ShoppingCart
+              className="h-5 w-5 cursor-pointer"
+              onClick={() => {
+                if (cartData) {
+                  console.log("Cart Items:", cartData.items);
+                  console.log("Total Items:", cartData.total_items);
+                  toast.info(`Cart has ${cartData.total_items} items`);
+                }
+              }}
+            />
             {user && cartCount && cartCount.total_items > 0 && (
               <span className="absolute -top-2 -right-2 bg-neutral-800 text-white text-xs rounded-full w-4 h-4 flex items-center justify-center">
                 {cartCount.total_items}
@@ -327,6 +352,26 @@ export default function UserBar() {
             </div>
           </div>
         )}
+
+        {/* cart items */}
+        <div className="absolute top-16 right-0 w-[400px] h-[calc(100vh-64px)] bg-red-500">
+          {cartData &&
+            cartData.items.map((item) => (
+              <div key={item.id}>
+                <Image
+                  src={item.image_url ?? ""}
+                  alt={item.name}
+                  width={100}
+                  height={100}
+                />
+                <div>{item.name}</div>
+                <div>{item.price}</div>
+                <div>{item.quantity}</div>
+                <div>{item.size}</div>
+                <div>{item.category}</div>
+              </div>
+            ))}
+        </div>
       </div>
     </div>
   );
