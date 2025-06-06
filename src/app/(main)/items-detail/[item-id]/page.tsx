@@ -6,6 +6,7 @@ import {
   useGetItemDetailQuery,
   useDeleteItemMutation,
 } from "@/services/endpoints/items-endpoints";
+import { useAddToCartMutation } from "@/services/endpoints/account-endpoints";
 import { useRouter } from "next/navigation";
 import LoadingSpin from "@/components/loading-spin";
 import BreadcrumbNavigation from "@/components/layout/breadcrumb";
@@ -36,6 +37,8 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
+import { toast } from "sonner";
+import { useAuth } from "@/contexts/auth-context";
 
 export default function ItemDetailPage({
   params,
@@ -43,11 +46,13 @@ export default function ItemDetailPage({
   params: Promise<{ "item-id": string }>;
 }) {
   const router = useRouter();
+  const { user } = useAuth();
   const resolvedParams = React.use(params);
   const { data: itemDetail, isLoading } = useGetItemDetailQuery(
     Number(resolvedParams["item-id"])
   );
   const [deleteItem] = useDeleteItemMutation();
+  const [addToCart, { isLoading: isAddingToCart }] = useAddToCartMutation();
   const [isDeleting, setIsDeleting] = React.useState(false);
 
   const [selectedImage, setSelectedImage] = React.useState<number>(0);
@@ -339,9 +344,43 @@ export default function ItemDetailPage({
                 {/* Add to Cart Button */}
                 <Button
                   className="w-full h-12 bg-neutral-800 text-lg"
-                  disabled={!selectedSize}
+                  disabled={!selectedSize || isAddingToCart}
+                  onClick={async () => {
+                    if (!user) {
+                      router.push("/login");
+                      return;
+                    }
+
+                    if (!selectedSize || !itemDetail) return;
+
+                    try {
+                      const selectedSizeObj = itemDetail.sizes.find(
+                        (size) => size.size === selectedSize
+                      );
+
+                      if (!selectedSizeObj) return;
+
+                      await addToCart({
+                        item_id: itemDetail.id,
+                        size_id: selectedSizeObj.id,
+                        quantity: quantity,
+                      }).unwrap();
+
+                      toast.success("Added to cart successfully");
+                    } catch (error) {
+                      toast.error("Failed to add to cart");
+                      console.error("Add to cart error:", error);
+                    }
+                  }}
                 >
-                  Add to Cart
+                  {isAddingToCart ? (
+                    <div className="flex items-center gap-2">
+                      <LoadingSpin />
+                      <span>Adding...</span>
+                    </div>
+                  ) : (
+                    "Add to Cart"
+                  )}
                 </Button>
               </div>
             </div>

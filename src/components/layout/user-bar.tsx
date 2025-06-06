@@ -9,6 +9,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/contexts/auth-context";
+import { useGetCartCountQuery } from "@/services/endpoints/account-endpoints";
 import {
   Accordion,
   AccordionContent,
@@ -18,6 +19,9 @@ import {
 
 export default function UserBar() {
   const { user } = useAuth();
+  const { data: cartCount } = useGetCartCountQuery(undefined, {
+    skip: !user, // Skip the query if user is not logged in
+  });
   const [prevScrollPos, setPrevScrollPos] = useState(0);
   const [visible, setVisible] = useState(true);
   const [activeCategory, setActiveCategory] = useState<number | null>(null);
@@ -141,7 +145,15 @@ export default function UserBar() {
               onChange={(e) => setSearchQuery(e.target.value)}
             />
           </form>
-          <ShoppingCart className="h-5 w-5 cursor-pointer" />
+          <div className="relative">
+            <ShoppingCart className="h-5 w-5 cursor-pointer" />
+            {user && cartCount && cartCount.total_items > 0 && (
+              <span className="absolute -top-2 -right-2 bg-neutral-800 text-white text-xs rounded-full w-4 h-4 flex items-center justify-center">
+                {cartCount.total_items}
+              </span>
+            )}
+          </div>
+          {/* show me the number of items in the cart */}
           <button
             className={`hamburger  mt-1.5 focus:outline-none ${
               isMobileMenuOpen ? "open" : ""
@@ -266,7 +278,14 @@ export default function UserBar() {
               onChange={(e) => setSearchQuery(e.target.value)}
             />
           </form>
-          <ShoppingCart className="h-5 w-5 cursor-pointer" />
+          <div className="relative">
+            <ShoppingCart className="h-5 w-5 cursor-pointer" />
+            {user && cartCount && cartCount.total_items > 0 && (
+              <span className="absolute -top-2 -right-2 bg-neutral-800 text-white text-xs rounded-full w-4 h-4 flex items-center justify-center">
+                {cartCount.total_items}
+              </span>
+            )}
+          </div>
         </div>
         {/* expandable categories */}
         {activeCategory !== null && (
