@@ -42,6 +42,7 @@ export interface ItemDetail {
     detail: string | null;
   } | null;
   sizes: {
+    id: number;
     size: string;
     quantity: number;
   }[];

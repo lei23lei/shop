@@ -52,6 +52,19 @@ export default function ItemDetailPage({
 
   const [selectedImage, setSelectedImage] = React.useState<number>(0);
   const [dialogOpen, setDialogOpen] = React.useState(false);
+  const [quantity, setQuantity] = React.useState(1);
+  const [selectedSize, setSelectedSize] = React.useState<string | null>(null);
+
+  // Get the selected size object to access its quantity
+  const selectedSizeObj = React.useMemo(() => {
+    if (!selectedSize || !itemDetail) return null;
+    return itemDetail.sizes.find((size) => size.size === selectedSize);
+  }, [selectedSize, itemDetail]);
+
+  // Reset quantity when size changes
+  React.useEffect(() => {
+    setQuantity(1);
+  }, [selectedSize]);
 
   // Combine primary images and detail images for the gallery
   const allImages = React.useMemo(() => {
@@ -192,16 +205,7 @@ export default function ItemDetailPage({
 
                 {/* Description */}
                 {itemDetail.description && (
-                  // <p className="text-neutral-600">{itemDetail.description}</p>
-                  <p className="text-muted-foreground">
-                    Introducing the Quantum Widget, a revolutionary device that
-                    harnesses zero-point energy to power your entire home with a
-                    single button press. Its sleek, futuristic design blends
-                    seamlessly into any decor while silently generating
-                    limitless clean energy. Available now for pre-order, this
-                    game-changer promises to redefine sustainability for the
-                    modern age.
-                  </p>
+                  <p className="text-neutral-600">{itemDetail.description}</p>
                 )}
 
                 {/* Color */}
@@ -217,7 +221,7 @@ export default function ItemDetailPage({
                 )}
 
                 {/* Delete Button */}
-                <AlertDialog>
+                {/* <AlertDialog>
                   <AlertDialogTrigger asChild>
                     <Button variant="destructive" className="w-full">
                       Delete Item
@@ -255,10 +259,51 @@ export default function ItemDetailPage({
                       </AlertDialogAction>
                     </AlertDialogFooter>
                   </AlertDialogContent>
-                </AlertDialog>
+                </AlertDialog> */}
               </div>
 
               <div className="space-y-6">
+                {/* Quantity */}
+                {selectedSize && (
+                  <div className="space-y-2">
+                    <h3 className="font-medium">Quantity</h3>
+                    <div className="flex items-center space-x-4">
+                      <Button
+                        variant="outline"
+                        size="icon"
+                        onClick={() =>
+                          setQuantity((prev) => Math.max(1, prev - 1))
+                        }
+                        disabled={quantity <= 1}
+                        className="h-10 w-10 rounded-full border-border shadow-sm"
+                      >
+                        <p className="text-xl mb-0.5">-</p>
+                      </Button>
+                      <span className="w-8 text-center font-medium">
+                        {quantity}
+                      </span>
+                      <Button
+                        variant="outline"
+                        size="icon"
+                        onClick={() =>
+                          setQuantity((prev) =>
+                            Math.min(selectedSizeObj?.quantity || 1, prev + 1)
+                          )
+                        }
+                        disabled={quantity >= (selectedSizeObj?.quantity || 1)}
+                        className="h-10 w-10 rounded-full border-border shadow-sm"
+                      >
+                        <p className="text-lg mb-0.5">+</p>
+                      </Button>
+                    </div>
+                    {selectedSizeObj && (
+                      <p className="text-sm text-neutral-500">
+                        {selectedSizeObj.quantity} items available
+                      </p>
+                    )}
+                  </div>
+                )}
+
                 {/* Sizes */}
                 {itemDetail.sizes.length > 0 && (
                   <div className="space-y-2">
@@ -267,12 +312,24 @@ export default function ItemDetailPage({
                       {itemDetail.sizes.map((size) => (
                         <div
                           key={size.size}
+                          onClick={() =>
+                            size.quantity > 0 && setSelectedSize(size.size)
+                          }
                           className={cn(
-                            "flex cursor-pointer  items-center justify-center p-2 border border-muted-foreground/1 shadow-md rounded-md",
-                            size.quantity === 0 && "opacity-50"
+                            "relative flex cursor-pointer items-center justify-center p-2 border border-muted-foreground/1 shadow-md rounded-md transition-all",
+                            size.quantity === 0 &&
+                              "opacity-50 cursor-not-allowed bg-neutral-100",
+                            selectedSize === size.size &&
+                              "border-2 border-neutral-800",
+                            size.quantity > 0 && "hover:border-neutral-800"
                           )}
                         >
                           <span className="font-medium">{size.size}</span>
+                          {size.quantity === 0 && (
+                            <span className="absolute -bottom-1 left-1/2 -translate-x-1/2 text-[10px] font-medium text-neutral-500 bg-white px-1">
+                              Sold Out
+                            </span>
+                          )}
                         </div>
                       ))}
                     </div>
@@ -280,7 +337,10 @@ export default function ItemDetailPage({
                 )}
 
                 {/* Add to Cart Button */}
-                <Button className="w-full h-12 bg-neutral-800 text-lg">
+                <Button
+                  className="w-full h-12 bg-neutral-800 text-lg"
+                  disabled={!selectedSize}
+                >
                   Add to Cart
                 </Button>
               </div>

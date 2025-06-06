@@ -60,6 +60,33 @@ interface ForgotPasswordResponse {
   message: string;
 }
 
+interface UpdateCartItemRequest {
+  cart_item_id: number;
+  quantity: number;
+}
+
+interface UpdateCartItemResponse {
+  message: string;
+  cart_item: {
+    id: number;
+    quantity: number;
+  };
+}
+
+interface AddToCartRequest {
+  item_id: number;
+  size_id: number;
+  quantity: number;
+}
+
+interface AddToCartResponse {
+  message: string;
+  cart_item: {
+    id: number;
+    quantity: number;
+  };
+}
+
 export const accountApi = api.injectEndpoints({
   endpoints: (builder) => ({
     register: builder.mutation<RegisterResponse, RegisterRequest>({
@@ -102,75 +129,25 @@ export const accountApi = api.injectEndpoints({
         body: data,
       }),
     }),
+    updateCartItem: builder.mutation<
+      UpdateCartItemResponse,
+      UpdateCartItemRequest
+    >({
+      query: (data) => ({
+        url: "/cart/update/",
+        method: "PUT",
+        body: data,
+      }),
+    }),
+    addToCart: builder.mutation<AddToCartResponse, AddToCartRequest>({
+      query: (data) => ({
+        url: "/cart/",
+        method: "POST",
+        body: data,
+      }),
+    }),
   }),
 });
-
-// url: /verify/
-// class VerifyTokenView(APIView):
-//     permission_classes = [IsAuthenticated]
-
-//     def get(self, request):
-//         try:
-//             user = request.user
-//             return Response({
-//                 "user": {
-//                     "id": user.id,
-//                     "email": user.email,
-//                     "first_name": user.first_name,
-//                     "last_name": user.last_name,
-//                     "phone_number": user.phone_number,
-//                     "address": user.address,
-//                     "is_superuser": user.is_superuser
-//                 }
-//             }, status=status.HTTP_200_OK)
-//         except Exception as e:
-//             return Response(
-//                 {"error": str(e)},
-//                 status=status.HTTP_400_BAD_REQUEST
-//             )
-
-// url: /login/
-// method: POST
-// body:
-// {
-//     "email": "user@example.com",    // Required
-//     "password": "yourpassword123"   // Required
-// }
-// response:
-// {
-//     "message": "Login successful",
-//     "user": {
-//         "id": 1,
-//         "email": "user@example.com",
-//         "first_name": "John",
-//         "last_name": "Doe",
-//         "phone_number": "1234567890",
-//         "address": "123 Main Street",
-//         "is_superuser": false
-//     },
-//     "tokens": {
-//         "access": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9...",
-//         "refresh": "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9..."
-//     }
-// }
-
-// {
-//     "error": "Invalid email or password"
-// }
-
-// http://localhost:8000/api/reset-password/
-// method POST
-// body:{
-// "token": "your-reset-token-here",
-// "new_password": "your-new-password-here"
-// }
-
-// POST http://localhost:8000/api/forgot-password/
-// body:
-// {
-//     "email": "user@example.com"
-// }
-// response:
 
 export const {
   useRegisterMutation,
@@ -178,4 +155,6 @@ export const {
   useVerifyQuery,
   useResetPasswordMutation,
   useForgotPasswordMutation,
+  useUpdateCartItemMutation,
+  useAddToCartMutation,
 } = accountApi;
