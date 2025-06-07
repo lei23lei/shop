@@ -1,8 +1,6 @@
 "use client";
 
 import { StoreProvider } from "@/providers/store-provider";
-import UserBar from "@/components/layout/user-bar";
-import Footer from "@/components/layout/footer";
 import { AuthProvider } from "@/contexts/auth-context";
 
 export default function RootLayoutClient({
@@ -12,13 +10,7 @@ export default function RootLayoutClient({
 }) {
   return (
     <StoreProvider>
-      <AuthProvider>
-        <>
-          <UserBar />
-          <div className="pt-[72px] md:pt-[120px]">{children}</div>
-          <Footer />
-        </>
-      </AuthProvider>
+      <AuthProvider>{children}</AuthProvider>
     </StoreProvider>
   );
 }
