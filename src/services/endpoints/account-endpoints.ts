@@ -93,6 +93,7 @@ interface CartCountResponse {
 
 export interface CartItem {
   id: number;
+  cart_item_id: number;
   name: string;
   price: string;
   size: string;
