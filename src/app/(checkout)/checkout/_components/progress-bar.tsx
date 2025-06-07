@@ -8,8 +8,8 @@ interface ProgressBarProps {
 export default function ProgressBar({ currentStep = 1 }: ProgressBarProps) {
   const steps = [
     { id: 1, name: "Shipping" },
-    { id: 2, name: "Payment" },
-    { id: 3, name: "Confirmation" },
+    { id: 2, name: "Confirmation" },
+    { id: 3, name: "Payment" },
   ];
 
   return (
