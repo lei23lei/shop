@@ -106,6 +106,10 @@ interface GetCartResponse {
   total_items: number;
 }
 
+interface DeleteCartItemResponse {
+  message: string;
+}
+
 export const accountApi = api.injectEndpoints({
   endpoints: (builder) => ({
     register: builder.mutation<RegisterResponse, RegisterRequest>({
@@ -174,6 +178,16 @@ export const accountApi = api.injectEndpoints({
       }),
       providesTags: (result) => (result ? [{ type: "Items", id: "CART" }] : []),
     }),
+    deleteCartItem: builder.mutation<DeleteCartItemResponse, number>({
+      query: (cartItemId) => ({
+        url: `/cart/?cart_item_id=${cartItemId}`,
+        method: "DELETE",
+      }),
+      invalidatesTags: [
+        { type: "Items", id: "CART" },
+        { type: "Items", id: "CART_COUNT" },
+      ],
+    }),
   }),
 });
 
@@ -186,4 +200,5 @@ export const {
   useAddToCartMutation,
   useGetCartCountQuery,
   useGetCartQuery,
+  useDeleteCartItemMutation,
 } = accountApi;
