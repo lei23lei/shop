@@ -338,7 +338,7 @@ export default function UserBar() {
                                   </div>
                                 </div>
                                 <div className="text-sm text-neutral-500">
-                                  Category: {item.category}
+                                  {item.categories}
                                 </div>
                                 <div className="text-sm text-neutral-500">
                                   {item.size}

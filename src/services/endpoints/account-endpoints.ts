@@ -98,7 +98,7 @@ interface CartItem {
   size: string;
   quantity: number;
   image_url: string | null;
-  category: string | null;
+  categories: string | null;
 }
 
 interface GetCartResponse {
