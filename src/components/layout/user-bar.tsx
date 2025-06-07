@@ -13,6 +13,7 @@ import {
   useGetCartCountQuery,
   useGetCartQuery,
   useDeleteCartItemMutation,
+  useUpdateCartItemMutation,
 } from "@/services/endpoints/account-endpoints";
 import {
   Accordion,
@@ -39,6 +40,10 @@ export default function UserBar() {
     skip: !user,
   });
   const [deleteCartItem] = useDeleteCartItemMutation();
+  const [updateCartItem] = useUpdateCartItemMutation();
+  const [localQuantities, setLocalQuantities] = useState<
+    Record<number, number>
+  >({});
   const [prevScrollPos, setPrevScrollPos] = useState(0);
   const [visible, setVisible] = useState(true);
   const [activeCategory, setActiveCategory] = useState<number | null>(null);
@@ -104,6 +109,17 @@ export default function UserBar() {
     };
   }, [prevScrollPos, user]);
 
+  // Initialize local quantities when cart data changes
+  useEffect(() => {
+    if (cartData?.items) {
+      const initialQuantities = cartData.items.reduce((acc, item) => {
+        acc[item.id] = item.quantity;
+        return acc;
+      }, {} as Record<number, number>);
+      setLocalQuantities(initialQuantities);
+    }
+  }, [cartData?.items]);
+
   const handleCategoryClick = (categoryId: number) => {
     setActiveCategory(activeCategory === categoryId ? null : categoryId);
   };
@@ -122,6 +138,40 @@ export default function UserBar() {
       toast.success("Item removed from cart");
     } catch (error) {
       toast.error("Failed to remove item from cart");
+    }
+  };
+
+  const handleUpdateQuantity = async (
+    cartItemId: number,
+    newQuantity: number
+  ) => {
+    const cartItem = cartData?.items.find((item) => item.id === cartItemId);
+    if (!cartItem) return;
+
+    if (newQuantity < 1) return;
+    if (newQuantity > cartItem.total_available) {
+      toast.error(`Only ${cartItem.total_available} items available`);
+      return;
+    }
+
+    // Update local state immediately
+    setLocalQuantities((prev) => ({
+      ...prev,
+      [cartItemId]: newQuantity,
+    }));
+
+    try {
+      await updateCartItem({
+        cart_item_id: cartItemId,
+        quantity: newQuantity,
+      }).unwrap();
+    } catch (error) {
+      // Revert local state on error
+      setLocalQuantities((prev) => ({
+        ...prev,
+        [cartItemId]: cartItem.quantity,
+      }));
+      toast.error("Failed to update cart");
     }
   };
 
@@ -345,19 +395,45 @@ export default function UserBar() {
                                 </div>
                                 <div className="flex border-t border-gray-300 mt-2 pt-2 flex-row justify-between items-center">
                                   <div className="flex bg-neutral-200 rounded-full p-1 flex-row items-center gap-4">
-                                    <div className="cursor-pointer bg-white rounded-full p-1">
+                                    <div
+                                      className="cursor-pointer bg-white rounded-full p-1"
+                                      onClick={() =>
+                                        handleUpdateQuantity(
+                                          item.id,
+                                          item.quantity - 1
+                                        )
+                                      }
+                                    >
                                       <Minus className="w-4 h-4 cursor-pointer hover:text-red-500" />
                                     </div>
                                     <div className="text-sm text-neutral-500">
-                                      {item.quantity}
+                                      {localQuantities[item.id] ??
+                                        item.quantity}
                                     </div>
-                                    <div className="cursor-pointer bg-white rounded-full p-1">
+                                    <div
+                                      className={`cursor-pointer bg-white rounded-full p-1 ${
+                                        item.quantity >= item.total_available
+                                          ? "opacity-50 cursor-not-allowed"
+                                          : ""
+                                      }`}
+                                      onClick={() =>
+                                        handleUpdateQuantity(
+                                          item.id,
+                                          item.quantity + 1
+                                        )
+                                      }
+                                    >
                                       <Plus className="w-4 h-4 cursor-pointer hover:text-red-500" />
                                     </div>
                                   </div>
 
                                   <div className="font-medium mt-1">
-                                    ${item.price}
+                                    $
+                                    {(
+                                      parseFloat(item.price) *
+                                      (localQuantities[item.id] ??
+                                        item.quantity)
+                                    ).toFixed(2)}
                                   </div>
                                 </div>
                               </div>
@@ -374,8 +450,19 @@ export default function UserBar() {
                   {cartData && cartData.items.length > 0 && (
                     <div className="mt-4 pt-4 border-t">
                       <div className="flex justify-between items-center mb-4">
-                        <span className="font-medium">Total Items:</span>
-                        <span>{cartData.total_items}</span>
+                        <span className="font-medium">Total Price:</span>
+                        <span className="font-medium">
+                          $
+                          {cartData.items
+                            .reduce(
+                              (total, item) =>
+                                total +
+                                parseFloat(item.price) *
+                                  (localQuantities[item.id] ?? item.quantity),
+                              0
+                            )
+                            .toFixed(2)}
+                        </span>
                       </div>
                       <Button className="w-full">Proceed to Checkout</Button>
                     </div>

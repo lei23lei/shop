@@ -97,6 +97,7 @@ interface CartItem {
   price: string;
   size: string;
   quantity: number;
+  total_available: number;
   image_url: string | null;
   categories: string | null;
 }
@@ -188,6 +189,20 @@ export const accountApi = api.injectEndpoints({
         { type: "Items", id: "CART_COUNT" },
       ],
     }),
+    updateCartItem: builder.mutation<
+      UpdateCartItemResponse,
+      UpdateCartItemRequest
+    >({
+      query: (data) => ({
+        url: "/cart/",
+        method: "PUT",
+        body: data,
+      }),
+      invalidatesTags: [
+        { type: "Items", id: "CART" },
+        { type: "Items", id: "CART_COUNT" },
+      ],
+    }),
   }),
 });
 
@@ -201,4 +216,5 @@ export const {
   useGetCartCountQuery,
   useGetCartQuery,
   useDeleteCartItemMutation,
+  useUpdateCartItemMutation,
 } = accountApi;
