@@ -104,12 +104,53 @@ export interface CartItem {
 }
 
 interface GetCartResponse {
+  cart_id: number;
   items: CartItem[];
   total_items: number;
 }
 
 interface DeleteCartItemResponse {
   message: string;
+}
+
+interface OrderItem {
+  id: number;
+  item_name: string;
+  size: string;
+  quantity: number;
+  price: string;
+  image_url: string | null;
+}
+
+interface Order {
+  id: number;
+  status: string;
+  total_price: string;
+  shipping_address: string;
+  shipping_phone: string;
+  shipping_email: string;
+  first_name: string;
+  last_name: string;
+  zip_code: string;
+  city: string;
+  created_at: string;
+  items: OrderItem[];
+}
+
+interface CreateOrderRequest {
+  cart_id: number;
+  first_name: string;
+  last_name: string;
+  zip_code: string;
+  city: string;
+  shipping_address: string;
+  shipping_phone: string;
+  shipping_email: string;
+}
+
+interface CreateOrderResponse {
+  message: string;
+  order: Order;
 }
 
 export const accountApi = api.injectEndpoints({
@@ -204,6 +245,17 @@ export const accountApi = api.injectEndpoints({
         { type: "Items", id: "CART_COUNT" },
       ],
     }),
+    createOrder: builder.mutation<CreateOrderResponse, CreateOrderRequest>({
+      query: (data) => ({
+        url: "/orders/",
+        method: "POST",
+        body: data,
+      }),
+      invalidatesTags: [
+        { type: "Items", id: "CART" },
+        { type: "Items", id: "CART_COUNT" },
+      ],
+    }),
   }),
 });
 
@@ -218,4 +270,5 @@ export const {
   useGetCartQuery,
   useDeleteCartItemMutation,
   useUpdateCartItemMutation,
+  useCreateOrderMutation,
 } = accountApi;
