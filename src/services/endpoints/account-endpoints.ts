@@ -355,6 +355,7 @@ export const accountApi = api.injectEndpoints({
       invalidatesTags: [
         { type: "Items", id: "CART" },
         { type: "Items", id: "CART_COUNT" },
+        { type: "Items", id: "USER_ORDERS" },
       ],
     }),
     getUserOrders: builder.query<GetUserOrdersResponse, void>({

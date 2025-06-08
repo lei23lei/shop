@@ -54,7 +54,7 @@ export function CartSheet({
     <div className="relative">
       <Sheet open={isCartOpen} onOpenChange={setIsCartOpen}>
         <SheetTrigger asChild>
-          <ShoppingCart className="h-5 w-5 cursor-pointer" />
+          <ShoppingCart className="h-5 w-5 text-white cursor-pointer" />
         </SheetTrigger>
         <SheetHeader>
           <SheetTitle>{""}</SheetTitle>
@@ -174,7 +174,7 @@ export function CartSheet({
         </SheetContent>
       </Sheet>
       {user && cartCount && cartCount.total_items > 0 && (
-        <span className="absolute -top-2 -right-2 bg-neutral-800 text-white text-xs rounded-full w-4 h-4 flex items-center justify-center">
+        <span className="absolute -top-2  -right-2 bg-red-700 text-white text-xs rounded-full w-[18px] h-[18px] flex items-center justify-center">
           {cartCount.total_items}
         </span>
       )}

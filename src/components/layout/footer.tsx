@@ -5,7 +5,7 @@ import Link from "next/link";
 import { ImFacebook2 } from "react-icons/im";
 import { GrInstagram, GrLinkedin } from "react-icons/gr";
 import { usePathname } from "next/navigation";
-
+import Image from "next/image";
 export default function Footer() {
   const pathname = usePathname();
 
@@ -20,27 +20,24 @@ export default function Footer() {
     <footer className="bg-black px-6 pt-12 pb-6">
       <div className="max-w-6xl container mx-auto space-y-10 md:space-y-0 flex flex-col md:flex-row items-center md:justify-between">
         {/* left */}
-        <div className="flex flex-col md:justify-start h-20 space-y-8">
-          <h2 className="text-4xl text-white font-bold">
-            <Link
-              href="/"
-              onClick={(e) => {
-                if (pathname === "/") {
-                  e.preventDefault();
-                  scrollToTop();
-                }
-              }}
-            >
-              Logo
-              {/* <Image
-                src="/images/logo.png"
-                alt="logo"
-                width={200}
-                height={200}
-                className="h-12 w-auto"
-              /> */}
-            </Link>
-          </h2>
+        <div className="flex flex-col md:-mt-12 md:justify-start h-20 space-y-8">
+          <Link
+            href="/"
+            onClick={(e) => {
+              if (pathname === "/") {
+                e.preventDefault();
+                scrollToTop();
+              }
+            }}
+          >
+            <Image
+              src="/images/icon-full.png"
+              alt="logo"
+              width={200}
+              height={200}
+              className=" w-auto md:w-[300px]"
+            />
+          </Link>
           {/* <ul className="flex flex-col mb-4 pt-2  items-center md:flex-row md:space-y-0 md:space-x-8 md:justify-start">
             {links.map(({ href, label }) => (
               <li
