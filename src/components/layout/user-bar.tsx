@@ -187,26 +187,26 @@ export default function UserBar() {
 
   return (
     <div
-      className={`fixed flex flex-col top-0 left-0 right-0 bg-neutral-800 z-50 transition-transform duration-300 ${
+      className={`fixed flex flex-col top-0 left-0 right-0 bg-zinc-700 z-50 transition-transform duration-300 ${
         visible ? "translate-y-0" : "-translate-y-full"
       }`}
       ref={menuRef}
     >
-      <div className="px-3 md:px-10  h-[85px] md:h-[80px] flex items-center justify-between">
+      <div className="px-3 md:px-10  h-[70px] md:h-[80px] flex items-center justify-between">
         <Link href="/">
           <Image
             src="/images/icon-full.png"
             alt="Logo"
             width={400}
             height={400}
-            className="w-72 mt-4 hidden md:block  "
+            className="w-64 mt-4 hidden md:block  "
           />
           <Image
             src="/images/icon.png"
             alt="Logo"
             width={250}
             height={250}
-            className="w-16 md:hidden  "
+            className="w-14 md:hidden  "
           />
         </Link>
 
@@ -323,7 +323,7 @@ export default function UserBar() {
       </div>
 
       {/* Desktop Menu */}
-      <div className="hidden md:flex relative flex-row justify-between h-[70px] items-center w-full mx-auto px-10">
+      <div className="hidden md:flex relative flex-row justify-between h-[55px] items-center w-full mx-auto px-10">
         <div className="flex space-x-4 items-center">
           {categories.map((category) => (
             <div
@@ -382,7 +382,7 @@ export default function UserBar() {
         {/* expandable categories */}
         {activeCategory !== null && (
           <div
-            className="hidden md:flex absolute  rounded-b-sm flex-row left-0 top-[70px] w-[600px] h-[290px] bg-neutral-300/75 shadow-lg 
+            className="hidden md:flex absolute  rounded-b-sm flex-row left-0 top-[55px] w-[600px] h-[290px] bg-neutral-300/75 shadow-lg 
             transform transition-all duration-300 ease-in-out opacity-100 translate-y-0 space-x-6
             origin-top animate-in fade-in slide-in-from-top-2"
           >

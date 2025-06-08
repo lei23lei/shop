@@ -17,7 +17,7 @@ export default function Footer() {
   };
 
   return (
-    <footer className="bg-black px-6 pt-12 pb-6">
+    <footer className="bg-zinc-700 px-6 pt-12 pb-6">
       <div className="max-w-6xl container mx-auto space-y-10 md:space-y-0 flex flex-col md:flex-row items-center md:justify-between">
         {/* left */}
         <div className="flex flex-col md:-mt-12 md:justify-start h-20 space-y-8">
@@ -33,24 +33,11 @@ export default function Footer() {
             <Image
               src="/images/icon-full.png"
               alt="logo"
-              width={200}
-              height={200}
-              className=" w-auto md:w-[300px]"
+              width={400}
+              height={400}
+              className=" w-[250px] md:w-[300px]"
             />
           </Link>
-          {/* <ul className="flex flex-col mb-4 pt-2  items-center md:flex-row md:space-y-0 md:space-x-8 md:justify-start">
-            {links.map(({ href, label }) => (
-              <li
-                key={`${href}${label}`}
-                className="group  ml-0 md:ml-2 flex flex-col items-center gap-2"
-              >
-                <Link className="text-white text-lg font-bold" href={href}>
-                  {label}
-                </Link>
-                <div className="group-hover:w-[80%] w-0 text-center duration-500 border-b-2 border-white mx-2"></div>
-              </li>
-            ))}
-          </ul> */}
         </div>
         {/* right */}
         <div className="flex flex-col md:justify-end mt-6 md:mt-0 space-y-8 md:space-y-10">

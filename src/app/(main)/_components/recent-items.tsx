@@ -82,7 +82,9 @@ export default function RecentItems({
                     </div>
 
                     <div className="mt-4 space-y-1">
-                      <h4 className="font-semibold">{item.name}</h4>
+                      <h4 className="font-semibold line-clamp-1">
+                        {item.name}
+                      </h4>
                       <p className="text-sm text-gray-500">
                         {item.categories[0]}
                       </p>
