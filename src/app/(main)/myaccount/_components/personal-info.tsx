@@ -169,7 +169,7 @@ export default function PersonalInfo() {
   const user = data?.user;
 
   return (
-    <div className="space-y-8 p-4">
+    <>
       <div className="flex justify-between items-center">
         <h2 className="text-2xl font-semibold">Personal Information</h2>
         {!isEditing && (
@@ -389,7 +389,7 @@ export default function PersonalInfo() {
                   </Button>
                 </form>
                 <div className="flex flex-col gap-2">
-                  <h3 className="font-medium">Password Requirements:</h3>
+                  <h4 className="font-medium">Password Requirements:</h4>
                   <ul className="space-y-2 text-sm text-gray-600">
                     <li className="flex items-center gap-2">
                       {hasMinLength ? (
@@ -422,6 +422,6 @@ export default function PersonalInfo() {
           </AccordionContent>
         </AccordionItem>
       </Accordion>
-    </div>
+    </>
   );
 }

@@ -198,6 +198,37 @@ export interface CreateOrderResponse {
   order: Order;
 }
 
+interface UserOrderItem {
+  id: number;
+  item_name: string;
+  size: string;
+  quantity: number;
+  price_at_time: string;
+  primary_image: string | null;
+}
+
+interface UserOrder {
+  id: number;
+  status: string;
+  total_price: string;
+  shipping_address: string;
+  shipping_phone: string;
+  shipping_name: string;
+  shipping_email: string;
+  first_name: string;
+  last_name: string;
+  zip_code: string;
+  city: string;
+  created_at: string;
+  updated_at: string;
+  items: UserOrderItem[];
+}
+
+interface GetUserOrdersResponse {
+  orders: UserOrder[];
+  total_orders: number;
+}
+
 export const accountApi = api.injectEndpoints({
   endpoints: (builder) => ({
     register: builder.mutation<RegisterResponse, RegisterRequest>({
@@ -326,6 +357,14 @@ export const accountApi = api.injectEndpoints({
         { type: "Items", id: "CART_COUNT" },
       ],
     }),
+    getUserOrders: builder.query<GetUserOrdersResponse, void>({
+      query: () => ({
+        url: "/user-orders/",
+        method: "GET",
+      }),
+      providesTags: (result) =>
+        result ? [{ type: "Items", id: "USER_ORDERS" }] : [],
+    }),
   }),
 });
 
@@ -344,4 +383,5 @@ export const {
   useDeleteCartItemMutation,
   useUpdateCartItemMutation,
   useCreateOrderMutation,
+  useGetUserOrdersQuery,
 } = accountApi;

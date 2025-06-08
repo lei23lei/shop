@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { useAuth } from "@/contexts/auth-context";
 import { useRouter } from "next/navigation";
@@ -21,10 +21,21 @@ export default function Page() {
   const [showConfirmDialog, setShowConfirmDialog] = useState(false);
   const [activeTab, setActiveTab] = useState("personal-info");
 
+  useEffect(() => {
+    if (!user) {
+      router.push("/login");
+    }
+  }, [user, router]);
+
   const handleSignOut = () => {
     logout();
     router.push("/login");
   };
+
+  // If no user, don't render anything while redirecting
+  if (!user) {
+    return null;
+  }
 
   return (
     <div className="container min-h-[700px]  flex  mx-auto p-4 gap-10">
@@ -60,8 +71,10 @@ export default function Page() {
       </div>
       {/* content */}
       <div className="flex flex-col w-full  gap-4">
-        {activeTab === "personal-info" && <PersonalInfo />}
-        {activeTab === "order-history" && <OrderHistory />}
+        <div className="space-y-8 p-4">
+          {activeTab === "personal-info" && <PersonalInfo />}
+          {activeTab === "order-history" && <OrderHistory />}
+        </div>
       </div>
       <Dialog open={showConfirmDialog} onOpenChange={setShowConfirmDialog}>
         <DialogContent>
@@ -93,17 +106,4 @@ export default function Page() {
       </Dialog>{" "}
     </div>
   );
-}
-
-{
-  /* <Button
-          variant="destructive"
-          onClick={() => setShowConfirmDialog(true)}
-          className="w-full"
-        >
-          Sign Out
-        </Button> */
-}
-
-{
 }
