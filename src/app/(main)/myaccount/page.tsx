@@ -12,11 +12,14 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
+import PersonalInfo from "./_components/personal-info";
+import OrderHistory from "./_components/order-history";
 
 export default function Page() {
   const { user, logout } = useAuth();
   const router = useRouter();
   const [showConfirmDialog, setShowConfirmDialog] = useState(false);
+  const [activeTab, setActiveTab] = useState("personal-info");
 
   const handleSignOut = () => {
     logout();
@@ -24,29 +27,53 @@ export default function Page() {
   };
 
   return (
-    <div className="container min-h-[700px] flex items-center justify-center mx-auto p-4">
-      <div className="w-full max-w-md mx-auto  space-y-4">
-        <h1 className="text-2xl font-bold">My Account</h1>
-        {user && (
-          <div className="space-y-2">
-            <p>Email: {user.email}</p>
-            <p>
-              Name: {user.first_name} {user.last_name}
-            </p>
-            <p>Phone: {user.phone_number}</p>
-            <p>Address: {user.address}</p>
-          </div>
-        )}
-        <Button
+    <div className="container min-h-[700px]  flex  mx-auto p-4 gap-10">
+      {/* nav */}
+      <div className="flex w-[230px] flex-col gap-4">
+        <div className="text-2xl font-bold">My Account</div>
+        <div className="flex flex-col gap-2">
+          <p
+            className={`text-lg font-bold text-muted-foreground cursor-pointer ${
+              activeTab === "personal-info" ? "text-primary" : ""
+            }`}
+            onClick={() => setActiveTab("personal-info")}
+          >
+            Personal Information
+          </p>
+          <p
+            className={`text-lg font-bold text-muted-foreground cursor-pointer ${
+              activeTab === "order-history" ? "text-primary" : ""
+            }`}
+            onClick={() => setActiveTab("order-history")}
+          >
+            Order History
+          </p>
+        </div>
+        <div>
+          <p className="text-lg font-bold text-muted-foreground">LOG OUT</p>
+        </div>
+      </div>
+      {/* content */}
+      <div className="flex flex-col w-full bg-red-500 gap-4">
+        {activeTab === "personal-info" && <PersonalInfo />}
+        {activeTab === "order-history" && <OrderHistory />}
+      </div>
+    </div>
+  );
+}
+
+{
+  /* <Button
           variant="destructive"
           onClick={() => setShowConfirmDialog(true)}
           className="w-full"
         >
           Sign Out
-        </Button>
-      </div>
+        </Button> */
+}
 
-      <Dialog open={showConfirmDialog} onOpenChange={setShowConfirmDialog}>
+{
+  /* <Dialog open={showConfirmDialog} onOpenChange={setShowConfirmDialog}>
         <DialogContent>
           <DialogHeader>
             <DialogTitle>Confirm Sign Out</DialogTitle>
@@ -73,7 +100,5 @@ export default function Page() {
             </Button>
           </DialogFooter>
         </DialogContent>
-      </Dialog>
-    </div>
-  );
+      </Dialog> */
 }
