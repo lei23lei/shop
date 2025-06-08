@@ -165,7 +165,9 @@ export function CartSheet({
                     ${localTotalPrice.toFixed(2)}
                   </span>
                 </div>
-                <Button className="w-full">Checkout</Button>
+                <Link href="/checkout">
+                  <Button className="w-full">Checkout</Button>
+                </Link>
               </div>
             )}
           </div>

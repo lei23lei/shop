@@ -1,94 +1,49 @@
 import React from "react";
+import { CreateOrderResponse } from "@/services/endpoints/account-endpoints";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { useGetCartQuery } from "@/services/endpoints/account-endpoints";
+import { CheckCircle2, Mail } from "lucide-react";
 
 interface StepThreeProps {
   onBack: () => void;
+  orderData: CreateOrderResponse;
 }
 
-export default function StepThree({ onBack }: StepThreeProps) {
-  const { data: cartData } = useGetCartQuery();
-
-  const totalPrice =
-    cartData?.items.reduce(
-      (sum, item) => sum + parseFloat(item.price) * item.quantity,
-      0
-    ) ?? 0;
-
+export default function StepThree({ onBack, orderData }: StepThreeProps) {
   return (
-    <div className="bg-white rounded-lg shadow-sm p-6">
-      <h2 className="text-2xl font-semibold mb-6">Payment Information</h2>
+    <div className="bg-white  rounded-lg shadow-sm p-6">
+      <div className="flex flex-col items-center text-center space-y-6">
+        <CheckCircle2 className="w-16 h-16 text-green-500" />
+        <h2 className="text-2xl font-semibold">Order Placed Successfully!</h2>
 
-      {/* Payment Form */}
-      <div className="mb-8">
-        <div className="space-y-4">
-          <div>
-            <label className="block text-sm font-medium mb-2">
-              Card Number
-            </label>
-            <Input
-              type="text"
-              placeholder="1234 5678 9012 3456"
-              className="w-full"
-            />
+        <div className="w-full max-w-md space-y-4">
+          <div className="bg-gray-50 p-4 rounded-lg">
+            <h3 className="font-medium mb-2">Order Details</h3>
+            <p>Order ID: #{orderData.order.id}</p>
+            <p>Total Amount: ${orderData.order.total_price}</p>
           </div>
-          <div className="grid grid-cols-2 gap-4">
-            <div>
-              <label className="block text-sm font-medium mb-2">
-                Expiry Date
-              </label>
-              <Input type="text" placeholder="MM/YY" />
-            </div>
-            <div>
-              <label className="block text-sm font-medium mb-2">CVV</label>
-              <Input type="text" placeholder="123" />
-            </div>
+
+          <div className="bg-blue-50 p-4 rounded-lg">
+            <h3 className="font-medium mb-2">Payment Instructions</h3>
+            <p className="mb-2">
+              Please complete your payment via E-transfer to:
+            </p>
+            <p className="font-mono bg-white p-2 rounded">
+              lei232lei91@gmail.com
+            </p>
+            <p className="text-sm mt-2">
+              Important: Include your Order ID (#{orderData.order.id}) in the
+              transfer message
+            </p>
           </div>
-          <div>
-            <label className="block text-sm font-medium mb-2">
-              Name on Card
-            </label>
-            <Input type="text" placeholder="John Doe" />
+
+          <div className="bg-gray-50 p-4 rounded-lg">
+            <h3 className="font-medium mb-2">Need Help?</h3>
+            <p className="flex items-center justify-center gap-2">
+              <Mail className="w-4 h-4" />
+              Contact us at: lei23lei91@gmail.com
+            </p>
           </div>
         </div>
-      </div>
-
-      {/* Order Summary */}
-      <div className="mb-8">
-        <h3 className="text-lg font-medium mb-4">Order Summary</h3>
-        <div className="space-y-4">
-          {cartData?.items.map((item) => (
-            <div
-              key={item.cart_item_id}
-              className="flex justify-between items-center"
-            >
-              <div className="flex items-center gap-4">
-                <span className="text-neutral-600">{item.quantity}x</span>
-                <span>{item.name}</span>
-              </div>
-              <span className="font-medium">
-                ${(parseFloat(item.price) * item.quantity).toFixed(2)}
-              </span>
-            </div>
-          ))}
-        </div>
-        <div className="mt-4 pt-4 border-t">
-          <div className="flex justify-between items-center">
-            <span className="font-medium">Total</span>
-            <span className="text-xl font-semibold">
-              ${totalPrice.toFixed(2)}
-            </span>
-          </div>
-        </div>
-      </div>
-
-      {/* Navigation Buttons */}
-      <div className="flex justify-between items-center">
-        <Button variant="outline" onClick={onBack}>
-          Back to Confirmation
-        </Button>
-        <Button>Complete Payment</Button>
       </div>
     </div>
   );

@@ -4,6 +4,7 @@ import {
   useGetCartQuery,
   useCreateOrderMutation,
 } from "@/services/endpoints/account-endpoints";
+import { CreateOrderResponse } from "@/services/endpoints/account-endpoints";
 import { z } from "zod";
 import { toast } from "sonner";
 
@@ -24,6 +25,7 @@ interface StepTwoProps {
   onBack: () => void;
   formData: FormData;
   cartId: number;
+  setOrderData: (data: CreateOrderResponse) => void;
 }
 
 export default function StepTwo({
@@ -31,6 +33,7 @@ export default function StepTwo({
   onBack,
   formData,
   cartId,
+  setOrderData,
 }: StepTwoProps) {
   const { data: cartData } = useGetCartQuery();
   const [createOrder] = useCreateOrderMutation();
@@ -43,10 +46,11 @@ export default function StepTwo({
 
   const handleProceedToPayment = async () => {
     try {
-      await createOrder({
+      const response = await createOrder({
         cart_id: cartId,
         ...formData,
       }).unwrap();
+      setOrderData(response);
       toast.success("Order created successfully");
       onNext();
     } catch (error) {
@@ -105,7 +109,7 @@ export default function StepTwo({
       {/* Navigation Buttons */}
       <div className="flex justify-between items-center">
         <Button variant="outline" onClick={onBack}>
-          Back to Shipping
+          Edit
         </Button>
         <Button onClick={handleProceedToPayment}>Proceed to Payment</Button>
       </div>

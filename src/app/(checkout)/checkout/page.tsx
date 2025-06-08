@@ -9,6 +9,7 @@ import StepThree from "./_components/step-three";
 import { CartSummary } from "./_components/cart-summary";
 import { useGetCartQuery } from "@/services/endpoints/account-endpoints";
 import { useAuth } from "@/contexts/auth-context";
+import { CreateOrderResponse } from "@/services/endpoints/account-endpoints";
 import { z } from "zod";
 
 const formSchema = z.object({
@@ -27,12 +28,13 @@ export default function CheckoutPage() {
   const router = useRouter();
   const { user, isLoading: isAuthLoading } = useAuth();
   const [currentStep, setCurrentStep] = useState(1);
+  const [orderData, setOrderData] = useState<CreateOrderResponse | null>(null);
   const [formData, setFormData] = useState<FormData>({
-    first_name: "",
-    last_name: "",
-    shipping_email: "",
-    shipping_phone: "",
-    shipping_address: "",
+    first_name: user?.first_name ?? "",
+    last_name: user?.last_name ?? "",
+    shipping_email: user?.email ?? "",
+    shipping_phone: user?.phone_number ?? "",
+    shipping_address: user?.address ?? "",
     city: "",
     zip_code: "",
   });
@@ -81,10 +83,14 @@ export default function CheckoutPage() {
             onBack={() => setCurrentStep(1)}
             formData={formData}
             cartId={cartData?.cart_id ?? 0}
+            setOrderData={setOrderData}
           />
         );
       case 3:
-        return <StepThree onBack={() => setCurrentStep(2)} />;
+        if (!orderData) return null;
+        return (
+          <StepThree onBack={() => setCurrentStep(2)} orderData={orderData} />
+        );
       default:
         return null;
     }
@@ -95,7 +101,9 @@ export default function CheckoutPage() {
       <ProgressBar currentStep={currentStep} />
       <div className="flex mt-14 items-start justify-center gap-10">
         <div className="w-[600px]">{renderStep()}</div>
-        <CartSummary cartData={cartData} totalPrice={totalPrice} />
+        {currentStep !== 3 && (
+          <CartSummary cartData={cartData} totalPrice={totalPrice} />
+        )}
       </div>
     </div>
   );

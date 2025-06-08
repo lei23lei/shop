@@ -122,7 +122,7 @@ interface OrderItem {
   image_url: string | null;
 }
 
-interface Order {
+export interface Order {
   id: number;
   status: string;
   total_price: string;
@@ -148,7 +148,7 @@ interface CreateOrderRequest {
   shipping_email: string;
 }
 
-interface CreateOrderResponse {
+export interface CreateOrderResponse {
   message: string;
   order: Order;
 }
