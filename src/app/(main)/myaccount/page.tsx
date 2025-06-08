@@ -59,7 +59,7 @@ export default function Page() {
         </div>
       </div>
       {/* content */}
-      <div className="flex flex-col w-full bg-red-500 gap-4">
+      <div className="flex flex-col w-full  gap-4">
         {activeTab === "personal-info" && <PersonalInfo />}
         {activeTab === "order-history" && <OrderHistory />}
       </div>

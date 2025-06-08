@@ -43,6 +43,51 @@ interface VerifyResponse {
   };
 }
 
+interface UserDetailResponse {
+  user: {
+    id: number;
+    email: string;
+    first_name: string;
+    last_name: string;
+    phone_number: string;
+    address: string;
+    is_superuser: boolean;
+    created_at: string;
+    updated_at: string;
+  };
+}
+
+interface UpdateUserRequest {
+  first_name?: string;
+  last_name?: string;
+  phone_number?: string;
+  address?: string;
+}
+
+interface UpdateUserResponse {
+  message: string;
+  user: {
+    id: number;
+    email: string;
+    first_name: string;
+    last_name: string;
+    phone_number: string;
+    address: string;
+    is_superuser: boolean;
+    created_at: string;
+    updated_at: string;
+  };
+}
+
+interface ChangePasswordRequest {
+  current_password: string;
+  new_password: string;
+}
+
+interface ChangePasswordResponse {
+  message: string;
+}
+
 interface ResetPasswordRequest {
   token: string;
   new_password: string;
@@ -175,6 +220,31 @@ export const accountApi = api.injectEndpoints({
         method: "GET",
       }),
     }),
+    getUserDetail: builder.query<UserDetailResponse, void>({
+      query: () => ({
+        url: "/user-detail/",
+        method: "GET",
+      }),
+      providesTags: [{ type: "User", id: "DETAIL" }],
+    }),
+    updateUser: builder.mutation<UpdateUserResponse, UpdateUserRequest>({
+      query: (data) => ({
+        url: "/user-detail/",
+        method: "PUT",
+        body: data,
+      }),
+      invalidatesTags: [{ type: "User", id: "DETAIL" }],
+    }),
+    changePassword: builder.mutation<
+      ChangePasswordResponse,
+      ChangePasswordRequest
+    >({
+      query: (data) => ({
+        url: "/change-password/",
+        method: "POST",
+        body: data,
+      }),
+    }),
     resetPassword: builder.mutation<
       ResetPasswordResponse,
       ResetPasswordRequest
@@ -263,6 +333,9 @@ export const {
   useRegisterMutation,
   useLoginMutation,
   useVerifyQuery,
+  useGetUserDetailQuery,
+  useUpdateUserMutation,
+  useChangePasswordMutation,
   useResetPasswordMutation,
   useForgotPasswordMutation,
   useAddToCartMutation,
