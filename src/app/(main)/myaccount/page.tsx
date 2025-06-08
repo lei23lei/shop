@@ -33,7 +33,7 @@ export default function Page() {
         <div className="text-2xl font-bold">My Account</div>
         <div className="flex flex-col gap-2">
           <p
-            className={`text-lg font-bold text-muted-foreground cursor-pointer ${
+            className={`text-md font-bold text-muted-foreground cursor-pointer ${
               activeTab === "personal-info" ? "text-primary" : ""
             }`}
             onClick={() => setActiveTab("personal-info")}
@@ -41,7 +41,7 @@ export default function Page() {
             Personal Information
           </p>
           <p
-            className={`text-lg font-bold text-muted-foreground cursor-pointer ${
+            className={`text-md font-bold text-muted-foreground cursor-pointer ${
               activeTab === "order-history" ? "text-primary" : ""
             }`}
             onClick={() => setActiveTab("order-history")}
@@ -50,7 +50,12 @@ export default function Page() {
           </p>
         </div>
         <div>
-          <p className="text-lg font-bold text-muted-foreground">LOG OUT</p>
+          <p
+            onClick={() => setShowConfirmDialog(true)}
+            className="text-lg font-bold text-muted-foreground cursor-pointer hover:text-primary"
+          >
+            LOG OUT
+          </p>
         </div>
       </div>
       {/* content */}
@@ -58,22 +63,7 @@ export default function Page() {
         {activeTab === "personal-info" && <PersonalInfo />}
         {activeTab === "order-history" && <OrderHistory />}
       </div>
-    </div>
-  );
-}
-
-{
-  /* <Button
-          variant="destructive"
-          onClick={() => setShowConfirmDialog(true)}
-          className="w-full"
-        >
-          Sign Out
-        </Button> */
-}
-
-{
-  /* <Dialog open={showConfirmDialog} onOpenChange={setShowConfirmDialog}>
+      <Dialog open={showConfirmDialog} onOpenChange={setShowConfirmDialog}>
         <DialogContent>
           <DialogHeader>
             <DialogTitle>Confirm Sign Out</DialogTitle>
@@ -100,5 +90,20 @@ export default function Page() {
             </Button>
           </DialogFooter>
         </DialogContent>
-      </Dialog> */
+      </Dialog>{" "}
+    </div>
+  );
+}
+
+{
+  /* <Button
+          variant="destructive"
+          onClick={() => setShowConfirmDialog(true)}
+          className="w-full"
+        >
+          Sign Out
+        </Button> */
+}
+
+{
 }
