@@ -261,15 +261,16 @@ export default function UserBar() {
             <>
               {user ? (
                 <Link href="/myaccount">
-                  <Button variant="outline" className="text-foreground">
-                    {user.email}
-                  </Button>
+                  <div className="flex items-center gap-2 text-white">
+                    <div className="w-8 h-8 rounded-full bg-blue-300/40 flex items-center justify-center text-white font-medium">
+                      {user.email.charAt(0).toUpperCase()}
+                    </div>
+                    <p className="text-md">{user.email}</p>
+                  </div>
                 </Link>
               ) : (
                 <Link href="/login">
-                  <Button variant="outline" className="text-foreground">
-                    Login
-                  </Button>
+                  <div className="text-white  text-lg">Login</div>
                 </Link>
               )}
             </>
@@ -382,7 +383,7 @@ export default function UserBar() {
         {/* expandable categories */}
         {activeCategory !== null && (
           <div
-            className="hidden md:flex absolute  rounded-b-sm flex-row left-0 top-[55px] w-[600px] h-[290px] bg-neutral-300/75 shadow-lg 
+            className="hidden md:flex text-white absolute  rounded-b-sm flex-row left-0 top-[55px] w-[600px] h-[290px] bg-zinc-700 shadow-lg 
             transform transition-all duration-300 ease-in-out opacity-100 translate-y-0 space-x-6
             origin-top animate-in fade-in slide-in-from-top-2"
           >
@@ -394,7 +395,7 @@ export default function UserBar() {
                     <Link
                       key={subcategory.id}
                       href={`/items/${subcategory.id}`}
-                      className="hover:bg-background rounded-md px-4 py-2 cursor-pointer"
+                      className="hover:bg-background rounded-md px-4 py-2 cursor-pointer hover:text-foreground"
                       onClick={handleLinkClick}
                     >
                       {subcategory.name}

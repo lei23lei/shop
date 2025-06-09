@@ -35,7 +35,7 @@ export default function Footer() {
               alt="logo"
               width={400}
               height={400}
-              className=" w-[250px] md:w-[300px]"
+              className=" w-[250px] md:w-[280px]"
             />
           </Link>
         </div>

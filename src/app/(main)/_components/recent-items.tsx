@@ -53,7 +53,7 @@ export default function RecentItems({
   }
 
   return (
-    <div className="mx-auto mt-2 lg:pt-20 mb-8">
+    <div className="mx-auto mt-2 md:pt-28   mb-8">
       <h2 className="px-14 mb-4">{name}</h2>
       <Carousel
         opts={{

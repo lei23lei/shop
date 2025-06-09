@@ -17,7 +17,7 @@ export default function Header() {
   ];
 
   const plugin = React.useRef(
-    Autoplay({ delay: 300000, stopOnInteraction: true })
+    Autoplay({ delay: 3000, stopOnInteraction: true })
   );
 
   return (
@@ -35,7 +35,8 @@ export default function Header() {
             <CarouselItem key={index} className="pl-0">
               <div>
                 <Card className=" border-0">
-                  <CardContent className="flex items-center justify-center p-0 h-[600px]  md:h-[650px] lg:h-[700px] xl:h-[750px] 2xl:h-[800px] ">
+                  {/* h-[600px]  md:h-[650px] lg:h-[700px] xl:h-[750px] 2xl:h-[800px]  */}
+                  <CardContent className="flex items-center justify-center p-0 h-[80vh] xl:h-[85vh] ">
                     <div className="relative w-full h-full">
                       <Image
                         src={image.src}
