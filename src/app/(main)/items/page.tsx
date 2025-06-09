@@ -15,10 +15,15 @@ import {
 } from "@/components/ui/pagination";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
+import Sort from "./_components/sort";
 
 function ItemsContent() {
   const searchParams = useSearchParams();
   const [page, setPage] = React.useState(1);
+  const [sort, setSort] = React.useState<"created_at" | "price" | "name">(
+    "created_at"
+  );
+  const [order, setOrder] = React.useState<"asc" | "desc">("desc");
 
   const search = searchParams.get("search");
   console.log("Search query:", search);
@@ -31,6 +36,8 @@ function ItemsContent() {
     page,
     search: search || undefined,
     page_size: 12,
+    sort,
+    order,
   });
 
   console.log("isError", isError);
@@ -42,15 +49,28 @@ function ItemsContent() {
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
+  const handleSortChange = (newSort: string, newOrder: "asc" | "desc") => {
+    setSort(newSort as "created_at" | "price" | "name");
+    setOrder(newOrder);
+    setPage(1); // Reset to first page when sorting changes
+  };
+
   return (
     <div className="container mx-auto py-2 px-0 lg:px-6 xl:px-10 2xl:px-16">
       <div className="flex flex-col gap-4 py-4 px-4 lg:px-0">
         <h2>{search ? `Search Results for "${search}"` : "All Items"}</h2>
-        <p className="text-sm text-muted-foreground">
-          {search
-            ? `Showing results for "${search}"`
-            : "Browse our collection of items."}
-        </p>
+        <div className="flex justify-between items-center">
+          <p className="text-sm text-muted-foreground">
+            {search
+              ? `Showing results for "${search}"`
+              : "Browse our collection of items."}
+          </p>
+          <Sort
+            onSortChange={handleSortChange}
+            currentSort={sort}
+            currentOrder={order}
+          />
+        </div>
       </div>
 
       {/* loading */}

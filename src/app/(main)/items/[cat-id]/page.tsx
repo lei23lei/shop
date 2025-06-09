@@ -17,6 +17,7 @@ import {
 import Link from "next/link";
 import BreadcrumbNavigation from "@/components/layout/breadcrumb";
 import { useSearchParams } from "next/navigation";
+import Sort from "../_components/sort";
 
 // Helper function to find category info
 const findCategoryInfo = (catId: number) => {
@@ -41,6 +42,10 @@ export default function ItemsPage({
   const resolvedParams = React.use(params);
   const searchParams = useSearchParams();
   const [page, setPage] = React.useState(1);
+  const [sort, setSort] = React.useState<"created_at" | "price" | "name">(
+    "created_at"
+  );
+  const [order, setOrder] = React.useState<"asc" | "desc">("desc");
 
   const categoryId = Number(resolvedParams["cat-id"]);
   const search = searchParams.get("search");
@@ -55,6 +60,8 @@ export default function ItemsPage({
       category: categoryId,
       search: search || undefined,
       page_size: 12,
+      sort,
+      order,
     },
     {
       skip: !resolvedParams["cat-id"],
@@ -66,6 +73,12 @@ export default function ItemsPage({
   const handlePageChange = (newPage: number) => {
     setPage(newPage);
     window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+
+  const handleSortChange = (newSort: string, newOrder: "asc" | "desc") => {
+    setSort(newSort as "created_at" | "price" | "name");
+    setOrder(newOrder);
+    setPage(1); // Reset to first page when sorting changes
   };
 
   return (
@@ -91,7 +104,14 @@ export default function ItemsPage({
                 categoryInfo?.subcategory.toLowerCase() || ""
               } items.`}
         </p>
-        <BreadcrumbNavigation categoryId={categoryId} />
+        <div className="flex justify-between items-center">
+          <BreadcrumbNavigation categoryId={categoryId} />
+          <Sort
+            onSortChange={handleSortChange}
+            currentSort={sort}
+            currentOrder={order}
+          />
+        </div>
       </div>
       {/* loading */}
       {isLoading && <LoadingItems />}
