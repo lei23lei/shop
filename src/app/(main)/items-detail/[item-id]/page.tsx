@@ -103,13 +103,14 @@ export default function ItemDetailPage({
     );
   }
 
-  const categoryId = itemDetail.categories[0]?.id;
+  const categoryId =
+    itemDetail.categories[itemDetail.categories.length - 1]?.id;
 
   return (
     <div className=" py-4 ">
       <div className="container mx-auto px-4 lg:px-6 xl:px-10 2xl:px-16">
         <div className="flex flex-col gap-4   lg:px-0">
-          <div className="py-4">
+          <div className="py-1 md:py-4">
             <BreadcrumbNavigation
               categoryId={categoryId}
               showItemName={true}
@@ -193,15 +194,18 @@ export default function ItemDetailPage({
 
             {/* Right side - Item Details */}
             <div className="flex-1 flex flex-col justify-between">
-              <div className=" space-y-6">
-                <h1 className="text-3xl font-semibold">{itemDetail.name}</h1>
+              <div className=" space-y-5">
+                <h1 className="text-lg md:text-xl lg:text-2xl font-semibold">
+                  {itemDetail.name}
+                </h1>
 
                 {/* Categories */}
-                <div className="flex gap-2">
+                <div className="flex items-center justify-start gap-2">
+                  <h4>Category: </h4>
                   {itemDetail.categories.map((category) => (
                     <span
                       key={category.id}
-                      className="px-3 py-1 bg-neutral-100 rounded-full text-sm"
+                      className=" bg-neutral-100 rounded-full text-xs md:text-sm"
                     >
                       {category.name}
                     </span>
@@ -225,96 +229,60 @@ export default function ItemDetailPage({
                     <span className="text-sm">{itemDetail.details.color}</span>
                   </div>
                 )}
-
-                {/* Delete Button */}
-                {/* <AlertDialog>
-                  <AlertDialogTrigger asChild>
-                    <Button variant="destructive" className="w-full">
-                      Delete Item
-                    </Button>
-                  </AlertDialogTrigger>
-                  <AlertDialogContent>
-                    <AlertDialogHeader>
-                      <AlertDialogTitle>Are you sure?</AlertDialogTitle>
-                      <AlertDialogDescription>
-                        This action cannot be undone. This will permanently
-                        delete the item "{itemDetail.name}" and all its
-                        associated data.
-                      </AlertDialogDescription>
-                    </AlertDialogHeader>
-                    <AlertDialogFooter>
-                      <AlertDialogCancel>Cancel</AlertDialogCancel>
-                      <AlertDialogAction
-                        onClick={async () => {
-                          try {
-                            setIsDeleting(true);
-                            await deleteItem(
-                              Number(resolvedParams["item-id"])
-                            ).unwrap();
-                            router.push("/items");
-                          } catch (error) {
-                            console.error("Failed to delete item:", error);
-                          } finally {
-                            setIsDeleting(false);
-                          }
-                        }}
-                        disabled={isDeleting}
-                        className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
-                      >
-                        {isDeleting ? "Deleting..." : "Delete"}
-                      </AlertDialogAction>
-                    </AlertDialogFooter>
-                  </AlertDialogContent>
-                </AlertDialog> */}
               </div>
 
-              <div className="space-y-6">
+              <div className="mt-2 space-y-6">
                 {/* Quantity */}
-                {selectedSize && (
-                  <div className="space-y-2">
-                    <h3 className="font-medium">Quantity</h3>
-                    <div className="flex items-center space-x-4">
-                      <Button
-                        variant="outline"
-                        size="icon"
-                        onClick={() =>
-                          setQuantity((prev) => Math.max(1, prev - 1))
-                        }
-                        disabled={quantity <= 1}
-                        className="h-10 w-10 rounded-full border-border shadow-sm"
-                      >
-                        <p className="text-xl mb-0.5">-</p>
-                      </Button>
-                      <span className="w-8 text-center font-medium">
-                        {quantity}
-                      </span>
-                      <Button
-                        variant="outline"
-                        size="icon"
-                        onClick={() =>
-                          setQuantity((prev) =>
-                            Math.min(selectedSizeObj?.quantity || 1, prev + 1)
-                          )
-                        }
-                        disabled={quantity >= (selectedSizeObj?.quantity || 1)}
-                        className="h-10 w-10 rounded-full border-border shadow-sm"
-                      >
-                        <p className="text-lg mb-0.5">+</p>
-                      </Button>
-                    </div>
-                    {selectedSizeObj && (
-                      <p className="text-sm text-neutral-500">
-                        {selectedSizeObj.quantity} items available
-                      </p>
-                    )}
+                <div className="space-y-2">
+                  <h4>Quantity</h4>
+                  <div className="flex items-center space-x-4">
+                    <Button
+                      variant="outline"
+                      size="icon"
+                      onClick={() =>
+                        setQuantity((prev) => Math.max(1, prev - 1))
+                      }
+                      disabled={!selectedSize || quantity <= 1}
+                      className="h-10 w-10 rounded-full border-border shadow-sm"
+                    >
+                      <p className="text-xl mb-0.5">-</p>
+                    </Button>
+                    <span className="w-8 text-center font-medium">
+                      {quantity}
+                    </span>
+                    <Button
+                      variant="outline"
+                      size="icon"
+                      onClick={() =>
+                        setQuantity((prev) =>
+                          Math.min(selectedSizeObj?.quantity || 1, prev + 1)
+                        )
+                      }
+                      disabled={
+                        !selectedSize ||
+                        quantity >= (selectedSizeObj?.quantity || 1)
+                      }
+                      className="h-10 w-10 rounded-full border-border shadow-sm"
+                    >
+                      <p className="text-lg mb-0.5">+</p>
+                    </Button>
                   </div>
-                )}
+                  {selectedSizeObj ? (
+                    <p className="text-sm text-neutral-500">
+                      {selectedSizeObj.quantity} items available
+                    </p>
+                  ) : (
+                    <p className="text-sm text-neutral-500">
+                      Please select a size
+                    </p>
+                  )}
+                </div>
 
                 {/* Sizes */}
                 {itemDetail.sizes.length > 0 && (
                   <div className="space-y-2">
-                    <h3 className="font-medium">Available Sizes</h3>
-                    <div className="grid grid-cols-6 gap-2">
+                    <h4>Available Sizes</h4>
+                    <div className="flex flex-wrap gap-2">
                       {itemDetail.sizes.map((size) => (
                         <div
                           key={size.size}
@@ -322,7 +290,7 @@ export default function ItemDetailPage({
                             size.quantity > 0 && setSelectedSize(size.size)
                           }
                           className={cn(
-                            "relative flex cursor-pointer items-center justify-center p-2 border border-muted-foreground/1 shadow-md rounded-md transition-all",
+                            "relative flex cursor-pointer items-center justify-center p-1 border border-muted-foreground/1 shadow-md rounded-md transition-all min-w-[60px]",
                             size.quantity === 0 &&
                               "opacity-50 cursor-not-allowed bg-neutral-100",
                             selectedSize === size.size &&
@@ -344,7 +312,7 @@ export default function ItemDetailPage({
 
                 {/* Add to Cart Button */}
                 <Button
-                  className="w-full h-12 bg-neutral-800 text-lg"
+                  className="w-full h-12 bg-primary text-lg"
                   disabled={!selectedSize || isAddingToCart}
                   onClick={async () => {
                     if (!user) {
@@ -389,10 +357,10 @@ export default function ItemDetailPage({
         </div>
         {/* Details (Color and Additional Details) */}
         {itemDetail.details && (
-          <div className="pt-10 -mb-16">
+          <div className="pt-10 mb-8 md:-mb-16">
             <Accordion type="single" collapsible className="w-full">
               <AccordionItem value="details">
-                <AccordionTrigger className="text-2xl font-medium">
+                <AccordionTrigger className="text-xl md:text-2xl font-medium">
                   Details
                 </AccordionTrigger>
                 <AccordionContent>
@@ -461,7 +429,11 @@ export default function ItemDetailPage({
         )}
       </div>
       {/* related items */}
-      <RecentItems name="You might also like" cat_id={categoryId} />
+      <RecentItems
+        name="You might also like"
+        cat_id={categoryId}
+        item_id={itemDetail.id}
+      />
     </div>
   );
 }

@@ -99,8 +99,8 @@ export default function CheckoutPage() {
   return (
     <div className="min-h-screen bg-gray-50">
       <ProgressBar currentStep={currentStep} />
-      <div className="flex mt-14 items-start justify-center gap-10">
-        <div className="w-[600px]">{renderStep()}</div>
+      <div className="flex flex-col-reverse md:flex-row mt-14 items-start justify-center gap-10">
+        <div className="w-full md:w-[600px]">{renderStep()}</div>
         {currentStep !== 3 && (
           <CartSummary cartData={cartData} totalPrice={totalPrice} />
         )}

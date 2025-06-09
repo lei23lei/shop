@@ -84,7 +84,7 @@ export default function ItemsPage({
   return (
     <div className="container mx-auto py-2 px-0 lg:px-6 xl:px-10 2xl:px-16">
       <div className="flex flex-col gap-4 py-4 px-4 lg:px-0">
-        <h2>
+        <h3>
           {search
             ? `Search Results for "${search}"${
                 categoryInfo ? ` in ${categoryInfo.subcategory}` : ""
@@ -92,7 +92,7 @@ export default function ItemsPage({
             : categoryInfo
             ? `${categoryInfo.category} - ${categoryInfo.subcategory}`
             : "Items"}
-        </h2>
+        </h3>
         <p className="text-sm text-muted-foreground">
           {search
             ? `Showing results for "${search}"${

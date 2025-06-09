@@ -81,6 +81,9 @@ export default {
       fontFamily: {
         "work-sans": ["var(--font-work-sans)"],
       },
+      fontSize: {
+        md: "17px",
+      },
     },
   },
   plugins: [require("tailwindcss-animate")],

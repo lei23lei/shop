@@ -58,7 +58,7 @@ function ItemsContent() {
   return (
     <div className="container mx-auto py-2 px-0 lg:px-6 xl:px-10 2xl:px-16">
       <div className="flex flex-col gap-4 py-4 px-4 lg:px-0">
-        <h2>{search ? `Search Results for "${search}"` : "All Items"}</h2>
+        <h3>{search ? `Search Results for "${search}"` : "All Items"}</h3>
         <div className="flex justify-between items-center">
           <p className="text-sm text-muted-foreground">
             {search

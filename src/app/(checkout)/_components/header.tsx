@@ -6,11 +6,13 @@ import Link from "next/link";
 export default function Header() {
   return (
     <div className="bg-neutral-200">
-      <div className="flex container  h-[120px] mx-auto flex-row justify-between items-center">
+      <div className="flex container px-4 h-[100px] md:h-[120px] mx-auto flex-row justify-between items-center">
         <Link href="/">
-          <div className="flex flex-row items-center gap-2 cursor-pointer">
-            <ChevronLeft className="w-4 h-4" />
-            <span>Continue Shopping</span>
+          <div className="flex flex-row items-center gap-2 cursor-pointer group">
+            <ChevronLeft className="w-5 h-5 group-hover:text-primary transition-colors" />
+            <span className="group-hover:text-primary text-sm md:text-md transition-colors">
+              Continue Shopping
+            </span>
           </div>
         </Link>
         <Image
@@ -18,7 +20,14 @@ export default function Header() {
           alt="logo"
           width={400}
           height={400}
-          className="h-[90px]  w-auto"
+          className="h-[90px] hidden md:block w-auto"
+        />
+        <Image
+          src="/images/icon.png"
+          alt="logo"
+          width={400}
+          height={400}
+          className="h-[70px] block md:hidden w-auto"
         />
       </div>
     </div>

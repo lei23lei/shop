@@ -13,7 +13,7 @@ export default function ProgressBar({ currentStep = 1 }: ProgressBarProps) {
   ];
 
   return (
-    <div className="w-full pt-14 max-w-3xl mx-auto px-4 py-8">
+    <div className="w-full pt-8 md:pt-14 max-w-3xl mx-auto px-4  md:py-8">
       <div className="relative">
         {/* Progress bar line */}
         <div className="absolute top-1/2 left-0 w-full h-0.5 bg-gray-200 -translate-y-1/2">
@@ -26,7 +26,7 @@ export default function ProgressBar({ currentStep = 1 }: ProgressBarProps) {
         </div>
 
         {/* Steps */}
-        <div className="absolute -top-4 left-0  w-full flex justify-between">
+        <div className="absolute -top-3 md:-top-4 left-0   w-full  flex justify-between">
           {steps.map((step) => {
             const isCompleted = step.id < currentStep;
             const isCurrent = step.id === currentStep;
@@ -35,7 +35,7 @@ export default function ProgressBar({ currentStep = 1 }: ProgressBarProps) {
               <div key={step.id} className="flex flex-col items-center ">
                 {/* Step circle */}
                 <div
-                  className={`w-8 h-8 rounded-full flex items-center justify-center border-2 transition-colors duration-300 ${
+                  className={`w-6 h-6 md:w-8 md:h-8 rounded-full flex items-center justify-center border-2 transition-colors duration-300 ${
                     isCompleted
                       ? "bg-black border-black"
                       : isCurrent
@@ -58,7 +58,7 @@ export default function ProgressBar({ currentStep = 1 }: ProgressBarProps) {
 
                 {/* Step label */}
                 <span
-                  className={`mt-2 text-sm font-medium ${
+                  className={`mt-2 text-xs md:text-sm font-medium ${
                     isCurrent ? "text-black" : "text-gray-400"
                   }`}
                 >

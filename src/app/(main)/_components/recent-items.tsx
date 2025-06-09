@@ -18,11 +18,13 @@ import LoadingSpin from "@/components/loading-spin";
 interface RecentItemsProps {
   name?: string;
   cat_id?: number;
+  item_id?: number;
 }
 
 export default function RecentItems({
   name = "Recent Items",
   cat_id,
+  item_id,
 }: RecentItemsProps) {
   const plugin = React.useRef(
     Autoplay({ delay: 3000, stopOnInteraction: true })
@@ -31,6 +33,12 @@ export default function RecentItems({
   const { data: itemsData, isLoading } = useGetItemsQuery({
     category: cat_id,
   });
+
+  // Filter out the current item if item_id is provided
+  const filteredItems = React.useMemo(() => {
+    if (!itemsData?.results) return [];
+    return itemsData.results.filter((item) => item.id !== item_id);
+  }, [itemsData?.results, item_id]);
 
   if (isLoading || !itemsData?.results) {
     return (
@@ -43,10 +51,10 @@ export default function RecentItems({
     );
   }
 
-  if (itemsData.results.length === 0) {
+  if (filteredItems.length === 0) {
     return (
       <div className="mx-auto mt-2 lg:pt-20 mb-10">
-        <h2 className="px-14 mb-4">{name}</h2>
+        <h2 className="px-14 text-xl md:text-2xl font-medium mb-4">{name}</h2>
         <p className="px-14">No items found</p>
       </div>
     );
@@ -66,7 +74,7 @@ export default function RecentItems({
         className="w-full"
       >
         <CarouselContent className="mx-0 pb-4 mr-4 md:mr-0 md:mx-2 lg:mx-4">
-          {itemsData.results.map((item) => (
+          {filteredItems.map((item) => (
             <CarouselItem
               key={item.id}
               className="basis-1/2 md:basis-1/3 lg:basis-1/4 xl:basis-1/5"

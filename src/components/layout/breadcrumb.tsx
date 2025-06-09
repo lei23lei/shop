@@ -17,6 +17,7 @@ interface BreadcrumbNavigationProps {
 
 // Helper function to find category info
 const findCategoryInfo = (catId: number) => {
+  console.log("catId", catId);
   for (const category of categories) {
     const subcategory = category.subcategories.find((sub) => sub.id === catId);
     if (subcategory) {
@@ -24,6 +25,7 @@ const findCategoryInfo = (catId: number) => {
         category: category.name,
         subcategory: subcategory.name,
         categoryId: category.id,
+        subcategoryId: subcategory.id,
       };
     }
   }
@@ -52,11 +54,11 @@ export default function BreadcrumbNavigation({
                 {categoryInfo.category}
               </BreadcrumbLink>
             </BreadcrumbItem>
-            {categoryInfo.subcategory !== "All" && (
+            {categoryInfo.subcategory && (
               <>
                 <BreadcrumbSeparator />
                 <BreadcrumbItem>
-                  <BreadcrumbLink href={`/items/${categoryId}`}>
+                  <BreadcrumbLink href={`/items/${categoryInfo.subcategoryId}`}>
                     {categoryInfo.subcategory}
                   </BreadcrumbLink>
                 </BreadcrumbItem>

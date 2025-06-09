@@ -153,7 +153,7 @@ export default function EditItemPage() {
             <Label htmlFor="detail">Detail</Label>
             <Textarea
               id="detail"
-              className="h-40"
+              className="h-96"
               value={formData.detail}
               onChange={(e) =>
                 setFormData({ ...formData, detail: e.target.value })
