@@ -39,6 +39,7 @@ import {
 } from "@/components/ui/accordion";
 import { toast } from "sonner";
 import { useAuth } from "@/contexts/auth-context";
+import remarkGfm from "remark-gfm";
 
 export default function ItemDetailPage({
   params,
@@ -388,7 +389,7 @@ export default function ItemDetailPage({
         </div>
         {/* Details (Color and Additional Details) */}
         {itemDetail.details && (
-          <div className="pt-10">
+          <div className="pt-10 -mb-16">
             <Accordion type="single" collapsible className="w-full">
               <AccordionItem value="details">
                 <AccordionTrigger className="text-2xl font-medium">
@@ -396,8 +397,34 @@ export default function ItemDetailPage({
                 </AccordionTrigger>
                 <AccordionContent>
                   {itemDetail.details.detail && (
-                    <div className="prose prose-sm max-w-none leading-8">
-                      <ReactMarkdown>{itemDetail.details.detail}</ReactMarkdown>
+                    <div className="prose prose-sm md:prose-base lg:prose-lg max-w-none leading-8 text-neutral-600">
+                      <ReactMarkdown
+                        remarkPlugins={[remarkGfm]}
+                        components={{
+                          table: ({ node, ...props }) => (
+                            <div className="overflow-x-auto">
+                              <table
+                                className="min-w-full divide-y border my-4 border-gray-200"
+                                {...props}
+                              />
+                            </div>
+                          ),
+                          th: ({ node, ...props }) => (
+                            <th
+                              className="px-6 py-3 bg-gray-50 border-b  text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                              {...props}
+                            />
+                          ),
+                          td: ({ node, ...props }) => (
+                            <td
+                              className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 border-b"
+                              {...props}
+                            />
+                          ),
+                        }}
+                      >
+                        {itemDetail.details.detail}
+                      </ReactMarkdown>
                     </div>
                   )}
                 </AccordionContent>
@@ -419,7 +446,7 @@ export default function ItemDetailPage({
         )}
       </div>
       {/* related items */}
-      <RecentItems name="Related Items" cat_id={categoryId} />
+      <RecentItems name="You might also like" cat_id={categoryId} />
     </div>
   );
 }
