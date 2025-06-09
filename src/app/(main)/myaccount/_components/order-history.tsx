@@ -18,7 +18,7 @@ export default function OrderHistory() {
   if (isLoading) {
     return (
       <div className="space-y-4">
-        <h2 className="text-2xl font-semibold">Order History</h2>
+        <h3>Order History</h3>
         <div className="space-y-4">
           {[1, 2, 3].map((i) => (
             <Skeleton key={i} className="h-[200px] w-full" />
@@ -131,7 +131,7 @@ export default function OrderHistory() {
                   </AccordionItem>
                 </Accordion>
                 <div className="flex justify-end">
-                  <p className="text-lg font-semibold">
+                  <p className="text-sm md:text-base font-semibold">
                     Total: ${order.total_price}
                   </p>
                 </div>

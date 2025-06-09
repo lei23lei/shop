@@ -171,7 +171,7 @@ export default function PersonalInfo() {
   return (
     <>
       <div className="flex justify-between items-center">
-        <h2 className="text-2xl font-semibold">Personal Information</h2>
+        <h3>Personal Information</h3>
         {!isEditing && (
           <Button onClick={handleEdit} variant="default">
             <PencilLine className="w-4 h-4" />
@@ -305,8 +305,8 @@ export default function PersonalInfo() {
       </div>
       <Accordion type="single" collapsible className="w-[600px]">
         <AccordionItem value="change-password">
-          <AccordionTrigger className="text-lg font-semibold hover:no-underline">
-            Change Password
+          <AccordionTrigger className="hover:no-underline">
+            <h4 className="font-semibold">Change Password</h4>
           </AccordionTrigger>
           <AccordionContent>
             {isPasswordChanged ? (

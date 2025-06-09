@@ -14,17 +14,20 @@ import {
 } from "@/components/ui/dialog";
 import PersonalInfo from "./_components/personal-info";
 import OrderHistory from "./_components/order-history";
+import LoadingPage from "@/components/loading-page";
 
 export default function Page() {
   const { user, logout } = useAuth();
   const router = useRouter();
   const [showConfirmDialog, setShowConfirmDialog] = useState(false);
   const [activeTab, setActiveTab] = useState("personal-info");
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     if (!user) {
       router.push("/login");
     }
+    setIsLoading(false);
   }, [user, router]);
 
   const handleSignOut = () => {
@@ -32,16 +35,21 @@ export default function Page() {
     router.push("/login");
   };
 
-  // If no user, don't render anything while redirecting
+  // Show loading state while checking authentication
+  if (isLoading) {
+    return <LoadingPage />;
+  }
+
+  // If no user, show nothing while redirecting
   if (!user) {
     return null;
   }
 
   return (
-    <div className="container min-h-[700px]  flex  mx-auto p-4 gap-10">
+    <div className=" min-h-[700px] flex flex-col md:flex-row mx-auto px-2 md:px-6 lg:px-10 p-2 md:p-4 gap-10">
       {/* nav */}
-      <div className="flex w-[230px] flex-col gap-4">
-        <div className="text-2xl font-bold">My Account</div>
+      <div className="flex w-full md:w-[230px] flex-col gap-4">
+        <h3>My Account</h3>
         <div className="flex flex-col gap-2">
           <p
             className={`text-md font-bold text-muted-foreground cursor-pointer ${
@@ -70,7 +78,7 @@ export default function Page() {
         </div>
       </div>
       {/* content */}
-      <div className="flex flex-col w-full  gap-4">
+      <div className="flex flex-col w-full gap-4">
         <div className="space-y-8 p-4">
           {activeTab === "personal-info" && <PersonalInfo />}
           {activeTab === "order-history" && <OrderHistory />}
@@ -103,7 +111,7 @@ export default function Page() {
             </Button>
           </DialogFooter>
         </DialogContent>
-      </Dialog>{" "}
+      </Dialog>
     </div>
   );
 }
