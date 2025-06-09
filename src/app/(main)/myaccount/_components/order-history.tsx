@@ -60,8 +60,13 @@ export default function OrderHistory() {
               </CardTitle>
               <div className="flex items-center gap-2">
                 <Badge
-                  variant={
-                    order.status === "completed" ? "default" : "secondary"
+                  variant="default"
+                  className={
+                    order.status === "Delivered"
+                      ? "bg-green-100 text-green-600 hover:bg-green-500"
+                      : order.status === "Shipped"
+                      ? "bg-blue-100 text-blue-600 hover:bg-blue-500"
+                      : "bg-yellow-100 text-yellow-600 hover:bg-yellow-500"
                   }
                 >
                   {order.status}

@@ -60,13 +60,15 @@ export default function StepTwo({
   };
 
   return (
-    <div className="bg-white rounded-lg shadow-sm p-6">
-      <h2 className="text-2xl font-semibold mb-6">Order Confirmation</h2>
+    <div className="bg-white rounded-lg shadow-sm p-4 md:p-6">
+      <h3 className="mb-4">Order Confirmation</h3>
 
       {/* Shipping Information */}
       <div className="mb-8">
-        <h3 className="text-lg font-medium mb-4">Shipping Information</h3>
-        <div className="space-y-2 text-neutral-600">
+        <h3 className="text-base md:text-lg font-medium mb-4">
+          Shipping Information
+        </h3>
+        <div className="space-y-2 text-neutral-600 text-sm md:text-base">
           <p>{`${formData.first_name} ${formData.last_name}`}</p>
           <p>{formData.shipping_address}</p>
           <p>
@@ -79,39 +81,48 @@ export default function StepTwo({
 
       {/* Order Summary */}
       <div className="mb-8">
-        <h3 className="text-lg font-medium mb-4">Order Summary</h3>
-        <div className="space-y-4">
+        <h4>Order Summary</h4>
+        <div className="space-y-4 mt-2">
           {cartData?.items.map((item) => (
             <div
               key={item.cart_item_id}
-              className="flex justify-between items-center"
+              className="flex flex-col  md:justify-between md:items-start gap-1"
             >
-              <div className="flex items-center gap-4">
-                <span className="text-neutral-600">{item.quantity}x</span>
-                <span>{item.name}</span>
+              <div className="flex items-center gap-2 md:gap-4">
+                <span className="text-neutral-600 text-sm md:text-base">
+                  {item.quantity}x
+                </span>
+                <span className="text-xs md:text-sm line-clamp-1">
+                  {item.name}
+                </span>
               </div>
-              <span className="font-medium">
-                ${(parseFloat(item.price) * item.quantity).toFixed(2)}
-              </span>
+              <div className="flex justify-between w-full items-center">
+                <span className="text-neutral-600 text-sm md:text-base">
+                  Size: {item.size}
+                </span>
+                <span className="font-medium text-sm md:text-base">
+                  ${(parseFloat(item.price) * item.quantity).toFixed(2)}
+                </span>
+              </div>
             </div>
           ))}
         </div>
-        <div className="mt-4 pt-4 border-t">
-          <div className="flex justify-between items-center">
-            <span className="font-medium">Total</span>
-            <span className="text-xl font-semibold">
-              ${totalPrice.toFixed(2)}
-            </span>
-          </div>
+        <div className="flex w-full border-t pt-2 mt-2 justify-between items-center">
+          <span className="font-medium text-sm md:text-base">Total</span>
+          <span className="text-lg md:text-xl font-semibold">
+            ${totalPrice.toFixed(2)}
+          </span>
         </div>
       </div>
 
       {/* Navigation Buttons */}
-      <div className="flex justify-between items-center">
-        <Button variant="outline" onClick={onBack}>
+      <div className="flex flex-col md:flex-row justify-between items-center gap-4">
+        <Button variant="outline" onClick={onBack} className="w-full md:w-auto">
           Edit
         </Button>
-        <Button onClick={handleProceedToPayment}>Proceed to Payment</Button>
+        <Button onClick={handleProceedToPayment} className="w-full md:w-auto">
+          Proceed to Payment
+        </Button>
       </div>
     </div>
   );

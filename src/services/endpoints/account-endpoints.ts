@@ -169,7 +169,7 @@ interface OrderItem {
 
 export interface Order {
   id: number;
-  status: string;
+  status: "Pending" | "Processing" | "Shipped" | "Delivered";
   total_price: string;
   shipping_address: string;
   shipping_phone: string;
