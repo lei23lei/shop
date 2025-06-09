@@ -5,7 +5,7 @@ import Image from "next/image";
 import { Card, CardContent } from "@/components/ui/card";
 import { categories } from "@/lib/data";
 import { useGetItemsQuery } from "@/services/endpoints/items-endpoints";
-import LoadingItems from "@/components/items-loading";
+import LoadingItems from "@/components/loading/items-loading";
 import {
   Pagination,
   PaginationContent,
@@ -18,6 +18,7 @@ import Link from "next/link";
 import BreadcrumbNavigation from "@/components/layout/breadcrumb";
 import { useSearchParams } from "next/navigation";
 import Sort from "../_components/sort";
+import ItemNotFound from "@/components/notfound/item-notfound";
 
 // Helper function to find category info
 const findCategoryInfo = (catId: number) => {
@@ -118,9 +119,7 @@ export default function ItemsPage({
       {/* no items */}
       {!isLoading &&
         (itemsData?.results.length === 0 || itemsData?.count === 0) && (
-          <div className="flex justify-center items-center border-t min-h-[600px] border-border pt-2">
-            <h2>No items found</h2>
-          </div>
+          <ItemNotFound />
         )}
       {/* items */}
       {!isLoading && itemsData && itemsData?.count > 0 && (

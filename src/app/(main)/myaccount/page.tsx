@@ -14,7 +14,7 @@ import {
 } from "@/components/ui/dialog";
 import PersonalInfo from "./_components/personal-info";
 import OrderHistory from "./_components/order-history";
-import LoadingPage from "@/components/loading-page";
+import LoadingPage from "@/components/loading/loading-page";
 
 export default function Page() {
   const { user, logout } = useAuth();

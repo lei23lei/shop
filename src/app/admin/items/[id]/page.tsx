@@ -27,6 +27,12 @@ export default function EditItemPage() {
     description: "",
     color: "",
     detail: "",
+    sizes: [] as { size: string; quantity: number }[],
+    images: [] as {
+      image_url: string;
+      quality: "low" | "medium" | "high";
+      is_primary: boolean;
+    }[],
   });
 
   React.useEffect(() => {
@@ -37,6 +43,15 @@ export default function EditItemPage() {
         description: item.description,
         color: item.details?.color || "",
         detail: item.details?.detail || "",
+        sizes: item.sizes.map((size) => ({
+          size: size.size,
+          quantity: size.quantity,
+        })),
+        images: item.images.map((img) => ({
+          image_url: img.image_url,
+          quality: img.quality as "low" | "medium" | "high",
+          is_primary: img.is_primary,
+        })),
       });
     }
   }, [item]);
@@ -52,6 +67,8 @@ export default function EditItemPage() {
           description: formData.description,
           color: formData.color,
           detail: formData.detail,
+          sizes: formData.sizes,
+          images: formData.images,
         },
       }).unwrap();
       toast.success("Item updated successfully");
@@ -59,6 +76,59 @@ export default function EditItemPage() {
     } catch (error) {
       toast.error("Failed to update item");
     }
+  };
+
+  const handleSizeChange = (
+    index: number,
+    field: "size" | "quantity",
+    value: string | number
+  ) => {
+    const newSizes = [...formData.sizes];
+    newSizes[index] = {
+      ...newSizes[index],
+      [field]: field === "quantity" ? Number(value) : value,
+    };
+    setFormData({ ...formData, sizes: newSizes });
+  };
+
+  const handleImageChange = (
+    index: number,
+    field: "image_url" | "quality" | "is_primary",
+    value: string | boolean
+  ) => {
+    const newImages = [...formData.images];
+    newImages[index] = {
+      ...newImages[index],
+      [field]: value,
+    };
+    setFormData({ ...formData, images: newImages });
+  };
+
+  const addSize = () => {
+    setFormData({
+      ...formData,
+      sizes: [...formData.sizes, { size: "", quantity: 0 }],
+    });
+  };
+
+  const addImage = () => {
+    setFormData({
+      ...formData,
+      images: [
+        ...formData.images,
+        { image_url: "", quality: "medium", is_primary: false },
+      ],
+    });
+  };
+
+  const removeSize = (index: number) => {
+    const newSizes = formData.sizes.filter((_, i) => i !== index);
+    setFormData({ ...formData, sizes: newSizes });
+  };
+
+  const removeImage = (index: number) => {
+    const newImages = formData.images.filter((_, i) => i !== index);
+    setFormData({ ...formData, images: newImages });
   };
 
   if (isLoading) {
@@ -159,6 +229,115 @@ export default function EditItemPage() {
                 setFormData({ ...formData, detail: e.target.value })
               }
             />
+          </div>
+
+          {/* Sizes Section */}
+          <div className="space-y-4">
+            <div className="flex justify-between items-center">
+              <Label>Sizes and Quantities</Label>
+              <Button type="button" variant="outline" onClick={addSize}>
+                Add Size
+              </Button>
+            </div>
+            {formData.sizes.map((size, index) => (
+              <div key={index} className="flex gap-4 items-end">
+                <div className="flex-1 space-y-2">
+                  <Label>Size</Label>
+                  <Input
+                    value={size.size}
+                    onChange={(e) =>
+                      handleSizeChange(index, "size", e.target.value)
+                    }
+                    placeholder="e.g., S, M, L"
+                  />
+                </div>
+                <div className="flex-1 space-y-2">
+                  <Label>Quantity</Label>
+                  <Input
+                    type="number"
+                    value={size.quantity}
+                    onChange={(e) =>
+                      handleSizeChange(index, "quantity", e.target.value)
+                    }
+                    min="0"
+                  />
+                </div>
+                <Button
+                  type="button"
+                  variant="destructive"
+                  onClick={() => removeSize(index)}
+                >
+                  Remove
+                </Button>
+              </div>
+            ))}
+          </div>
+
+          {/* Images Section */}
+          <div className="space-y-4">
+            <div className="flex justify-between items-center">
+              <Label>Images</Label>
+              <Button type="button" variant="outline" onClick={addImage}>
+                Add Image
+              </Button>
+            </div>
+            {formData.images.map((image, index) => (
+              <div key={index} className="space-y-4 p-4 border rounded-lg">
+                <div className="space-y-2">
+                  <Label>Image URL</Label>
+                  <Input
+                    value={image.image_url}
+                    onChange={(e) =>
+                      handleImageChange(index, "image_url", e.target.value)
+                    }
+                    placeholder="https://example.com/image.jpg"
+                  />
+                </div>
+                <div className="flex gap-4">
+                  <div className="flex-1 space-y-2">
+                    <Label>Quality</Label>
+                    <select
+                      className="w-full p-2 border rounded-md"
+                      value={image.quality}
+                      onChange={(e) =>
+                        handleImageChange(
+                          index,
+                          "quality",
+                          e.target.value as "low" | "medium" | "high"
+                        )
+                      }
+                    >
+                      <option value="low">Low</option>
+                      <option value="medium">Medium</option>
+                      <option value="high">High</option>
+                    </select>
+                  </div>
+                  <div className="flex items-end">
+                    <label className="flex items-center gap-2">
+                      <input
+                        type="checkbox"
+                        checked={image.is_primary}
+                        onChange={(e) =>
+                          handleImageChange(
+                            index,
+                            "is_primary",
+                            e.target.checked
+                          )
+                        }
+                      />
+                      Primary Image
+                    </label>
+                  </div>
+                </div>
+                <Button
+                  type="button"
+                  variant="destructive"
+                  onClick={() => removeImage(index)}
+                >
+                  Remove Image
+                </Button>
+              </div>
+            ))}
           </div>
 
           <div className="flex justify-end space-x-4">

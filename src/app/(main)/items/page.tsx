@@ -4,7 +4,7 @@ import React, { Suspense } from "react";
 import Image from "next/image";
 import { Card, CardContent } from "@/components/ui/card";
 import { useGetItemsQuery } from "@/services/endpoints/items-endpoints";
-import LoadingItems from "@/components/items-loading";
+import LoadingItems from "@/components/loading/items-loading";
 import {
   Pagination,
   PaginationContent,
@@ -16,6 +16,7 @@ import {
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import Sort from "./_components/sort";
+import ItemNotFound from "@/components/notfound/item-notfound";
 
 function ItemsContent() {
   const searchParams = useSearchParams();
@@ -79,9 +80,7 @@ function ItemsContent() {
       {/* no items */}
       {!isLoading &&
         (itemsData?.results.length === 0 || itemsData?.count === 0) && (
-          <div className="flex justify-center items-center border-t min-h-[600px] border-border pt-2">
-            <h2>No items found</h2>
-          </div>
+          <ItemNotFound />
         )}
 
       {/* items */}

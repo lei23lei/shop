@@ -8,7 +8,7 @@ import {
 } from "@/services/endpoints/items-endpoints";
 import { useAddToCartMutation } from "@/services/endpoints/account-endpoints";
 import { useRouter } from "next/navigation";
-import LoadingSpin from "@/components/loading-spin";
+import LoadingSpin from "@/components/loading/loading-spin";
 import BreadcrumbNavigation from "@/components/layout/breadcrumb";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -40,6 +40,8 @@ import {
 import { toast } from "sonner";
 import { useAuth } from "@/contexts/auth-context";
 import remarkGfm from "remark-gfm";
+import LoadingPage from "@/components/loading/loading-page";
+import ItemNotFound from "@/components/notfound/item-notfound";
 
 export default function ItemDetailPage({
   params,
@@ -88,19 +90,11 @@ export default function ItemDetailPage({
   }, [itemDetail]);
 
   if (isLoading) {
-    return (
-      <div className="container mx-auto min-h-[600px] flex items-center justify-center">
-        <LoadingSpin />
-      </div>
-    );
+    return <LoadingPage />;
   }
 
   if (!itemDetail) {
-    return (
-      <div className="container mx-auto min-h-[600px] flex items-center justify-center">
-        <h2>Item not found</h2>
-      </div>
-    );
+    return <ItemNotFound />;
   }
 
   const categoryId =
@@ -172,7 +166,7 @@ export default function ItemDetailPage({
                     )}
                   </div>
                 </DialogTrigger>
-                <DialogContent className="max-w-[50vw]  border-0 h-[80vh] p-0">
+                <DialogContent className="w-[95vw] md:w-[80vw] lg:w-[50vw] border-0 min-w-[280px] max-w-[800px] aspect-square p-0">
                   <DialogTitle className="sr-only">
                     {itemDetail.name} Image View
                   </DialogTitle>

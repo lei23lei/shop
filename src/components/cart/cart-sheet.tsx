@@ -175,7 +175,7 @@ export function CartSheet({
       </Sheet>
       {user && cartCount && cartCount.total_items > 0 && (
         <span className="absolute -top-2  -right-2 bg-red-700 text-white text-xs rounded-full w-[18px] h-[18px] flex items-center justify-center">
-          {cartCount.total_items}
+          <p className="mb-0.5"> {cartCount.total_items}</p>
         </span>
       )}
     </div>

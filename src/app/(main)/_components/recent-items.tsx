@@ -13,7 +13,7 @@ import {
 } from "@/components/ui/carousel";
 import Autoplay from "embla-carousel-autoplay";
 import { useGetItemsQuery } from "@/services/endpoints/items-endpoints";
-import LoadingSpin from "@/components/loading-spin";
+import LoadingSpin from "@/components/loading/loading-spin";
 
 interface RecentItemsProps {
   name?: string;
