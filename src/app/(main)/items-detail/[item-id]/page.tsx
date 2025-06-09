@@ -397,7 +397,7 @@ export default function ItemDetailPage({
                 </AccordionTrigger>
                 <AccordionContent>
                   {itemDetail.details.detail && (
-                    <div className="prose prose-sm md:prose-base lg:prose-lg max-w-none leading-8 text-neutral-600">
+                    <div className="prose prose-sm md:prose-base lg:prose-lg max-w-none leading-8 text-neutral-600 [&_p]:whitespace-pre-line">
                       <ReactMarkdown
                         remarkPlugins={[remarkGfm]}
                         components={{
@@ -418,6 +418,21 @@ export default function ItemDetailPage({
                           td: ({ node, ...props }) => (
                             <td
                               className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 border-b"
+                              {...props}
+                            />
+                          ),
+                          p: ({ node, ...props }) => (
+                            <p className="whitespace-pre-line" {...props} />
+                          ),
+                          h3: ({ node, ...props }) => (
+                            <h3
+                              className="mt-8 mb-4 text-xl font-semibold"
+                              {...props}
+                            />
+                          ),
+                          hr: ({ node, ...props }) => (
+                            <hr
+                              className="my-8 border-t border-gray-200"
                               {...props}
                             />
                           ),
