@@ -11,6 +11,7 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { Badge } from "@/components/ui/badge";
 
 interface CartItem {
   id: number;
@@ -174,9 +175,13 @@ export function CartSheet({
         </SheetContent>
       </Sheet>
       {user && cartCount && cartCount.total_items > 0 && (
-        <span className="absolute -top-2  -right-2 bg-red-700 text-white text-xs rounded-full w-[18px] h-[18px] flex items-center justify-center">
-          <p className="mb-0.5"> {cartCount.total_items}</p>
-        </span>
+        <Badge
+          variant="destructive"
+          onClick={() => setIsCartOpen(true)}
+          className="absolute -top-2 -right-3 cursor-pointer h-5 w-5 p-0 flex items-center justify-center"
+        >
+          <p className=""> {cartCount.total_items}</p>
+        </Badge>
       )}
     </div>
   );

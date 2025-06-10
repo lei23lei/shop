@@ -15,6 +15,7 @@ import {
 import PersonalInfo from "./_components/personal-info";
 import OrderHistory from "./_components/order-history";
 import LoadingPage from "@/components/loading/loading-page";
+import { LogOut } from "lucide-react";
 
 export default function Page() {
   const { user, logout } = useAuth();
@@ -46,43 +47,53 @@ export default function Page() {
   }
 
   return (
-    <div className=" min-h-[700px] flex flex-col md:flex-row mx-auto px-2 md:px-6 lg:px-10 p-2 md:p-4 gap-10">
-      {/* nav */}
-      <div className="flex w-full md:w-[230px] flex-col gap-4">
+    <div className=" min-h-[700px] flex flex-col mx-auto px-2 md:px-6 lg:px-10 p-2 md:p-4 gap-10">
+      <div className="flex justify-between items-center">
         <h3>My Account</h3>
-        <div className="flex flex-col gap-2">
-          <p
-            className={`text-md font-bold text-muted-foreground cursor-pointer ${
-              activeTab === "personal-info" ? "text-primary" : ""
-            }`}
-            onClick={() => setActiveTab("personal-info")}
-          >
-            Personal Information
-          </p>
-          <p
-            className={`text-md font-bold text-muted-foreground cursor-pointer ${
-              activeTab === "order-history" ? "text-primary" : ""
-            }`}
-            onClick={() => setActiveTab("order-history")}
-          >
-            Order History
-          </p>
-        </div>
-        <div>
-          <p
-            onClick={() => setShowConfirmDialog(true)}
-            className="text-lg font-bold text-muted-foreground cursor-pointer hover:text-primary"
-          >
-            LOG OUT
-          </p>
+        <Button
+          variant="primary"
+          onClick={() => setShowConfirmDialog(true)}
+          size="default"
+        >
+          <LogOut className="h-5 w-5" />
+          Logout
+        </Button>
+      </div>
+      {/* nav */}
+      <div className="flex w-full flex-col gap-4">
+        <div className="flex flex-row border-b gap-8 border-gray-300 pb-2 relative">
+          <div className="relative">
+            <p
+              className={`text-md font-bold text-muted-foreground cursor-pointer ${
+                activeTab === "personal-info" ? "text-primary" : ""
+              }`}
+              onClick={() => setActiveTab("personal-info")}
+            >
+              Personal Information
+            </p>
+            {activeTab === "personal-info" && (
+              <div className="absolute bottom-[-10px] left-0 w-full h-0.5 bg-primary transition-all duration-300" />
+            )}
+          </div>
+          <div className="relative">
+            <p
+              className={`text-md font-bold text-muted-foreground cursor-pointer ${
+                activeTab === "order-history" ? "text-primary" : ""
+              }`}
+              onClick={() => setActiveTab("order-history")}
+            >
+              Order History
+            </p>
+            {activeTab === "order-history" && (
+              <div className="absolute bottom-[-10px] left-0 w-full h-0.5 bg-primary transition-all duration-300" />
+            )}
+          </div>
         </div>
       </div>
       {/* content */}
-      <div className="flex flex-col w-full gap-4">
-        <div className="space-y-8 p-4">
-          {activeTab === "personal-info" && <PersonalInfo />}
-          {activeTab === "order-history" && <OrderHistory />}
-        </div>
+      <div className="px-2 md:px-4">
+        {activeTab === "personal-info" && <PersonalInfo />}
+        {activeTab === "order-history" && <OrderHistory />}
       </div>
       <Dialog open={showConfirmDialog} onOpenChange={setShowConfirmDialog}>
         <DialogContent>
