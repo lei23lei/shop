@@ -10,6 +10,8 @@ import {
   ShoppingCart,
   Trash2,
   ChevronRight,
+  MoonStar,
+  Sun,
 } from "lucide-react";
 import { categories } from "@/lib/data";
 import Image from "next/image";
@@ -29,6 +31,7 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { toast } from "sonner";
+import { useTheme } from "next-themes";
 
 import { CartSheet } from "@/components/cart/cart-sheet";
 
@@ -56,6 +59,8 @@ export default function UserBar() {
   const router = useRouter();
   const SCROLL_THRESHOLD = 100;
   const [isCartOpen, setIsCartOpen] = React.useState(false);
+  const { theme, setTheme } = useTheme();
+  const [isAnimating, setIsAnimating] = useState(false);
 
   useEffect(() => {
     setIsClient(true);
@@ -176,6 +181,17 @@ export default function UserBar() {
       });
   };
 
+  // Handle theme toggle with animation
+  const handleThemeToggle = () => {
+    setIsAnimating(true);
+    setTimeout(() => {
+      setTheme(theme === "dark" ? "light" : "dark");
+      setTimeout(() => {
+        setIsAnimating(false);
+      }, 300);
+    }, 200);
+  };
+
   return (
     <div
       className={`fixed flex flex-col top-0 left-0 right-0 bg-zinc-700 z-50 transition-transform duration-300 ${
@@ -253,7 +269,7 @@ export default function UserBar() {
               {user ? (
                 <Link href="/myaccount">
                   <div className="flex items-center gap-2 text-white">
-                    <div className="w-8 h-8 rounded-full bg-blue-300/40 flex items-center justify-center text-white font-medium">
+                    <div className="w-8 h-8 rounded-full hover:underline  bg-blue-300/40 flex items-center justify-center text-white font-medium">
                       {user.email.charAt(0).toUpperCase()}
                     </div>
                     <p className="text-md">{user.email}</p>
@@ -261,11 +277,40 @@ export default function UserBar() {
                 </Link>
               ) : (
                 <Link href="/login">
-                  <div className="text-white  text-lg">Login</div>
+                  <div className="text-white text-lg">Login</div>
                 </Link>
               )}
             </>
           )}
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={handleThemeToggle}
+            className="h-8 w-8 overflow-hidden rounded-full transition-colors hover:bg-muted"
+            disabled={isAnimating}
+          >
+            <div
+              className={`transform transition-all duration-500 ${
+                theme === "dark" ? "rotate-0" : "rotate-180"
+              }`}
+              style={{ transformOrigin: "center" }}
+            >
+              {theme === "dark" ? (
+                <MoonStar
+                  className={`h-4 w-4 text-gray-300 ${
+                    isAnimating ? "scale-90" : "scale-[1.4]"
+                  } transition-transform duration-300`}
+                />
+              ) : (
+                <Sun
+                  className={`h-4 w-4 text-gray-300 ${
+                    isAnimating ? "scale-90" : "scale-[1.4]"
+                  } transition-transform duration-300`}
+                />
+              )}
+            </div>
+            <span className="sr-only">Toggle dark mode</span>
+          </Button>
         </div>
       </div>
 
