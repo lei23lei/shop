@@ -14,6 +14,8 @@
 
     --header-background: 286 1% 92%;
 
+    --header-font: 286, 3%, 27.4%;
+
     --card: 0 0% 100%;
 
     --card-foreground: 0 0% 3.9%;
@@ -68,6 +70,9 @@
 
     --header-background: 286 2% 10.1%;
 
+    /* Zinc 300 */
+    --header-font: 286 2% 87.1%;
+
     --card: 0 0% 3.9%;
 
     --card-foreground: 0 0% 98%;
@@ -76,7 +81,7 @@
 
     --popover-foreground: 0 0% 98%;
 
-    --primary: 0 0% 98%;
+    --primary: 338 96% 44%;
 
     --primary-foreground: 0 0% 9%;
 
@@ -164,10 +169,9 @@
   height: 2px;
   top: 0;
   left: 0;
-  background: #000;
+  background: hsl(var(--header-font));
   transform: rotate(0);
   transition: all 0.5s;
-  background: #fff;
 }
 
 .hamburger-middle {

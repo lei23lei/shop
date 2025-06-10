@@ -200,7 +200,7 @@ export default function UserBar() {
       ref={menuRef}
     >
       <div className="px-3 md:px-10  h-[70px] md:h-[80px] flex items-center justify-between">
-        <Link href="/">
+        <Link href="/" onClick={() => setIsMobileMenuOpen(false)}>
           <Image
             src="/images/icon-full.png"
             alt="Logo"
@@ -250,6 +250,35 @@ export default function UserBar() {
             user={user}
             cartCount={cartCount}
           />
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={handleThemeToggle}
+            className="h-8 w-8 overflow-hidden rounded-full transition-colors hover:bg-white dark:hover:bg-zinc-500"
+            disabled={isAnimating}
+          >
+            <div
+              className={`transform transition-all duration-500 ${
+                theme === "dark" ? "rotate-0" : "rotate-180"
+              }`}
+              style={{ transformOrigin: "center" }}
+            >
+              {theme === "dark" ? (
+                <MoonStar
+                  className={`h-4 w-4 text-header-font ${
+                    isAnimating ? "scale-90" : "scale-[1.4]"
+                  } transition-transform duration-300`}
+                />
+              ) : (
+                <Sun
+                  className={`h-4 w-4 text-header-font ${
+                    isAnimating ? "scale-90" : "scale-[1.4]"
+                  } transition-transform duration-300`}
+                />
+              )}
+            </div>
+            <span className="sr-only">Toggle dark mode</span>
+          </Button>
           <button
             className={`hamburger  mt-1.5 focus:outline-none ${
               isMobileMenuOpen ? "open" : ""
@@ -268,16 +297,18 @@ export default function UserBar() {
             <>
               {user ? (
                 <Link href="/myaccount">
-                  <div className="flex items-center gap-2 text-white">
-                    <div className="w-8 h-8 rounded-full hover:underline  bg-blue-300/40 flex items-center justify-center text-white font-medium">
+                  <div className="flex items-center  gap-2 text-white">
+                    <div className="w-8 h-8 rounded-full   bg-blue-300/40 flex items-center justify-center text-white font-medium">
                       {user.email.charAt(0).toUpperCase()}
                     </div>
-                    <p className="text-md">{user.email}</p>
+                    <p className="text-md text-header-font hover:underline">
+                      {user.email}
+                    </p>
                   </div>
                 </Link>
               ) : (
                 <Link href="/login">
-                  <div className="text-white text-lg">Login</div>
+                  <div className="text-header-font text-lg">Login</div>
                 </Link>
               )}
             </>
@@ -286,7 +317,7 @@ export default function UserBar() {
             variant="ghost"
             size="icon"
             onClick={handleThemeToggle}
-            className="h-8 w-8 overflow-hidden rounded-full transition-colors hover:bg-muted"
+            className="h-8 w-8 overflow-hidden rounded-full transition-colors hover:bg-white dark:hover:bg-zinc-500"
             disabled={isAnimating}
           >
             <div
@@ -297,13 +328,13 @@ export default function UserBar() {
             >
               {theme === "dark" ? (
                 <MoonStar
-                  className={`h-4 w-4 text-gray-300 ${
+                  className={`h-4 w-4 text-header-font ${
                     isAnimating ? "scale-90" : "scale-[1.4]"
                   } transition-transform duration-300`}
                 />
               ) : (
                 <Sun
-                  className={`h-4 w-4 text-gray-300 ${
+                  className={`h-4 w-4 text-header-font ${
                     isAnimating ? "scale-90" : "scale-[1.4]"
                   } transition-transform duration-300`}
                 />
@@ -316,7 +347,7 @@ export default function UserBar() {
 
       {/* Mobile Menu */}
       <div
-        className={`md:hidden bg-gray-200 overflow-hidden transition-all duration-500 ease-in-out ${
+        className={`md:hidden bg-gray-200 dark:bg-zinc-700 overflow-hidden transition-all duration-500 ease-in-out ${
           isMobileMenuOpen ? "h-[calc(100vh-72px)]" : "h-0"
         }`}
       >
@@ -328,7 +359,7 @@ export default function UserBar() {
           <Accordion type="single" collapsible className="w-full pb-4">
             {categories.map((category) => (
               <AccordionItem value={category.id.toString()} key={category.id}>
-                <AccordionTrigger className="text-base hover:no-underline">
+                <AccordionTrigger className="text-base  hover:no-underline">
                   {category.name}
                 </AccordionTrigger>
                 <AccordionContent>
@@ -337,7 +368,7 @@ export default function UserBar() {
                       <Link
                         key={subcategory.id}
                         href={`/items/${subcategory.id}`}
-                        className="text-sm text-muted-foreground hover:text-foreground py-2"
+                        className="text-sm text-header-font hover:text-foreground py-2"
                         onClick={() => {
                           setIsMobileMenuOpen(false);
                           handleLinkClick();
@@ -351,22 +382,35 @@ export default function UserBar() {
               </AccordionItem>
             ))}
           </Accordion>
-          <div className="border-t flex items-center justify-between cursor-pointer border-gray-300 pt-4">
+          <div className="border-t  dark:border-t-0 flex items-center justify-between cursor-pointer border-gray-300 pt-4">
             {user ? (
-              <Link href="/myaccount">
-                <div className="flex items-center gap-2 ">
-                  <div className="w-8 h-8 rounded-full bg-blue-300/40 flex items-center justify-center text-muted-foreground font-medium">
-                    {user.email.charAt(0).toUpperCase()}
+              <Link
+                href="/myaccount"
+                className="w-full"
+                onClick={() => setIsMobileMenuOpen(false)}
+              >
+                <div className="flex w-full items-center justify-between">
+                  <div className="flex items-center gap-2 ">
+                    <div className="w-8 h-8 rounded-full bg-blue-300/40 flex items-center justify-center text-header-font font-medium">
+                      {user.email.charAt(0).toUpperCase()}
+                    </div>
+                    <p className="text-md">{user.email}</p>
                   </div>
-                  <p className="text-md">{user.email}</p>
+                  <ChevronRight className="w-4 h-4  text-header-font" />
                 </div>
               </Link>
             ) : (
-              <Link href="/login">
-                <h5 className="text-md">Login</h5>
+              <Link
+                href="/login"
+                className="w-full"
+                onClick={() => setIsMobileMenuOpen(false)}
+              >
+                <div className="flex w-full items-center justify-between">
+                  <h5 className="text-md">Login</h5>
+                  <ChevronRight className="w-4 h-4  text-header-font" />
+                </div>
               </Link>
             )}
-            <ChevronRight className="w-4 h-4 text-muted-foreground" />
           </div>
         </div>
       </div>
@@ -380,10 +424,10 @@ export default function UserBar() {
               className="group cursor-pointer relative py-2"
               onClick={() => handleCategoryClick(Number(category.id))}
             >
-              <div className="px-2 text-white">{category.name}</div>
+              <div className="px-2 text-header-font">{category.name}</div>
               <div className="absolute bottom-0 left-0 w-full h-[3px]">
                 <div
-                  className={`h-full bg-white transition-all duration-400 mx-auto
+                  className={`h-full bg-header-font transition-all duration-400 mx-auto
                     ${
                       activeCategory === category.id
                         ? "w-[80%]"
@@ -431,7 +475,7 @@ export default function UserBar() {
         {/* expandable categories */}
         {activeCategory !== null && (
           <div
-            className="hidden md:flex text-white absolute  rounded-b-sm flex-row left-0 top-[55px] w-[600px] h-[290px] bg-header-background shadow-lg 
+            className="hidden md:flex text-header-font absolute  rounded-b-sm flex-row left-0 top-[55px] w-[600px] h-[290px] bg-header-background shadow-lg 
             transform transition-all duration-300 ease-in-out opacity-100 translate-y-0 space-x-6
             origin-top animate-in fade-in slide-in-from-top-2"
           >
@@ -443,7 +487,7 @@ export default function UserBar() {
                     <Link
                       key={subcategory.id}
                       href={`/items/${subcategory.id}`}
-                      className="hover:bg-background rounded-md px-4 py-2 cursor-pointer hover:text-foreground"
+                      className="hover:bg-foreground/10 rounded-md px-4 py-2 cursor-pointer   hover:text-primary"
                       onClick={handleLinkClick}
                     >
                       {subcategory.name}

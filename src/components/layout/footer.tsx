@@ -46,25 +46,25 @@ export default function Footer() {
           <ul className="flex space-x-6 sm:space-x-8 justify-center md:justify-end">
             <Link
               href="https://www.instagram.com/leelitam/"
-              className="hover:opacity-80 transition-opacity"
+              className="hover:opacity-70 transition-opacity"
             >
-              <GrInstagram className="text-zinc-500 text-xl sm:text-2xl" />
+              <GrInstagram className="text-header-font text-xl sm:text-2xl" />
             </Link>
             <Link
               href="https://www.linkedin.com/in/lei-ieong-tam-6602a92bb/"
-              className="hover:opacity-80 transition-opacity"
+              className="hover:opacity-70 transition-opacity"
             >
-              <GrLinkedin className="text-zinc-500 text-xl sm:text-2xl" />
+              <GrLinkedin className="text-header-font text-xl sm:text-2xl" />
             </Link>
             <Link
               href="https://www.facebook.com/leeli.tam/"
-              className="hover:opacity-80 transition-opacity"
+              className="hover:opacity-70 transition-opacity"
             >
-              <ImFacebook2 className="text-zinc-500 text-xl sm:text-2xl" />
+              <ImFacebook2 className="text-header-font text-xl sm:text-2xl" />
             </Link>
           </ul>
 
-          <p className="text-zinc-500 font-bold text-center text-sm sm:text-base">
+          <p className="text-header-font font-bold text-center text-sm sm:text-base">
             © 2025 Peter Studio. All rights reserved.
           </p>
         </div>

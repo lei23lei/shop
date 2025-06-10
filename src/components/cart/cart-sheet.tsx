@@ -55,12 +55,12 @@ export function CartSheet({
     <div className="relative">
       <Sheet open={isCartOpen} onOpenChange={setIsCartOpen}>
         <SheetTrigger asChild>
-          <ShoppingCart className="h-5 w-5 text-white cursor-pointer" />
+          <ShoppingCart className="h-5 w-5 text-header-font cursor-pointer" />
         </SheetTrigger>
         <SheetHeader>
           <SheetTitle>{""}</SheetTitle>
         </SheetHeader>
-        <SheetContent className="w-full sm:w-[540px]">
+        <SheetContent className="w-full  sm:w-[540px]  border-l-0">
           <div className="flex flex-col h-full overflow-hidden ">
             <ScrollArea className="flex-1 pr-4">
               <div className="flex flex-col gap-4 mt-4">
@@ -69,7 +69,7 @@ export function CartSheet({
                     {cartData.items.map((item) => (
                       <div
                         key={item.cart_item_id}
-                        className="flex flex-row bg-white rounded-md p-2 gap-4"
+                        className="flex flex-row bg-header-background rounded-md p-2 gap-4"
                       >
                         <Link href={`/items-detail/${item.id}`}>
                           <div className="relative w-24 h-24 overflow-hidden rounded-md">
@@ -88,20 +88,20 @@ export function CartSheet({
                             </div>
                             <div>
                               <Trash2
-                                className="w-4 h-4 cursor-pointer hover:text-red-500"
+                                className="w-4 h-4 cursor-pointer hover:text-primary"
                                 onClick={() =>
                                   handleDeleteItem(item.cart_item_id)
                                 }
                               />
                             </div>
                           </div>
-                          <div className="text-sm text-neutral-500">
+                          <div className="text-sm text-header-font">
                             {item.categories}
                           </div>
-                          <div className="text-sm text-neutral-500">
+                          <div className="text-sm text-header-font">
                             {item.size}
                           </div>
-                          <div className="flex border-t border-gray-300 mt-2 pt-2 flex-row justify-between items-center">
+                          <div className="flex border-t border-broder mt-2 pt-2 flex-row justify-between items-center">
                             <div className="flex bg-neutral-200 rounded-full p-1 flex-row items-center gap-4">
                               <div
                                 className="cursor-pointer bg-white rounded-full p-1"
@@ -113,7 +113,7 @@ export function CartSheet({
                                   )
                                 }
                               >
-                                <Minus className="w-4 h-4 cursor-pointer hover:text-red-500" />
+                                <Minus className="w-4 h-4 text-zinc-700 cursor-pointer hover:text-primary" />
                               </div>
                               <div className="text-sm text-neutral-500">
                                 {localQuantities[item.cart_item_id] ??
@@ -134,7 +134,7 @@ export function CartSheet({
                                   )
                                 }
                               >
-                                <Plus className="w-4 h-4 cursor-pointer hover:text-red-500" />
+                                <Plus className="w-4 h-4 text-zinc-700 cursor-pointer hover:text-primary" />
                               </div>
                             </div>
 
@@ -167,7 +167,9 @@ export function CartSheet({
                   </span>
                 </div>
                 <Link href="/checkout">
-                  <Button className="w-full">Checkout</Button>
+                  <Button className="w-full font-extrabold bg-zinc-950/80 hover:bg-zinc-950/60 dark:bg-zinc-950 dark:hover:bg-zinc-950/60 text-zinc-100">
+                    Checkout
+                  </Button>
                 </Link>
               </div>
             )}
