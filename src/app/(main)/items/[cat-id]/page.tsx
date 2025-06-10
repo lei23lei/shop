@@ -52,9 +52,6 @@ export default function ItemsPage({
   const search = searchParams.get("search");
   const categoryInfo = findCategoryInfo(categoryId);
 
-  console.log("Category ID:", categoryId);
-  console.log("Search query:", search);
-
   const { data: itemsData, isLoading } = useGetItemsQuery(
     {
       page,
@@ -134,8 +131,10 @@ export default function ItemsPage({
                     className="group relative cursor-pointer w-fit"
                   >
                     <Link href={`/items/${subcategory.id}`} className="block">
-                      <h4 className="font-medium pb-1">{subcategory.name}</h4>
-                      <div className="absolute bottom-0 left-0 h-[3px] w-0 bg-black transition-all duration-300 group-hover:w-full" />
+                      <h4 className="font-medium pb-1 group-hover:text-primary">
+                        {subcategory.name}
+                      </h4>
+                      <div className="absolute bottom-0 left-0 h-[3px] w-0 bg-primary transition-all duration-300 group-hover:w-full" />
                     </Link>
                   </div>
                 ))}

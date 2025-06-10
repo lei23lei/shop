@@ -101,9 +101,9 @@ export default function ItemDetailPage({
     itemDetail.categories[itemDetail.categories.length - 1]?.id;
 
   return (
-    <div className=" py-4 ">
-      <div className="container mx-auto px-4 lg:px-6 xl:px-10 2xl:px-16">
-        <div className="flex flex-col gap-4   lg:px-0">
+    <div className="py-2 sm:py-4">
+      <div className="container mx-auto px-3 sm:px-4 lg:px-6 xl:px-10 2xl:px-16">
+        <div className="flex flex-col gap-3 sm:gap-4 lg:px-0">
           <div className="py-1 md:py-4">
             <BreadcrumbNavigation
               categoryId={categoryId}
@@ -112,7 +112,7 @@ export default function ItemDetailPage({
             />
           </div>
 
-          <div className="flex flex-col lg:flex-row gap-8 ">
+          <div className="flex flex-col lg:flex-row gap-4 sm:gap-8">
             {/* Left side - Image Gallery */}
             <div className="w-full lg:w-[600px]">
               {/* Main Image Container */}
@@ -134,19 +134,19 @@ export default function ItemDetailPage({
 
                     {/* Thumbnail Gallery Overlay */}
                     {allImages.length > 1 && (
-                      <div className="absolute left-0 bottom-0 bg-white/30 backdrop-blur-sm p-1.5 rounded-sm">
-                        <div className="flex gap-2">
+                      <div className="absolute left-0 bottom-0 bg-white/30 backdrop-blur-sm p-1 sm:p-1.5 rounded-sm">
+                        <div className="flex gap-1 sm:gap-2">
                           {allImages.map((image, index) => (
                             <button
                               key={image.id}
                               onClick={(e) => {
-                                e.stopPropagation(); // Prevent dialog from opening
+                                e.stopPropagation();
                                 setSelectedImage(index);
                               }}
                               className={cn(
-                                "relative w-[82px] aspect-square bg-neutral-100 rounded-md overflow-hidden transition-all",
+                                "relative w-[60px] sm:w-[82px] aspect-square bg-neutral-100 rounded-md overflow-hidden transition-all",
                                 selectedImage === index
-                                  ? "ring-2 ring-white/60 "
+                                  ? "ring-2 ring-white/60"
                                   : "hover:ring-2 hover:ring-white/40"
                               )}
                             >
@@ -156,7 +156,7 @@ export default function ItemDetailPage({
                                   index + 1
                                 }`}
                                 fill
-                                sizes="64px"
+                                sizes="(max-width: 640px) 60px, 82px"
                                 className="object-cover"
                               />
                             </button>
@@ -170,7 +170,7 @@ export default function ItemDetailPage({
                   <DialogTitle className="sr-only">
                     {itemDetail.name} Image View
                   </DialogTitle>
-                  <div className=" w-[50vw] aspect-[2/1] ">
+                  <div className="w-full aspect-square">
                     <Image
                       src={
                         allImages[selectedImage]?.image_url ||
@@ -178,6 +178,7 @@ export default function ItemDetailPage({
                       }
                       alt={itemDetail.name}
                       fill
+                      sizes="(max-width: 768px) 95vw, (max-width: 1024px) 80vw, 50vw"
                       className="object-cover"
                       priority
                     />
@@ -188,48 +189,101 @@ export default function ItemDetailPage({
 
             {/* Right side - Item Details */}
             <div className="flex-1 flex flex-col justify-between">
-              <div className=" space-y-5">
-                <h1 className="text-lg md:text-xl lg:text-2xl font-semibold">
-                  {itemDetail.name}
-                </h1>
+              <div className="space-y-4 sm:space-y-6">
+                <div className="space-y-2 sm:space-y-3">
+                  <h1 className="text-base sm:text-lg  md:text-xl lg:text-2xl font-extrabold">
+                    {itemDetail.name}
+                  </h1>
 
-                {/* Categories */}
-                <div className="flex items-center justify-start gap-2">
-                  <h4>Category: </h4>
-                  {itemDetail.categories.map((category) => (
-                    <span
-                      key={category.id}
-                      className=" bg-neutral-100 rounded-full text-xs md:text-sm"
-                    >
-                      {category.name}
-                    </span>
-                  ))}
+                  {/* Categories */}
+                  <div className="flex flex-wrap items-center gap-1.5 sm:gap-2">
+                    <h4 className="text-sm sm:text-base font-medium">
+                      Category:{" "}
+                    </h4>
+                    {itemDetail.categories.map((category) => (
+                      <span
+                        key={category.id}
+                        className="bg-neutral-100 rounded-full text-xs sm:text-sm px-2.5 py-1"
+                      >
+                        {category.name}
+                      </span>
+                    ))}
+                  </div>
+
+                  <p className="text-xl sm:text-2xl font-bold">
+                    ${itemDetail.price}
+                  </p>
                 </div>
-                <p className="text-2xl font-bold mt-2">${itemDetail.price}</p>
 
                 {/* Description */}
                 {itemDetail.description && (
-                  <p className="text-neutral-600">{itemDetail.description}</p>
+                  <div className="border-t border-neutral-200 pt-3 sm:pt-4">
+                    <p className="text-sm sm:text-base text-neutral-600 leading-relaxed">
+                      {itemDetail.description}
+                    </p>
+                  </div>
                 )}
 
                 {/* Color */}
                 {itemDetail.details?.color && (
-                  <div className="flex items-center gap-2">
-                    <span className="text-sm">Color:</span>
-                    <div
-                      className="w-6 h-6 rounded-full border"
-                      style={{ backgroundColor: itemDetail.details.color }}
-                    />
-                    <span className="text-sm">{itemDetail.details.color}</span>
+                  <div className="border-t border-neutral-200 pt-3 sm:pt-4">
+                    <div className="flex items-center gap-2">
+                      <span className="text-sm sm:text-base font-medium">
+                        Color:
+                      </span>
+                      <div
+                        className="w-5 h-5 sm:w-6 sm:h-6 rounded-full border"
+                        style={{ backgroundColor: itemDetail.details.color }}
+                      />
+                      <span className="text-sm sm:text-base">
+                        {itemDetail.details.color}
+                      </span>
+                    </div>
                   </div>
                 )}
               </div>
 
-              <div className="mt-2 space-y-6">
+              <div className="mt-6 sm:mt-8 space-y-6 sm:space-y-8">
+                {/* Sizes */}
+                {itemDetail.sizes.length > 0 && (
+                  <div className="space-y-2 sm:space-y-3">
+                    <h4 className="text-sm sm:text-base font-medium">
+                      Available Sizes
+                    </h4>
+                    <div className="flex flex-wrap gap-2 sm:gap-3">
+                      {itemDetail.sizes.map((size) => (
+                        <div
+                          key={size.size}
+                          onClick={() =>
+                            size.quantity > 0 && setSelectedSize(size.size)
+                          }
+                          className={cn(
+                            "relative flex cursor-pointer items-center justify-center p-2 border border-muted-foreground/1 shadow-sm rounded-md transition-all min-w-[50px] sm:min-w-[60px]",
+                            size.quantity === 0 &&
+                              "opacity-50 cursor-not-allowed bg-neutral-900",
+                            selectedSize === size.size &&
+                              "border-2  bg-primary text-white",
+                            size.quantity > 0 && "hover:border-primary"
+                          )}
+                        >
+                          <span className="text-sm sm:text-base font-medium">
+                            {size.size}
+                          </span>
+                          {size.quantity === 0 && (
+                            <span className="absolute -bottom-1 left-1/2 -translate-x-1/2 text-[8px] sm:text-[10px] font-medium text-neutral-500 bg-white px-1">
+                              Sold Out
+                            </span>
+                          )}
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+
                 {/* Quantity */}
-                <div className="space-y-2">
-                  <h4>Quantity</h4>
-                  <div className="flex items-center space-x-4">
+                <div className="space-y-2 sm:space-y-3">
+                  <h4 className="text-sm sm:text-base font-medium">Quantity</h4>
+                  <div className="flex items-center space-x-3 sm:space-x-4">
                     <Button
                       variant="outline"
                       size="icon"
@@ -237,11 +291,11 @@ export default function ItemDetailPage({
                         setQuantity((prev) => Math.max(1, prev - 1))
                       }
                       disabled={!selectedSize || quantity <= 1}
-                      className="h-10 w-10 rounded-full border-border shadow-sm"
+                      className="h-8 w-8 sm:h-10 sm:w-10 rounded-full border-border shadow-sm"
                     >
-                      <p className="text-xl mb-0.5">-</p>
+                      <p className="text-lg sm:text-xl mb-0.5">-</p>
                     </Button>
-                    <span className="w-8 text-center font-medium">
+                    <span className="w-6 sm:w-8 text-center font-medium text-sm sm:text-base">
                       {quantity}
                     </span>
                     <Button
@@ -256,58 +310,27 @@ export default function ItemDetailPage({
                         !selectedSize ||
                         quantity >= (selectedSizeObj?.quantity || 1)
                       }
-                      className="h-10 w-10 rounded-full border-border shadow-sm"
+                      className="h-8 w-8 sm:h-10 sm:w-10 rounded-full border-border shadow-sm"
                     >
-                      <p className="text-lg mb-0.5">+</p>
+                      <p className="text-base sm:text-lg mb-0.5">+</p>
                     </Button>
                   </div>
                   {selectedSizeObj ? (
-                    <p className="text-sm text-neutral-500">
+                    <p className="text-xs sm:text-sm text-neutral-500">
                       {selectedSizeObj.quantity} items available
                     </p>
                   ) : (
-                    <p className="text-sm text-neutral-500">
+                    <p className="text-xs sm:text-sm text-neutral-500">
                       Please select a size
                     </p>
                   )}
                 </div>
 
-                {/* Sizes */}
-                {itemDetail.sizes.length > 0 && (
-                  <div className="space-y-2">
-                    <h4>Available Sizes</h4>
-                    <div className="flex flex-wrap gap-2">
-                      {itemDetail.sizes.map((size) => (
-                        <div
-                          key={size.size}
-                          onClick={() =>
-                            size.quantity > 0 && setSelectedSize(size.size)
-                          }
-                          className={cn(
-                            "relative flex cursor-pointer items-center justify-center p-1 border border-muted-foreground/1 shadow-md rounded-md transition-all min-w-[60px]",
-                            size.quantity === 0 &&
-                              "opacity-50 cursor-not-allowed bg-neutral-100",
-                            selectedSize === size.size &&
-                              "border-2 border-neutral-800",
-                            size.quantity > 0 && "hover:border-neutral-800"
-                          )}
-                        >
-                          <span className="font-medium">{size.size}</span>
-                          {size.quantity === 0 && (
-                            <span className="absolute -bottom-1 left-1/2 -translate-x-1/2 text-[10px] font-medium text-neutral-500 bg-white px-1">
-                              Sold Out
-                            </span>
-                          )}
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                )}
-
                 {/* Add to Cart Button */}
                 <Button
-                  className="w-full h-12 bg-primary text-lg"
+                  className="w-full h-10 sm:h-12  text-sm sm:text-base font-medium"
                   disabled={!selectedSize || isAddingToCart}
+                  variant="default"
                   onClick={async () => {
                     if (!user) {
                       router.push("/login");
@@ -339,10 +362,12 @@ export default function ItemDetailPage({
                   {isAddingToCart ? (
                     <div className="flex items-center gap-2">
                       <LoadingSpin />
-                      <span>Adding...</span>
+                      <span className="text-sm sm:text-base">Adding...</span>
                     </div>
                   ) : (
-                    "Add to Cart"
+                    <p className="text-sm font-extrabold sm:text-base">
+                      ADD TO CART
+                    </p>
                   )}
                 </Button>
               </div>
@@ -351,50 +376,53 @@ export default function ItemDetailPage({
         </div>
         {/* Details (Color and Additional Details) */}
         {itemDetail.details && (
-          <div className="pt-10 mb-8 md:-mb-16">
+          <div className="pt-6 sm:pt-10 mb-4 sm:mb-8 md:-mb-16">
             <Accordion type="single" collapsible className="w-full">
               <AccordionItem value="details">
-                <AccordionTrigger className="text-xl md:text-2xl font-medium">
+                <AccordionTrigger className="text-lg sm:text-xl md:text-2xl font-medium">
                   Details
                 </AccordionTrigger>
                 <AccordionContent>
                   {itemDetail.details.detail && (
-                    <div className="prose prose-sm md:prose-base lg:prose-lg max-w-none leading-8 text-neutral-600 [&_p]:whitespace-pre-line">
+                    <div className="prose prose-sm sm:prose-base lg:prose-lg max-w-none leading-6 sm:leading-8 text-neutral-600 [&_p]:whitespace-pre-line">
                       <ReactMarkdown
                         remarkPlugins={[remarkGfm]}
                         components={{
                           table: ({ node, ...props }) => (
                             <div className="overflow-x-auto">
                               <table
-                                className="min-w-full divide-y border my-4 border-gray-200"
+                                className="min-w-full divide-y border my-2 sm:my-4 border-gray-200"
                                 {...props}
                               />
                             </div>
                           ),
                           th: ({ node, ...props }) => (
                             <th
-                              className="px-6 py-3 bg-gray-50 border-b  text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                              className="px-3 sm:px-6 py-2 sm:py-3 bg-gray-50 border-b text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
                               {...props}
                             />
                           ),
                           td: ({ node, ...props }) => (
                             <td
-                              className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 border-b"
+                              className="px-3 sm:px-6 py-2 sm:py-4 whitespace-nowrap text-xs sm:text-sm text-gray-500 border-b"
                               {...props}
                             />
                           ),
                           p: ({ node, ...props }) => (
-                            <p className="whitespace-pre-line" {...props} />
+                            <p
+                              className="text-sm sm:text-base whitespace-pre-line"
+                              {...props}
+                            />
                           ),
                           h3: ({ node, ...props }) => (
                             <h3
-                              className="mt-8 mb-4 text-xl font-semibold"
+                              className="mt-6 sm:mt-8 mb-3 sm:mb-4 text-lg sm:text-xl font-semibold"
                               {...props}
                             />
                           ),
                           hr: ({ node, ...props }) => (
                             <hr
-                              className="my-8 border-t border-gray-200"
+                              className="my-6 sm:my-8 border-t border-gray-200"
                               {...props}
                             />
                           ),
@@ -411,13 +439,14 @@ export default function ItemDetailPage({
         )}
         {/* detail iamges */}
         {itemDetail.detail_images.length > 0 && (
-          <div className="space-y-2 w-full pt-10">
+          <div className="space-y-2 w-full pt-6 sm:pt-10">
             <Image
               src={itemDetail.detail_images[0].image_url}
               alt={itemDetail.name}
               width={100}
               height={100}
               className="w-full h-full object-cover"
+              priority
             />
           </div>
         )}
