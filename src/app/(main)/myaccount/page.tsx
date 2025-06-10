@@ -47,24 +47,24 @@ export default function Page() {
   }
 
   return (
-    <div className=" min-h-[700px] flex flex-col mx-auto px-2 md:px-6 lg:px-10 p-2 md:p-4 gap-10">
+    <div className="min-h-[700px] flex flex-col mx-auto px-2 md:px-6 lg:px-10 p-2 md:p-4 gap-6 md:gap-10">
       <div className="flex justify-between items-center">
-        <h3>My Account</h3>
+        <h3 className="text-lg md:text-xl font-semibold">My Account</h3>
         <Button
           variant="primary"
           onClick={() => setShowConfirmDialog(true)}
-          size="default"
+          size="sm"
         >
-          <LogOut className="h-5 w-5" />
-          Logout
+          <LogOut className="h-4 w-4 md:h-5 md:w-5" />
+          <h6 className="hidden md:inline ml-2">Logout</h6>
         </Button>
       </div>
       {/* nav */}
       <div className="flex w-full flex-col gap-4">
-        <div className="flex flex-row border-b gap-8 border-gray-300 pb-2 relative">
-          <div className="relative">
+        <div className="flex flex-row border-b gap-4 md:gap-8 border-gray-300 pb-2 relative ">
+          <div className="relative whitespace-nowrap">
             <p
-              className={`text-md font-bold text-muted-foreground cursor-pointer ${
+              className={`text-sm md:text-md font-bold text-muted-foreground cursor-pointer ${
                 activeTab === "personal-info" ? "text-primary" : ""
               }`}
               onClick={() => setActiveTab("personal-info")}
@@ -75,9 +75,9 @@ export default function Page() {
               <div className="absolute bottom-[-10px] left-0 w-full h-0.5 bg-primary transition-all duration-300" />
             )}
           </div>
-          <div className="relative">
+          <div className="relative whitespace-nowrap">
             <p
-              className={`text-md font-bold text-muted-foreground cursor-pointer ${
+              className={`text-sm md:text-md font-bold text-muted-foreground cursor-pointer ${
                 activeTab === "order-history" ? "text-primary" : ""
               }`}
               onClick={() => setActiveTab("order-history")}
@@ -91,12 +91,12 @@ export default function Page() {
         </div>
       </div>
       {/* content */}
-      <div className="px-2 md:px-4">
+      <div className="px-1 md:px-4">
         {activeTab === "personal-info" && <PersonalInfo />}
         {activeTab === "order-history" && <OrderHistory />}
       </div>
       <Dialog open={showConfirmDialog} onOpenChange={setShowConfirmDialog}>
-        <DialogContent>
+        <DialogContent className="sm:max-w-[425px]">
           <DialogHeader>
             <DialogTitle>Confirm Sign Out</DialogTitle>
             <DialogDescription>
@@ -108,6 +108,7 @@ export default function Page() {
             <Button
               variant="outline"
               onClick={() => setShowConfirmDialog(false)}
+              className="w-full sm:w-auto"
             >
               Cancel
             </Button>
@@ -117,6 +118,7 @@ export default function Page() {
                 setShowConfirmDialog(false);
                 handleSignOut();
               }}
+              className="w-full sm:w-auto"
             >
               Sign Out
             </Button>

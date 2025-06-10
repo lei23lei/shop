@@ -171,18 +171,25 @@ export default function PersonalInfo() {
   return (
     <>
       <div className="flex justify-between items-center">
-        <h3>Personal Information</h3>
+        <h3 className="text-lg md:text-xl font-semibold">
+          Personal Information
+        </h3>
         {!isEditing && (
-          <Button onClick={handleEdit} variant="default">
+          <Button
+            onClick={handleEdit}
+            variant="default"
+            size="sm"
+            className="md:size-default"
+          >
             <PencilLine className="w-4 h-4" />
-            Edit
+            <span className="hidden md:inline ml-2">Edit</span>
           </Button>
         )}
       </div>
       <div className="space-y-6">
         {isEditing ? (
           <form onSubmit={handleSubmit} className="space-y-6">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
               <div className="space-y-4">
                 <div>
                   <label className="text-sm text-gray-500">First Name</label>
@@ -191,6 +198,7 @@ export default function PersonalInfo() {
                     value={formData.first_name}
                     onChange={handleChange}
                     placeholder="Enter first name"
+                    className="text-sm md:text-base"
                   />
                 </div>
                 <div>
@@ -200,11 +208,16 @@ export default function PersonalInfo() {
                     value={formData.last_name}
                     onChange={handleChange}
                     placeholder="Enter last name"
+                    className="text-sm md:text-base"
                   />
                 </div>
                 <div>
                   <label className="text-sm text-gray-500">Email Address</label>
-                  <Input value={user?.email} disabled className="bg-gray-100" />
+                  <Input
+                    value={user?.email}
+                    disabled
+                    className="bg-gray-100 text-sm md:text-base"
+                  />
                 </div>
               </div>
               <div className="space-y-4">
@@ -215,6 +228,7 @@ export default function PersonalInfo() {
                     value={formData.phone_number}
                     onChange={handleChange}
                     placeholder="Enter phone number"
+                    className="text-sm md:text-base"
                   />
                 </div>
                 <div>
@@ -222,7 +236,7 @@ export default function PersonalInfo() {
                   <Input
                     value={user?.is_superuser ? "Administrator" : "Customer"}
                     disabled
-                    className="bg-gray-100"
+                    className="bg-gray-100 text-sm md:text-base"
                   />
                 </div>
                 <div>
@@ -232,7 +246,7 @@ export default function PersonalInfo() {
                       user?.created_at || ""
                     ).toLocaleDateString()}
                     disabled
-                    className="bg-gray-100"
+                    className="bg-gray-100 text-sm md:text-base"
                   />
                 </div>
               </div>
@@ -244,53 +258,62 @@ export default function PersonalInfo() {
                 value={formData.address}
                 onChange={handleChange}
                 placeholder="Enter address"
-                className="min-h-[100px]"
+                className="min-h-[100px] text-sm md:text-base"
               />
             </div>
-            <div className="flex justify-end space-x-4">
-              <Button type="button" variant="outline" onClick={handleCancel}>
+            <div className="flex flex-col sm:flex-row justify-end gap-2 sm:gap-4">
+              <Button
+                type="button"
+                variant="outline"
+                onClick={handleCancel}
+                className="w-full sm:w-auto"
+              >
                 Cancel
               </Button>
-              <Button type="submit">Save Changes</Button>
+              <Button type="submit" className="w-full sm:w-auto">
+                Save Changes
+              </Button>
             </div>
           </form>
         ) : (
           <>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
               <div className="space-y-4">
                 <div>
                   <label className="text-sm text-gray-500">First Name</label>
-                  <p className="font-medium">
+                  <p className="font-medium text-sm md:text-base">
                     {user?.first_name || "Not provided"}
                   </p>
                 </div>
                 <div>
                   <label className="text-sm text-gray-500">Last Name</label>
-                  <p className="font-medium">
+                  <p className="font-medium text-sm md:text-base">
                     {user?.last_name || "Not provided"}
                   </p>
                 </div>
                 <div>
                   <label className="text-sm text-gray-500">Email Address</label>
-                  <p className="font-medium">{user?.email}</p>
+                  <p className="font-medium text-sm md:text-base">
+                    {user?.email}
+                  </p>
                 </div>
               </div>
               <div className="space-y-4">
                 <div>
                   <label className="text-sm text-gray-500">Phone Number</label>
-                  <p className="font-medium">
+                  <p className="font-medium text-sm md:text-base">
                     {user?.phone_number || "Not provided"}
                   </p>
                 </div>
                 <div>
                   <label className="text-sm text-gray-500">Account Type</label>
-                  <p className="font-medium">
+                  <p className="font-medium text-sm md:text-base">
                     {user?.is_superuser ? "Administrator" : "Customer"}
                   </p>
                 </div>
                 <div>
                   <label className="text-sm text-gray-500">Member Since</label>
-                  <p className="font-medium">
+                  <p className="font-medium text-sm md:text-base">
                     {new Date(user?.created_at || "").toLocaleDateString()}
                   </p>
                 </div>
@@ -298,34 +321,38 @@ export default function PersonalInfo() {
             </div>
             <div>
               <label className="text-sm text-gray-500">Address</label>
-              <p className="font-medium">{user?.address || "Not provided"}</p>
+              <p className="font-medium text-sm md:text-base">
+                {user?.address || "Not provided"}
+              </p>
             </div>
           </>
         )}
       </div>
-      <Accordion type="single" collapsible className="w-[600px]">
+      <Accordion type="single" collapsible className="w-full max-w-[600px]">
         <AccordionItem value="change-password">
           <AccordionTrigger className="hover:no-underline">
-            <h4 className="font-semibold">Change Password</h4>
+            <h4 className="font-semibold text-sm md:text-base">
+              Change Password
+            </h4>
           </AccordionTrigger>
           <AccordionContent>
             {isPasswordChanged ? (
-              <div className="flex flex-col items-center justify-center p-8 gap-4">
+              <div className="flex flex-col items-center justify-center p-4 md:p-8 gap-4">
                 <div className="flex items-center gap-2 text-green-600">
-                  <CheckCircle className="w-8 h-8" />
-                  <h3 className="text-xl font-semibold">
+                  <CheckCircle className="w-6 h-6 md:w-8 md:h-8" />
+                  <h3 className="text-lg md:text-xl font-semibold">
                     Password Changed Successfully
                   </h3>
                 </div>
-                <p className="text-gray-600">
+                <p className="text-sm md:text-base text-gray-600 text-center">
                   Your password has been updated successfully.
                 </p>
               </div>
             ) : (
-              <div className="flex items-center justify-between gap-2">
+              <div className="flex flex-col-reverse md:flex-row items-start md:items-center justify-between gap-4 md:gap-8">
                 <form
                   onSubmit={handlePasswordSubmit}
-                  className="flex flex-col w-[300px] p-2 gap-4"
+                  className="flex flex-col w-full md:w-[300px] p-2 gap-4"
                 >
                   <div>
                     <label className="text-sm text-gray-500">
@@ -338,7 +365,9 @@ export default function PersonalInfo() {
                       onChange={handlePasswordChange}
                       placeholder="Enter current password"
                       required
-                      className={passwordError ? "border-red-500" : ""}
+                      className={`text-sm md:text-base ${
+                        passwordError ? "border-red-500" : ""
+                      }`}
                     />
                     {passwordError && (
                       <p className="text-sm text-red-500 mt-1">
@@ -357,7 +386,9 @@ export default function PersonalInfo() {
                       onChange={handlePasswordChange}
                       placeholder="Enter new password"
                       required
-                      className={newPasswordError ? "border-red-500" : ""}
+                      className={`text-sm md:text-base ${
+                        newPasswordError ? "border-red-500" : ""
+                      }`}
                     />
                     {newPasswordError && (
                       <p className="text-sm text-red-500 mt-1">
@@ -376,7 +407,9 @@ export default function PersonalInfo() {
                       onChange={handlePasswordChange}
                       placeholder="Confirm new password"
                       required
-                      className={confirmPasswordError ? "border-red-500" : ""}
+                      className={`text-sm md:text-base ${
+                        confirmPasswordError ? "border-red-500" : ""
+                      }`}
                     />
                     {confirmPasswordError && (
                       <p className="text-sm text-red-500 mt-1">
@@ -384,12 +417,14 @@ export default function PersonalInfo() {
                       </p>
                     )}
                   </div>
-                  <Button type="submit" className="w-fit mt-2">
+                  <Button type="submit" className="w-full md:w-fit mt-2">
                     Change Password
                   </Button>
                 </form>
-                <div className="flex flex-col gap-2">
-                  <h4 className="font-medium">Password Requirements:</h4>
+                <div className="flex flex-col gap-2 w-full md:w-auto">
+                  <h4 className="font-medium text-sm md:text-base">
+                    Password Requirements:
+                  </h4>
                   <ul className="space-y-2 text-sm text-gray-600">
                     <li className="flex items-center gap-2">
                       {hasMinLength ? (

@@ -135,7 +135,10 @@
   }
 
   h5 {
-    @apply text-lg font-medium;
+    @apply text-sm md:text-base font-medium;
+  }
+  h6 {
+    @apply text-xs md:text-sm font-medium;
   }
 }
 
