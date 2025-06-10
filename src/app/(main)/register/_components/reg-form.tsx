@@ -24,6 +24,7 @@ import {
 import { CheckCircle2, Circle } from "lucide-react";
 import { useRegisterMutation } from "@/services/endpoints/account-endpoints";
 import { useRouter } from "next/navigation";
+import { useAuth } from "@/contexts/auth-context";
 
 const formSchema = z
   .object({
@@ -47,6 +48,7 @@ const formSchema = z
 
 export default function RegForm() {
   const router = useRouter();
+  const { login } = useAuth();
   const [register, { isLoading, error }] = useRegisterMutation();
   const [countdown, setCountdown] = useState(3);
   const [isSuccess, setIsSuccess] = useState(false);
@@ -58,7 +60,7 @@ export default function RegForm() {
         setCountdown((prev) => prev - 1);
       }, 1000);
     } else if (isSuccess && countdown === 0) {
-      router.push("/login");
+      router.push("/");
     }
     return () => {
       if (timer) clearInterval(timer);
@@ -86,6 +88,7 @@ export default function RegForm() {
         password: values.password,
       }).unwrap();
 
+      await login(values.email, values.password);
       setIsSuccess(true);
     } catch (error: any) {
       console.log("Registration error:", error);
@@ -100,13 +103,13 @@ export default function RegForm() {
 
   if (isSuccess) {
     return (
-      <div className="flex flex-col items-center justify-center min-h-[300px] space-y-4">
-        <CheckCircle2 className="h-12 w-12 text-green-500 animate-pulse" />
-        <h2 className="text-2xl font-bold text-green-600">
+      <div className="flex flex-col -mt-10 items-center justify-center min-h-[300px] space-y-4">
+        <CheckCircle2 className="h-8 w-8 md:h-10 md:w-10 text-green-500 animate-pulse" />
+        <h2 className="text-xl md:text-2xl font-bold text-green-600">
           Registration Successful!
         </h2>
         <p className="text-muted-foreground">
-          Redirecting to login page in {countdown} seconds...
+          Redirecting to home page in {countdown} seconds...
         </p>
       </div>
     );

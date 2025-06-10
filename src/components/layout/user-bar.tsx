@@ -3,7 +3,14 @@
 import React, { useEffect, useState, useRef, FormEvent } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Minus, Plus, Search, ShoppingCart, Trash2 } from "lucide-react";
+import {
+  Minus,
+  Plus,
+  Search,
+  ShoppingCart,
+  Trash2,
+  ChevronRight,
+} from "lucide-react";
 import { categories } from "@/lib/data";
 import Image from "next/image";
 import Link from "next/link";
@@ -52,22 +59,6 @@ export default function UserBar() {
 
   useEffect(() => {
     setIsClient(true);
-
-    console.log("User Information:", {
-      user,
-      isLoggedIn: !!user,
-      userDetails: user
-        ? {
-            id: user.id,
-            email: user.email,
-            firstName: user.first_name,
-            lastName: user.last_name,
-            phoneNumber: user.phone_number,
-            address: user.address,
-            isSuperuser: user.is_superuser,
-          }
-        : null,
-    });
 
     const handleScroll = () => {
       const currentScrollPos = window.scrollY;
@@ -227,7 +218,7 @@ export default function UserBar() {
             <Input
               type="search"
               placeholder="Search"
-              className="w-[120px] pl-8 bg-white/80 focus:w-[200px] transition-all duration-400 ease-in-out"
+              className="w-[120px]  pl-8 bg-white/80 focus:w-[200px] focus-visible:ring-offset-0 border-4 border-primary/20 transition-all  duration-400 ease-in-out"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
             />
@@ -315,11 +306,23 @@ export default function UserBar() {
               </AccordionItem>
             ))}
           </Accordion>
-          <Link href="/login">
-            <div className="border-t border-gray-300 pt-4">
-              <h5 className="text-md">Login</h5>
-            </div>
-          </Link>
+          <div className="border-t flex items-center justify-between cursor-pointer border-gray-300 pt-4">
+            {user ? (
+              <Link href="/myaccount">
+                <div className="flex items-center gap-2 ">
+                  <div className="w-8 h-8 rounded-full bg-blue-300/40 flex items-center justify-center text-muted-foreground font-medium">
+                    {user.email.charAt(0).toUpperCase()}
+                  </div>
+                  <p className="text-md">{user.email}</p>
+                </div>
+              </Link>
+            ) : (
+              <Link href="/login">
+                <h5 className="text-md">Login</h5>
+              </Link>
+            )}
+            <ChevronRight className="w-4 h-4 text-muted-foreground" />
+          </div>
         </div>
       </div>
 
@@ -363,7 +366,7 @@ export default function UserBar() {
             <Input
               type="search"
               placeholder="Search..."
-              className="w-[200px] pl-8 bg-white/80 focus:w-[400px] transition-all duration-400 ease-in-out"
+              className="w-[200px] pl-8 border-4 border-primary/20 focus-visible:ring-offset-0 bg-white/80 focus:w-[400px] transition-all duration-400 ease-in-out"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
             />
