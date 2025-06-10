@@ -13,7 +13,7 @@ export default function Page() {
     }
   }, [user, router]);
   return (
-    <div className="container mx-auto flex w-full items-center justify-center min-h-[700px] py-8">
+    <div className="container mx-auto flex w-full items-center justify-center min-h-[600px] md:min-h-[700px] py-8">
       <LoginForm />
     </div>
   );

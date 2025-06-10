@@ -70,14 +70,16 @@ export function LoginForm() {
   }
 
   return (
-    <Card className="w-full max-w-md">
-      <CardHeader className="space-y-1">
-        <CardTitle className="text-2xl font-bold text-center">Login</CardTitle>
+    <Card className="w-[90%] md:w-full  max-w-md">
+      <CardHeader className="space-y-1 ">
+        <CardTitle className="text-xl md:text-2xl font-bold text-center">
+          Login
+        </CardTitle>
         <CardDescription className="text-center">
           Enter your email and password to sign in to your account
         </CardDescription>
       </CardHeader>
-      <CardContent>
+      <CardContent className="px-4">
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
             <FormField
@@ -113,7 +115,7 @@ export function LoginForm() {
             <div className="flex justify-end">
               <Link
                 href="/forget-pwd"
-                className="text-sm text-primary hover:underline"
+                className="text-sm text-muted-foreground underline"
               >
                 Forgot password?
               </Link>
@@ -127,7 +129,7 @@ export function LoginForm() {
       <CardFooter className="flex flex-col space-y-4">
         <div className="text-sm text-center text-muted-foreground">
           Don't have an account?{" "}
-          <Link href="/register" className="text-primary hover:underline">
+          <Link href="/register" className="text-muted-foreground underline">
             Create an account
           </Link>
         </div>

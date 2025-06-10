@@ -328,7 +328,11 @@ export default function PersonalInfo() {
           </>
         )}
       </div>
-      <Accordion type="single" collapsible className="w-full max-w-[600px]">
+      <Accordion
+        type="single"
+        collapsible
+        className="w-full max-w-[600px] mt-4 md:mt-6"
+      >
         <AccordionItem value="change-password">
           <AccordionTrigger className="hover:no-underline">
             <h4 className="font-semibold text-sm md:text-base">
@@ -337,7 +341,7 @@ export default function PersonalInfo() {
           </AccordionTrigger>
           <AccordionContent>
             {isPasswordChanged ? (
-              <div className="flex flex-col items-center justify-center p-4 md:p-8 gap-4">
+              <div className="flex flex-col items-center justify-center p-4  md:p-8 gap-4">
                 <div className="flex items-center gap-2 text-green-600">
                   <CheckCircle className="w-6 h-6 md:w-8 md:h-8" />
                   <h3 className="text-lg md:text-xl font-semibold">
@@ -349,7 +353,7 @@ export default function PersonalInfo() {
                 </p>
               </div>
             ) : (
-              <div className="flex flex-col-reverse md:flex-row items-start md:items-center justify-between gap-4 md:gap-8">
+              <div className="flex flex-row items-start md:items-center justify-between gap-4 md:gap-8">
                 <form
                   onSubmit={handlePasswordSubmit}
                   className="flex flex-col w-full md:w-[300px] p-2 gap-4"
@@ -417,11 +421,42 @@ export default function PersonalInfo() {
                       </p>
                     )}
                   </div>
+                  <div className=" flex flex-col md:hidden gap-2 w-full md:w-auto">
+                    <h4 className="font-medium text-sm md:text-base">
+                      Password Requirements:
+                    </h4>
+                    <ul className="space-y-2 text-sm text-gray-600">
+                      <li className="flex items-center gap-2">
+                        {hasMinLength ? (
+                          <CheckCircle2 className="w-4 h-4 text-green-500" />
+                        ) : (
+                          <Circle className="w-4 h-4 text-gray-400" />
+                        )}
+                        At least 8 characters
+                      </li>
+                      <li className="flex items-center gap-2">
+                        {hasLetter ? (
+                          <CheckCircle2 className="w-4 h-4 text-green-500" />
+                        ) : (
+                          <Circle className="w-4 h-4 text-gray-400" />
+                        )}
+                        Contains letters
+                      </li>
+                      <li className="flex items-center gap-2">
+                        {hasNumber ? (
+                          <CheckCircle2 className="w-4 h-4 text-green-500" />
+                        ) : (
+                          <Circle className="w-4 h-4 text-gray-400" />
+                        )}
+                        Contains numbers
+                      </li>
+                    </ul>
+                  </div>
                   <Button type="submit" className="w-full md:w-fit mt-2">
                     Change Password
                   </Button>
                 </form>
-                <div className="flex flex-col gap-2 w-full md:w-auto">
+                <div className=" hidden md:flex flex-col gap-2 w-full md:w-auto">
                   <h4 className="font-medium text-sm md:text-base">
                     Password Requirements:
                   </h4>

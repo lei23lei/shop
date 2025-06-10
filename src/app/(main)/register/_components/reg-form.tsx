@@ -113,12 +113,12 @@ export default function RegForm() {
   }
 
   return (
-    <Card className="w-full max-w-md">
-      <CardHeader className="space-y-1">
-        <CardTitle className="text-2xl font-bold text-center">
+    <Card className="w-[90%] md:w-full  max-w-md">
+      <CardHeader className="space-y-1 px-0">
+        <CardTitle className="text-xl md:text-2xl  font-bold text-center">
           Create an account
         </CardTitle>
-        <CardDescription className="text-center">
+        <CardDescription className="text-center px-4">
           Enter your email and password to create your account
         </CardDescription>
       </CardHeader>
