@@ -51,16 +51,16 @@ export default function OrderHistory() {
   }
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-6 pb-4">
       <h2 className="text-lg md:text-xl font-semibold">Order History</h2>
       <div className="space-y-4">
         {ordersData.orders.map((order) => (
           <Card key={order.id}>
-            <CardHeader className="flex flex-col sm:flex-row items-start sm:items-center justify-between space-y-2 sm:space-y-0 pb-2">
+            <CardHeader className="flex flex-row items-center justify-between space-y-2 sm:space-y-0 pb-2">
               <CardTitle className="text-sm font-medium">
                 Order #{order.id}
               </CardTitle>
-              <div className="flex flex-col sm:flex-row items-start sm:items-center gap-2">
+              <div className="flex flex-row items-center gap-2">
                 <Badge
                   variant="default"
                   className={
