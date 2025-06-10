@@ -22,6 +22,7 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
+import { Label } from "@/components/ui/label";
 
 export default function PersonalInfo() {
   const { data, isLoading, error } = useGetUserDetailQuery();
@@ -192,7 +193,7 @@ export default function PersonalInfo() {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
               <div className="space-y-4">
                 <div>
-                  <label className="text-sm text-gray-500">First Name</label>
+                  <Label className="text-sm ">First Name</Label>
                   <Input
                     name="first_name"
                     value={formData.first_name}
@@ -202,7 +203,7 @@ export default function PersonalInfo() {
                   />
                 </div>
                 <div>
-                  <label className="text-sm text-gray-500">Last Name</label>
+                  <Label className="text-sm ">Last Name</Label>
                   <Input
                     name="last_name"
                     value={formData.last_name}
@@ -212,7 +213,7 @@ export default function PersonalInfo() {
                   />
                 </div>
                 <div>
-                  <label className="text-sm text-gray-500">Email Address</label>
+                  <Label className="text-sm ">Email Address</Label>
                   <Input
                     value={user?.email}
                     disabled
@@ -222,7 +223,7 @@ export default function PersonalInfo() {
               </div>
               <div className="space-y-4">
                 <div>
-                  <label className="text-sm text-gray-500">Phone Number</label>
+                  <Label className="text-sm ">Phone Number</Label>
                   <Input
                     name="phone_number"
                     value={formData.phone_number}
@@ -232,7 +233,7 @@ export default function PersonalInfo() {
                   />
                 </div>
                 <div>
-                  <label className="text-sm text-gray-500">Account Type</label>
+                  <Label className="text-sm ">Account Type</Label>
                   <Input
                     value={user?.is_superuser ? "Administrator" : "Customer"}
                     disabled
@@ -240,7 +241,7 @@ export default function PersonalInfo() {
                   />
                 </div>
                 <div>
-                  <label className="text-sm text-gray-500">Member Since</label>
+                  <Label className="text-sm ">Member Since</Label>
                   <Input
                     value={new Date(
                       user?.created_at || ""
@@ -252,7 +253,7 @@ export default function PersonalInfo() {
               </div>
             </div>
             <div>
-              <label className="text-sm text-gray-500">Address</label>
+              <Label className="text-sm ">Address</Label>
               <Textarea
                 name="address"
                 value={formData.address}
@@ -280,19 +281,19 @@ export default function PersonalInfo() {
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
               <div className="space-y-4">
                 <div>
-                  <label className="text-sm text-gray-500">First Name</label>
+                  <Label className="text-sm ">First Name</Label>
                   <p className="font-medium text-sm md:text-base">
                     {user?.first_name || "Not provided"}
                   </p>
                 </div>
                 <div>
-                  <label className="text-sm text-gray-500">Last Name</label>
+                  <Label className="text-sm ">Last Name</Label>
                   <p className="font-medium text-sm md:text-base">
                     {user?.last_name || "Not provided"}
                   </p>
                 </div>
                 <div>
-                  <label className="text-sm text-gray-500">Email Address</label>
+                  <Label className="text-sm ">Email Address</Label>
                   <p className="font-medium text-sm md:text-base">
                     {user?.email}
                   </p>
@@ -300,19 +301,19 @@ export default function PersonalInfo() {
               </div>
               <div className="space-y-4">
                 <div>
-                  <label className="text-sm text-gray-500">Phone Number</label>
+                  <Label className="text-sm ">Phone Number</Label>
                   <p className="font-medium text-sm md:text-base">
                     {user?.phone_number || "Not provided"}
                   </p>
                 </div>
                 <div>
-                  <label className="text-sm text-gray-500">Account Type</label>
+                  <Label className="text-sm ">Account Type</Label>
                   <p className="font-medium text-sm md:text-base">
                     {user?.is_superuser ? "Administrator" : "Customer"}
                   </p>
                 </div>
                 <div>
-                  <label className="text-sm text-gray-500">Member Since</label>
+                  <Label className="text-sm ">Member Since</Label>
                   <p className="font-medium text-sm md:text-base">
                     {new Date(user?.created_at || "").toLocaleDateString()}
                   </p>
@@ -320,7 +321,7 @@ export default function PersonalInfo() {
               </div>
             </div>
             <div>
-              <label className="text-sm text-gray-500">Address</label>
+              <Label className="text-sm ">Address</Label>
               <p className="font-medium text-sm md:text-base">
                 {user?.address || "Not provided"}
               </p>
@@ -359,9 +360,7 @@ export default function PersonalInfo() {
                   className="flex flex-col w-full md:w-[300px] p-2 gap-4"
                 >
                   <div>
-                    <label className="text-sm text-gray-500">
-                      Current Password
-                    </label>
+                    <Label className="text-sm ">Current Password</Label>
                     <Input
                       type="password"
                       name="current_password"
@@ -380,9 +379,7 @@ export default function PersonalInfo() {
                     )}
                   </div>
                   <div>
-                    <label className="text-sm text-gray-500">
-                      New Password
-                    </label>
+                    <Label className="text-sm ">New Password</Label>
                     <Input
                       type="password"
                       name="new_password"
@@ -401,9 +398,7 @@ export default function PersonalInfo() {
                     )}
                   </div>
                   <div>
-                    <label className="text-sm text-gray-500">
-                      Confirm New Password
-                    </label>
+                    <Label className="text-sm ">Confirm New Password</Label>
                     <Input
                       type="password"
                       name="confirm_password"
@@ -425,7 +420,7 @@ export default function PersonalInfo() {
                     <h4 className="font-medium text-sm md:text-base">
                       Password Requirements:
                     </h4>
-                    <ul className="space-y-2 text-sm text-gray-600">
+                    <ul className="space-y-2 text-sm text-header-font">
                       <li className="flex items-center gap-2">
                         {hasMinLength ? (
                           <CheckCircle2 className="w-4 h-4 text-green-500" />
@@ -442,7 +437,7 @@ export default function PersonalInfo() {
                         )}
                         Contains letters
                       </li>
-                      <li className="flex items-center gap-2">
+                      <li className="flex items-center gap-2 text-header-font">
                         {hasNumber ? (
                           <CheckCircle2 className="w-4 h-4 text-green-500" />
                         ) : (
@@ -460,7 +455,7 @@ export default function PersonalInfo() {
                   <h4 className="font-medium text-sm md:text-base">
                     Password Requirements:
                   </h4>
-                  <ul className="space-y-2 text-sm text-gray-600">
+                  <ul className="space-y-2 text-sm text-header-font">
                     <li className="flex items-center gap-2">
                       {hasMinLength ? (
                         <CheckCircle2 className="w-4 h-4 text-green-500" />

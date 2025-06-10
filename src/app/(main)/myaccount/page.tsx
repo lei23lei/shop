@@ -47,21 +47,21 @@ export default function Page() {
   }
 
   return (
-    <div className="min-h-[700px] flex flex-col mx-auto px-2 md:px-6 lg:px-10 p-2 md:p-4 gap-6 md:gap-10">
+    <div className="min-h-[700px] mt-4 flex flex-col mx-auto px-2 md:px-6 lg:px-10 p-2 md:p-4 gap-6 md:gap-10">
       <div className="flex justify-between items-center">
-        <h3 className="text-lg md:text-xl font-semibold">My Account</h3>
+        <h3>My Account</h3>
         <Button
           variant="primary"
           onClick={() => setShowConfirmDialog(true)}
           size="sm"
         >
-          <LogOut className="h-4 w-4 md:h-5 md:w-5" />
-          <h6 className="hidden md:inline ml-2">Logout</h6>
+          <LogOut className="h-4 text-white w-4 md:h-5 md:w-5" />
+          <h6 className="hidden md:inline ml-2 text-white">Logout</h6>
         </Button>
       </div>
       {/* nav */}
       <div className="flex w-full flex-col gap-4">
-        <div className="flex flex-row border-b gap-4 md:gap-8 border-gray-300 pb-2 relative ">
+        <div className="flex flex-row border-b gap-4 md:gap-8 border-znic-400 pb-2 relative ">
           <div className="relative whitespace-nowrap">
             <p
               className={`text-sm md:text-md font-bold text-muted-foreground cursor-pointer ${

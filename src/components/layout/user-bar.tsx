@@ -3,16 +3,7 @@
 import React, { useEffect, useState, useRef, FormEvent } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import {
-  Minus,
-  Plus,
-  Search,
-  ShoppingCart,
-  Trash2,
-  ChevronRight,
-  MoonStar,
-  Sun,
-} from "lucide-react";
+import { Search, ChevronRight, MoonStar, Sun } from "lucide-react";
 import { categories } from "@/lib/data";
 import Image from "next/image";
 import Link from "next/link";
@@ -233,8 +224,8 @@ export default function UserBar() {
             <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
             <Input
               type="search"
-              placeholder="Search"
-              className="w-[120px] pl-8 bg-white/80 focus:w-[242px] border-4 border-primary/20 transition-all duration-400 ease-in-out !ring-0 !ring-offset-0 !focus-visible:ring-0 !focus-visible:ring-offset-0 !focus:ring-0 !focus:ring-offset-0 !outline-none"
+              placeholder="Search..."
+              className="w-[120px] pl-8 bg-white/90 text-black focus:w-[280px]  transition-all duration-400 ease-in-out !ring-0 !ring-offset-0 !focus-visible:ring-0 !focus-visible:ring-offset-0 !focus:ring-0 !focus:ring-offset-0 !outline-none "
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
             />
@@ -455,7 +446,7 @@ export default function UserBar() {
             <Input
               type="search"
               placeholder="Search..."
-              className="w-[200px] pl-8 border-4 border-primary/20 bg-white/80 focus:w-[400px] transition-all duration-400 ease-in-out !ring-0 !ring-offset-0 !focus-visible:ring-0 !focus-visible:ring-offset-0 !focus:ring-0 !focus:ring-offset-0 !outline-none"
+              className="w-[200px] pl-8  text-black      bg-white/90 focus:w-[350px] transition-all duration-400 ease-in-out !ring-0 !ring-offset-0 !focus-visible:ring-0 !focus-visible:ring-offset-0 !focus:ring-0 !focus:ring-offset-0 !outline-none"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
             />
