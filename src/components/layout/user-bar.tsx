@@ -194,7 +194,7 @@ export default function UserBar() {
 
   return (
     <div
-      className={`fixed flex flex-col top-0 left-0 right-0 bg-zinc-700 z-50 transition-transform duration-300 ${
+      className={`fixed flex flex-col top-0 left-0 right-0 bg-header-background z-50 transition-transform duration-300 ${
         visible ? "translate-y-0" : "-translate-y-full"
       }`}
       ref={menuRef}
@@ -431,7 +431,7 @@ export default function UserBar() {
         {/* expandable categories */}
         {activeCategory !== null && (
           <div
-            className="hidden md:flex text-white absolute  rounded-b-sm flex-row left-0 top-[55px] w-[600px] h-[290px] bg-zinc-700 shadow-lg 
+            className="hidden md:flex text-white absolute  rounded-b-sm flex-row left-0 top-[55px] w-[600px] h-[290px] bg-header-background shadow-lg 
             transform transition-all duration-300 ease-in-out opacity-100 translate-y-0 space-x-6
             origin-top animate-in fade-in slide-in-from-top-2"
           >

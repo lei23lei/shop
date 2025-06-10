@@ -18,7 +18,7 @@ export default function Footer() {
   };
 
   return (
-    <footer className="bg-zinc-700 px-4 sm:px-6 pt-8 sm:pt-12 pb-4 sm:pb-6">
+    <footer className="bg-header-background px-4 sm:px-6 pt-8 sm:pt-12 pb-4 sm:pb-6">
       <div className="max-w-6xl container mx-auto space-y-8 md:space-y-0 flex flex-col md:flex-row items-center md:justify-between">
         {/* left */}
         <div className="flex flex-col md:-mt-12 md:justify-start h-16 sm:h-20 space-y-6 sm:space-y-8">
@@ -48,23 +48,23 @@ export default function Footer() {
               href="https://www.instagram.com/leelitam/"
               className="hover:opacity-80 transition-opacity"
             >
-              <GrInstagram className="text-white text-xl sm:text-2xl" />
+              <GrInstagram className="text-zinc-500 text-xl sm:text-2xl" />
             </Link>
             <Link
               href="https://www.linkedin.com/in/lei-ieong-tam-6602a92bb/"
               className="hover:opacity-80 transition-opacity"
             >
-              <GrLinkedin className="text-white text-xl sm:text-2xl" />
+              <GrLinkedin className="text-zinc-500 text-xl sm:text-2xl" />
             </Link>
             <Link
               href="https://www.facebook.com/leeli.tam/"
               className="hover:opacity-80 transition-opacity"
             >
-              <ImFacebook2 className="text-white text-xl sm:text-2xl" />
+              <ImFacebook2 className="text-zinc-500 text-xl sm:text-2xl" />
             </Link>
           </ul>
 
-          <p className="text-gray-500 font-bold text-center text-sm sm:text-base">
+          <p className="text-zinc-500 font-bold text-center text-sm sm:text-base">
             © 2025 Peter Studio. All rights reserved.
           </p>
         </div>
