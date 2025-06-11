@@ -259,13 +259,13 @@ export default function UserBar() {
               >
                 {theme === "dark" ? (
                   <MoonStar
-                    className={`h-4 w-4 text-header-font ${
+                    className={`h-4 w-4 text-yellow-300 ${
                       isAnimating ? "scale-90" : "scale-[1.4]"
                     } transition-transform duration-300`}
                   />
                 ) : (
                   <Sun
-                    className={`h-4 w-4 text-header-font ${
+                    className={`h-4 w-4 text-orange-800 ${
                       isAnimating ? "scale-90" : "scale-[1.4]"
                     } transition-transform duration-300`}
                   />
