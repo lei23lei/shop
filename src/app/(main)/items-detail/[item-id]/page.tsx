@@ -371,45 +371,45 @@ export default function ItemDetailPage({
                 </AccordionTrigger>
                 <AccordionContent>
                   {itemDetail.details.detail && (
-                    <div className="prose prose-sm sm:prose-base lg:prose-lg max-w-none leading-6 sm:leading-8 text-neutral-600 [&_p]:whitespace-pre-line">
+                    <div className="prose prose-sm sm:prose-base lg:prose-lg max-w-none leading-6 sm:leading-8 dark:prose-invert [&_p]:whitespace-pre-line">
                       <ReactMarkdown
                         remarkPlugins={[remarkGfm]}
                         components={{
                           table: ({ node, ...props }) => (
                             <div className="overflow-x-auto">
                               <table
-                                className="min-w-full divide-y border my-2 sm:my-4 border-gray-200"
+                                className="min-w-full divide-y border my-2 sm:my-4 border-border"
                                 {...props}
                               />
                             </div>
                           ),
                           th: ({ node, ...props }) => (
                             <th
-                              className="px-3 sm:px-6 py-2 sm:py-3 bg-gray-50 border-b text-left text-xs font-medium text-gray-500 uppercase tracking-wider"
+                              className="px-3 sm:px-6 py-2 sm:py-3 bg-muted border-b text-left text-xs font-medium text-foreground/80 uppercase tracking-wider"
                               {...props}
                             />
                           ),
                           td: ({ node, ...props }) => (
                             <td
-                              className="px-3 sm:px-6 py-2 sm:py-4 whitespace-nowrap text-xs sm:text-sm text-gray-500 border-b"
+                              className="px-3 sm:px-6 py-2 sm:py-4 whitespace-nowrap text-xs sm:text-sm text-foreground/80 border-b"
                               {...props}
                             />
                           ),
                           p: ({ node, ...props }) => (
                             <p
-                              className="text-sm sm:text-base whitespace-pre-line"
+                              className="text-sm sm:text-base whitespace-pre-line text-foreground/80"
                               {...props}
                             />
                           ),
                           h3: ({ node, ...props }) => (
                             <h3
-                              className="mt-6 sm:mt-8 mb-3 sm:mb-4 text-lg sm:text-xl font-semibold"
+                              className="mt-6 sm:mt-8 mb-3 sm:mb-4 text-lg sm:text-xl font-semibold text-foreground/80"
                               {...props}
                             />
                           ),
                           hr: ({ node, ...props }) => (
                             <hr
-                              className="my-6 sm:my-8 border-t border-gray-200"
+                              className="my-6 sm:my-8 border-t border-border"
                               {...props}
                             />
                           ),

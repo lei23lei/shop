@@ -17,6 +17,7 @@ import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import Sort from "./_components/sort";
 import ItemNotFound from "@/components/notfound/item-notfound";
+import ErrorPage from "@/components/error/error-page";
 
 function ItemsContent() {
   const searchParams = useSearchParams();
@@ -74,17 +75,28 @@ function ItemsContent() {
         </div>
       </div>
 
+      {/* error */}
+      {isError && (
+        <ErrorPage
+          title="Connection Error"
+          message="Unable to connect to the server. Please check your internet connection and try again."
+          showRetry={true}
+          onRetry={() => window.location.reload()}
+        />
+      )}
+
       {/* loading */}
       {isLoading && <LoadingItems />}
 
       {/* no items */}
       {!isLoading &&
+        !isError &&
         (itemsData?.results.length === 0 || itemsData?.count === 0) && (
           <ItemNotFound />
         )}
 
       {/* items */}
-      {!isLoading && itemsData && itemsData?.count > 0 && (
+      {!isLoading && !isError && itemsData && itemsData?.count > 0 && (
         <div className="flex border-t min-h-[600px] border-border pt-2">
           <div className="flex-1 p-4">
             <div className="grid grid-cols-2 md:grid-cols-3 2xl:grid-cols-4 gap-4">

@@ -19,6 +19,7 @@ import BreadcrumbNavigation from "@/components/layout/breadcrumb";
 import { useSearchParams } from "next/navigation";
 import Sort from "../_components/sort";
 import ItemNotFound from "@/components/notfound/item-notfound";
+import ErrorPage from "@/components/error/error-page";
 
 // Helper function to find category info
 const findCategoryInfo = (catId: number) => {
@@ -52,7 +53,11 @@ export default function ItemsPage({
   const search = searchParams.get("search");
   const categoryInfo = findCategoryInfo(categoryId);
 
-  const { data: itemsData, isLoading } = useGetItemsQuery(
+  const {
+    data: itemsData,
+    isLoading,
+    isError,
+  } = useGetItemsQuery(
     {
       page,
       category: categoryId,
@@ -111,15 +116,29 @@ export default function ItemsPage({
           />
         </div>
       </div>
+
+      {/* error */}
+      {isError && (
+        <ErrorPage
+          title="Connection Error"
+          message="Unable to connect to the server. Please check your internet connection and try again."
+          showRetry={true}
+          onRetry={() => window.location.reload()}
+        />
+      )}
+
       {/* loading */}
       {isLoading && <LoadingItems />}
+
       {/* no items */}
       {!isLoading &&
+        !isError &&
         (itemsData?.results.length === 0 || itemsData?.count === 0) && (
           <ItemNotFound />
         )}
+
       {/* items */}
-      {!isLoading && itemsData && itemsData?.count > 0 && (
+      {!isLoading && !isError && itemsData && itemsData?.count > 0 && (
         <div className="flex border-t min-h-[600px] border-border pt-2">
           <div className="hidden lg:block pl-4 w-60 py-2 space-y-3">
             {categoryInfo &&

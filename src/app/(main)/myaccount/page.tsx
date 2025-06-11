@@ -37,13 +37,8 @@ export default function Page() {
   };
 
   // Show loading state while checking authentication
-  if (isLoading) {
+  if (isLoading || !user) {
     return <LoadingPage />;
-  }
-
-  // If no user, show nothing while redirecting
-  if (!user) {
-    return null;
   }
 
   return (
