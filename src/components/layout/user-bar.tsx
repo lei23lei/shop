@@ -46,6 +46,7 @@ export default function UserBar() {
   const [searchQuery, setSearchQuery] = useState("");
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isClient, setIsClient] = useState(false);
+  const [isMounted, setIsMounted] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
   const router = useRouter();
   const SCROLL_THRESHOLD = 100;
@@ -55,6 +56,7 @@ export default function UserBar() {
 
   useEffect(() => {
     setIsClient(true);
+    setIsMounted(true);
 
     const handleScroll = () => {
       const currentScrollPos = window.scrollY;
@@ -190,7 +192,7 @@ export default function UserBar() {
       }`}
       ref={menuRef}
     >
-      <div className="px-3 md:px-10  h-[70px] md:h-[80px] flex items-center justify-between">
+      <div className="px-3 md:px-10  h-[70px]  flex items-center justify-between">
         <Link href="/" onClick={() => setIsMobileMenuOpen(false)}>
           <Image
             src="/images/icon-full.png"
@@ -248,26 +250,28 @@ export default function UserBar() {
             className="h-8 w-8 overflow-hidden rounded-full transition-colors hover:bg-white dark:hover:bg-zinc-500"
             disabled={isAnimating}
           >
-            <div
-              className={`transform transition-all duration-500 ${
-                theme === "dark" ? "rotate-0" : "rotate-180"
-              }`}
-              style={{ transformOrigin: "center" }}
-            >
-              {theme === "dark" ? (
-                <MoonStar
-                  className={`h-4 w-4 text-header-font ${
-                    isAnimating ? "scale-90" : "scale-[1.4]"
-                  } transition-transform duration-300`}
-                />
-              ) : (
-                <Sun
-                  className={`h-4 w-4 text-header-font ${
-                    isAnimating ? "scale-90" : "scale-[1.4]"
-                  } transition-transform duration-300`}
-                />
-              )}
-            </div>
+            {isMounted && (
+              <div
+                className={`transform transition-all duration-500 ${
+                  theme === "dark" ? "rotate-0" : "rotate-180"
+                }`}
+                style={{ transformOrigin: "center" }}
+              >
+                {theme === "dark" ? (
+                  <MoonStar
+                    className={`h-4 w-4 text-header-font ${
+                      isAnimating ? "scale-90" : "scale-[1.4]"
+                    } transition-transform duration-300`}
+                  />
+                ) : (
+                  <Sun
+                    className={`h-4 w-4 text-header-font ${
+                      isAnimating ? "scale-90" : "scale-[1.4]"
+                    } transition-transform duration-300`}
+                  />
+                )}
+              </div>
+            )}
             <span className="sr-only">Toggle dark mode</span>
           </Button>
           <button
@@ -299,7 +303,9 @@ export default function UserBar() {
                 </Link>
               ) : (
                 <Link href="/login">
-                  <div className="text-header-font text-lg">Login</div>
+                  <div className="text-header-font hover:text-foreground  text-lg">
+                    Login
+                  </div>
                 </Link>
               )}
             </>
@@ -311,26 +317,28 @@ export default function UserBar() {
             className="h-8 w-8 overflow-hidden rounded-full transition-colors hover:bg-white dark:hover:bg-zinc-500"
             disabled={isAnimating}
           >
-            <div
-              className={`transform transition-all duration-500 ${
-                theme === "dark" ? "rotate-0" : "rotate-180"
-              }`}
-              style={{ transformOrigin: "center" }}
-            >
-              {theme === "dark" ? (
-                <MoonStar
-                  className={`h-4 w-4 text-header-font ${
-                    isAnimating ? "scale-90" : "scale-[1.4]"
-                  } transition-transform duration-300`}
-                />
-              ) : (
-                <Sun
-                  className={`h-4 w-4 text-header-font ${
-                    isAnimating ? "scale-90" : "scale-[1.4]"
-                  } transition-transform duration-300`}
-                />
-              )}
-            </div>
+            {isMounted && (
+              <div
+                className={`transform transition-all duration-500 ${
+                  theme === "dark" ? "rotate-0" : "rotate-180"
+                }`}
+                style={{ transformOrigin: "center" }}
+              >
+                {theme === "dark" ? (
+                  <MoonStar
+                    className={`h-4 w-4 text-yellow-300 ${
+                      isAnimating ? "scale-90" : "scale-[1.4]"
+                    } transition-transform duration-300`}
+                  />
+                ) : (
+                  <Sun
+                    className={`h-4 w-4 text-orange-800 ${
+                      isAnimating ? "scale-90" : "scale-[1.4]"
+                    } transition-transform duration-300`}
+                  />
+                )}
+              </div>
+            )}
             <span className="sr-only">Toggle dark mode</span>
           </Button>
         </div>
@@ -429,7 +437,7 @@ export default function UserBar() {
             </div>
           ))}
         </div>
-        <div className="flex items-center space-x-4">
+        <div className="flex mb-2 items-center space-x-4">
           <form
             className="relative"
             onSubmit={(e: FormEvent) => {
