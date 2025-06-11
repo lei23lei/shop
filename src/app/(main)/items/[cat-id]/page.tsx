@@ -162,14 +162,14 @@ export default function ItemsPage({
             <div className="grid grid-cols-2 md:grid-cols-3 2xl:grid-cols-4 gap-4">
               {itemsData?.results.map((item) => (
                 <Link href={`/items-detail/${item.id}`} key={item.id}>
-                  <Card className="overflow-hidden transition-shadow duration-200 hover:shadow-lg cursor-pointer">
+                  <Card className="overflow-hidden transition-shadow duration-200 hover:shadow-lg cursor-pointer group">
                     <CardContent className="p-0">
-                      <div className="relative aspect-square">
+                      <div className="relative aspect-square overflow-hidden">
                         <Image
                           src={item.image || "/placeholder.jpg"}
                           alt={item.name}
                           fill
-                          className="object-cover"
+                          className="object-cover transition-transform duration-500 group-hover:scale-105"
                         />
                       </div>
                       <div className="p-2 md:p-4 space-y-2">
