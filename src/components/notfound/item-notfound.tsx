@@ -8,9 +8,9 @@ export default function ItemNotFound() {
 
   return (
     <div className="container min-h-[500px] md:min-h-[600px] lg:min-h-[750px] flex items-center justify-center mx-auto p-4">
-      <div className="text-center -mt-20 space-y-4 md:space-y-6 max-w-[280px] sm:max-w-md">
+      <div className="text-center -mt-40 space-y-4 md:space-y-6 max-w-[280px] sm:max-w-md">
         <div className="flex justify-center">
-          <PackageX className="w-16 h-16 md:w-20 md:h-20 lg:w-24 lg:h-24 text-muted-foreground" />
+          <PackageX className="w-12 h-12 md:w-16 md:h-16 lg:w-20 lg:h-20 text-muted-foreground" />
         </div>
         <div className="space-y-2">
           <h3>Item Not Found</h3>
@@ -19,7 +19,7 @@ export default function ItemNotFound() {
             removed or is no longer available.
           </p>
         </div>
-        <div className="flex flex-col sm:flex-row gap-2 sm:gap-4 justify-center">
+        <div className="flex flex-row gap-2 sm:gap-4 justify-center">
           <Button
             variant="outline"
             onClick={() => router.back()}

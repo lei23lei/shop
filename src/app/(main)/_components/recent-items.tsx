@@ -106,8 +106,8 @@ export default function RecentItems({
             </CarouselItem>
           ))}
         </CarouselContent>
-        <CarouselPrevious className="absolute top-1/2 left-2 -translate-y-1/2" />
-        <CarouselNext className="absolute top-1/2 right-2 -translate-y-1/2" />
+        <CarouselPrevious className="absolute text-header-font border-muted-foreground/50 top-1/2 left-2 -translate-y-1/2" />
+        <CarouselNext className="absolute text-header-font border-muted-foreground/50 top-1/2 right-2 -translate-y-1/2" />
       </Carousel>
     </div>
   );

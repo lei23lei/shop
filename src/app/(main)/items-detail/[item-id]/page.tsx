@@ -43,8 +43,14 @@ import remarkGfm from "remark-gfm";
 import LoadingPage from "@/components/loading/loading-page";
 import ItemNotFound from "@/components/notfound/item-notfound";
 import { Badge } from "@/components/ui/badge";
-import { Minus, Plus } from "lucide-react";
+import { Minus, Plus, X } from "lucide-react";
 import { Quantity } from "@/components/cart/quantity";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 export default function ItemDetailPage({
   params,
@@ -104,7 +110,7 @@ export default function ItemDetailPage({
     itemDetail.categories[itemDetail.categories.length - 1]?.id;
 
   return (
-    <div className="py-2 sm:py-4">
+    <div className="py-4 sm:py-6">
       <div className="container mx-auto px-3 sm:px-4 lg:px-6 xl:px-10 2xl:px-16">
         <div className="flex flex-col gap-3 sm:gap-4 lg:px-0">
           <div className="py-1 md:py-4">
@@ -194,9 +200,9 @@ export default function ItemDetailPage({
             <div className="flex-1 flex flex-col justify-between">
               <div className="space-y-4 sm:space-y-6">
                 <div className="space-y-2 sm:space-y-3">
-                  <h1 className="text-base sm:text-lg  md:text-xl lg:text-2xl font-extrabold">
+                  <h2 className="text-base sm:text-lg  md:text-xl lg:text-2xl font-extrabold">
                     {itemDetail.name}
-                  </h1>
+                  </h2>
 
                   {/* Categories */}
                   <div className="flex flex-wrap items-center gap-1.5 sm:gap-2">
@@ -250,29 +256,38 @@ export default function ItemDetailPage({
                     <h4>Available Sizes</h4>
                     <div className="flex flex-wrap gap-2 sm:gap-3">
                       {itemDetail.sizes.map((size) => (
-                        <div
-                          key={size.size}
-                          onClick={() =>
-                            size.quantity > 0 && setSelectedSize(size.size)
-                          }
-                          className={cn(
-                            "relative flex cursor-pointer items-center justify-center p-2 border border-muted-foreground/1 shadow-sm rounded-md transition-all min-w-[50px] sm:min-w-[60px]",
-                            size.quantity === 0 &&
-                              "opacity-50 cursor-not-allowed bg-neutral-900",
-                            selectedSize === size.size &&
-                              "border-2  bg-neutral-900 text-white",
-                            size.quantity > 0 && "hover:border-foreground/70"
-                          )}
-                        >
-                          <span className="text-sm sm:text-base font-medium">
-                            {size.size}
-                          </span>
-                          {size.quantity === 0 && (
-                            <span className="absolute -bottom-1 left-1/2 -translate-x-1/2 text-[8px] sm:text-[10px] font-medium text-neutral-500 bg-white px-1">
-                              Sold Out
-                            </span>
-                          )}
-                        </div>
+                        <TooltipProvider key={size.size}>
+                          <Tooltip>
+                            <TooltipTrigger asChild>
+                              <div
+                                onClick={() =>
+                                  size.quantity > 0 &&
+                                  setSelectedSize(size.size)
+                                }
+                                className={cn(
+                                  "relative flex cursor-pointer items-center justify-center p-2 border border-muted-foreground/1 shadow-sm rounded-md transition-all min-w-[50px] sm:min-w-[60px]",
+                                  size.quantity === 0
+                                    ? "opacity-100 cursor-not-allowed bg-neutral-100 dark:bg-neutral-800 text-neutral-400 dark:text-neutral-500 border-neutral-200 dark:border-neutral-700"
+                                    : selectedSize === size.size
+                                    ? "border-2 bg-neutral-900 text-white"
+                                    : "hover:border-foreground/70"
+                                )}
+                              >
+                                <span className="text-sm sm:text-base font-medium">
+                                  {size.size}
+                                </span>
+                                {size.quantity === 0 && (
+                                  <X className="absolute inset-0 w-full h-full text-neutral-400 dark:text-neutral-500 opacity-50" />
+                                )}
+                              </div>
+                            </TooltipTrigger>
+                            {size.quantity === 0 && (
+                              <TooltipContent>
+                                <p>Sold Out</p>
+                              </TooltipContent>
+                            )}
+                          </Tooltip>
+                        </TooltipProvider>
                       ))}
                     </div>
                   </div>
