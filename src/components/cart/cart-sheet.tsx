@@ -12,6 +12,7 @@ import {
 } from "@/components/ui/sheet";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Badge } from "@/components/ui/badge";
+import { Quantity } from "@/components/cart/quantity";
 
 interface CartItem {
   id: number;
@@ -102,42 +103,19 @@ export function CartSheet({
                             {item.size}
                           </div>
                           <div className="flex border-t border-broder mt-2 pt-2 flex-row justify-between items-center">
-                            <div className="flex bg-neutral-200 rounded-full p-1 flex-row items-center gap-4">
-                              <div
-                                className="cursor-pointer bg-white rounded-full p-1"
-                                onClick={() =>
-                                  handleUpdateQuantity(
-                                    item.cart_item_id,
-                                    (localQuantities[item.cart_item_id] ??
-                                      item.quantity) - 1
-                                  )
-                                }
-                              >
-                                <Minus className="w-4 h-4 text-zinc-700 cursor-pointer hover:text-primary" />
-                              </div>
-                              <div className="text-sm text-neutral-500">
-                                {localQuantities[item.cart_item_id] ??
-                                  item.quantity}
-                              </div>
-                              <div
-                                className={`cursor-pointer bg-white rounded-full p-1 ${
-                                  (localQuantities[item.cart_item_id] ??
-                                    item.quantity) >= item.total_available
-                                    ? "opacity-50 cursor-not-allowed"
-                                    : ""
-                                }`}
-                                onClick={() =>
-                                  handleUpdateQuantity(
-                                    item.cart_item_id,
-                                    (localQuantities[item.cart_item_id] ??
-                                      item.quantity) + 1
-                                  )
-                                }
-                              >
-                                <Plus className="w-4 h-4 text-zinc-700 cursor-pointer hover:text-primary" />
-                              </div>
-                            </div>
-
+                            <Quantity
+                              value={
+                                localQuantities[item.cart_item_id] ??
+                                item.quantity
+                              }
+                              onChange={(newQuantity) =>
+                                handleUpdateQuantity(
+                                  item.cart_item_id,
+                                  newQuantity
+                                )
+                              }
+                              max={item.total_available}
+                            />
                             <div className="font-medium mt-1">
                               $
                               {(

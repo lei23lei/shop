@@ -141,7 +141,7 @@
   }
 
   h4 {
-    @apply font-medium text-base md:text-md;
+    @apply font-medium text-base md:text-md dark:text-foreground/80;
   }
 
   h5 {

@@ -42,6 +42,9 @@ import { useAuth } from "@/contexts/auth-context";
 import remarkGfm from "remark-gfm";
 import LoadingPage from "@/components/loading/loading-page";
 import ItemNotFound from "@/components/notfound/item-notfound";
+import { Badge } from "@/components/ui/badge";
+import { Minus, Plus } from "lucide-react";
+import { Quantity } from "@/components/cart/quantity";
 
 export default function ItemDetailPage({
   params,
@@ -197,16 +200,15 @@ export default function ItemDetailPage({
 
                   {/* Categories */}
                   <div className="flex flex-wrap items-center gap-1.5 sm:gap-2">
-                    <h4 className="text-sm sm:text-base font-medium">
-                      Category:{" "}
-                    </h4>
+                    <h4>Category: </h4>
                     {itemDetail.categories.map((category) => (
-                      <span
+                      <Badge
                         key={category.id}
-                        className="bg-neutral-100 rounded-full text-xs sm:text-sm px-2.5 py-1"
+                        variant="category"
+                        className="text-xs sm:text-sm"
                       >
                         {category.name}
-                      </span>
+                      </Badge>
                     ))}
                   </div>
 
@@ -217,8 +219,8 @@ export default function ItemDetailPage({
 
                 {/* Description */}
                 {itemDetail.description && (
-                  <div className="border-t border-neutral-200 pt-3 sm:pt-4">
-                    <p className="text-sm sm:text-base text-neutral-600 leading-relaxed">
+                  <div className="border-t border-muted-foreground/50 pt-3 sm:pt-4">
+                    <p className="text-sm sm:text-base text-foreground/90 leading-relaxed">
                       {itemDetail.description}
                     </p>
                   </div>
@@ -226,11 +228,9 @@ export default function ItemDetailPage({
 
                 {/* Color */}
                 {itemDetail.details?.color && (
-                  <div className="border-t border-neutral-200 pt-3 sm:pt-4">
+                  <div className="border-t border-muted-foreground/50 pt-3 sm:pt-4">
                     <div className="flex items-center gap-2">
-                      <span className="text-sm sm:text-base font-medium">
-                        Color:
-                      </span>
+                      <h4>Color: </h4>
                       <div
                         className="w-5 h-5 sm:w-6 sm:h-6 rounded-full border"
                         style={{ backgroundColor: itemDetail.details.color }}
@@ -247,9 +247,7 @@ export default function ItemDetailPage({
                 {/* Sizes */}
                 {itemDetail.sizes.length > 0 && (
                   <div className="space-y-2 sm:space-y-3">
-                    <h4 className="text-sm sm:text-base font-medium">
-                      Available Sizes
-                    </h4>
+                    <h4>Available Sizes</h4>
                     <div className="flex flex-wrap gap-2 sm:gap-3">
                       {itemDetail.sizes.map((size) => (
                         <div
@@ -262,8 +260,8 @@ export default function ItemDetailPage({
                             size.quantity === 0 &&
                               "opacity-50 cursor-not-allowed bg-neutral-900",
                             selectedSize === size.size &&
-                              "border-2  bg-primary text-white",
-                            size.quantity > 0 && "hover:border-primary"
+                              "border-2  bg-neutral-900 text-white",
+                            size.quantity > 0 && "hover:border-foreground/70"
                           )}
                         >
                           <span className="text-sm sm:text-base font-medium">
@@ -283,44 +281,18 @@ export default function ItemDetailPage({
                 {/* Quantity */}
                 <div className="space-y-2 sm:space-y-3">
                   <h4 className="text-sm sm:text-base font-medium">Quantity</h4>
-                  <div className="flex items-center space-x-3 sm:space-x-4">
-                    <Button
-                      variant="outline"
-                      size="icon"
-                      onClick={() =>
-                        setQuantity((prev) => Math.max(1, prev - 1))
-                      }
-                      disabled={!selectedSize || quantity <= 1}
-                      className="h-8 w-8 sm:h-10 sm:w-10 rounded-full border-border shadow-sm"
-                    >
-                      <p className="text-lg sm:text-xl mb-0.5">-</p>
-                    </Button>
-                    <span className="w-6 sm:w-8 text-center font-medium text-sm sm:text-base">
-                      {quantity}
-                    </span>
-                    <Button
-                      variant="outline"
-                      size="icon"
-                      onClick={() =>
-                        setQuantity((prev) =>
-                          Math.min(selectedSizeObj?.quantity || 1, prev + 1)
-                        )
-                      }
-                      disabled={
-                        !selectedSize ||
-                        quantity >= (selectedSizeObj?.quantity || 1)
-                      }
-                      className="h-8 w-8 sm:h-10 sm:w-10 rounded-full border-border shadow-sm"
-                    >
-                      <p className="text-base sm:text-lg mb-0.5">+</p>
-                    </Button>
-                  </div>
+                  <Quantity
+                    value={quantity}
+                    onChange={setQuantity}
+                    max={selectedSizeObj?.quantity}
+                    disabled={!selectedSize}
+                  />
                   {selectedSizeObj ? (
-                    <p className="text-xs sm:text-sm text-neutral-500">
+                    <p className="text-xs sm:text-sm text-foreground/90">
                       {selectedSizeObj.quantity} items available
                     </p>
                   ) : (
-                    <p className="text-xs sm:text-sm text-neutral-500">
+                    <p className="text-xs sm:text-sm text-foreground/90">
                       Please select a size
                     </p>
                   )}
