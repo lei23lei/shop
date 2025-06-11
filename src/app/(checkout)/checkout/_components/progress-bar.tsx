@@ -13,12 +13,12 @@ export default function ProgressBar({ currentStep = 1 }: ProgressBarProps) {
   ];
 
   return (
-    <div className="w-full pt-8 md:pt-14 max-w-3xl mx-auto px-4  md:py-8">
+    <div className="w-full pt-8 md:pt-14 max-w-3xl mx-auto px-4 md:py-8">
       <div className="relative">
         {/* Progress bar line */}
-        <div className="absolute top-1/2 left-0 w-full h-0.5 bg-gray-200 -translate-y-1/2">
+        <div className="absolute top-1/2 left-0 w-full h-0.5 bg-muted-foreground/20 -translate-y-1/2">
           <div
-            className="h-full bg-black transition-all duration-300"
+            className="h-full bg-foreground transition-all duration-300"
             style={{
               width: `${((currentStep - 1) / (steps.length - 1)) * 100}%`,
             }}
@@ -26,29 +26,29 @@ export default function ProgressBar({ currentStep = 1 }: ProgressBarProps) {
         </div>
 
         {/* Steps */}
-        <div className="absolute -top-3 md:-top-4 left-0   w-full  flex justify-between">
+        <div className="absolute -top-3 md:-top-4 left-0 w-full flex justify-between">
           {steps.map((step) => {
             const isCompleted = step.id < currentStep;
             const isCurrent = step.id === currentStep;
 
             return (
-              <div key={step.id} className="flex flex-col items-center ">
+              <div key={step.id} className="flex flex-col items-center">
                 {/* Step circle */}
                 <div
                   className={`w-6 h-6 md:w-8 md:h-8 rounded-full flex items-center justify-center border-2 transition-colors duration-300 ${
                     isCompleted
-                      ? "bg-black border-black"
+                      ? "bg-foreground border-foreground"
                       : isCurrent
-                      ? "border-neutral-600 border-[2.5px] bg-white"
-                      : "border-gray-200 bg-white"
+                      ? "border-foreground border-[2.5px] bg-background"
+                      : "border-muted-foreground/20 bg-background"
                   }`}
                 >
                   {isCompleted ? (
-                    <Check className="w-5 h-5 text-white" />
+                    <Check className="w-5 h-5 text-background" />
                   ) : (
                     <span
                       className={`text-sm font-medium ${
-                        isCurrent ? "text-black" : "text-gray-400"
+                        isCurrent ? "text-foreground" : "text-muted-foreground"
                       }`}
                     >
                       {step.id}
@@ -59,7 +59,7 @@ export default function ProgressBar({ currentStep = 1 }: ProgressBarProps) {
                 {/* Step label */}
                 <span
                   className={`mt-2 text-xs md:text-sm font-medium ${
-                    isCurrent ? "text-black" : "text-gray-400"
+                    isCurrent ? "text-foreground" : "text-muted-foreground"
                   }`}
                 >
                   {step.name}

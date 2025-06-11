@@ -47,8 +47,8 @@ export default function StepOne({
   }
 
   return (
-    <div className="bg-white rounded-lg shadow-sm p-4 md:p-6">
-      <h3 className="mb-4">Shipping Information</h3>
+    <div className="bg-card rounded-lg shadow-sm p-4 md:p-6">
+      <h3 className="mb-4 text-foreground">Shipping Information</h3>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
           <div className="grid grid-cols-2 gap-4">
@@ -57,7 +57,7 @@ export default function StepOne({
               name="first_name"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>First Name</FormLabel>
+                  <FormLabel className="text-foreground">First Name</FormLabel>
                   <FormControl>
                     <Input placeholder="John" {...field} />
                   </FormControl>
@@ -70,7 +70,7 @@ export default function StepOne({
               name="last_name"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Last Name</FormLabel>
+                  <FormLabel className="text-foreground">Last Name</FormLabel>
                   <FormControl>
                     <Input placeholder="Doe" {...field} />
                   </FormControl>
@@ -85,7 +85,7 @@ export default function StepOne({
             name="shipping_email"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Email</FormLabel>
+                <FormLabel className="text-foreground">Email</FormLabel>
                 <FormControl>
                   <Input
                     type="email"
@@ -103,7 +103,7 @@ export default function StepOne({
             name="shipping_phone"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Phone Number</FormLabel>
+                <FormLabel className="text-foreground">Phone Number</FormLabel>
                 <FormControl>
                   <Input type="tel" placeholder="1234567890" {...field} />
                 </FormControl>
@@ -117,7 +117,7 @@ export default function StepOne({
             name="shipping_address"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Address</FormLabel>
+                <FormLabel className="text-foreground">Address</FormLabel>
                 <FormControl>
                   <Input placeholder="123 Main Street, Apt 4B" {...field} />
                 </FormControl>
@@ -132,7 +132,7 @@ export default function StepOne({
               name="city"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>City</FormLabel>
+                  <FormLabel className="text-foreground">City</FormLabel>
                   <FormControl>
                     <Input placeholder="New York" {...field} />
                   </FormControl>
@@ -145,7 +145,7 @@ export default function StepOne({
               name="zip_code"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Zip Code</FormLabel>
+                  <FormLabel className="text-foreground">Zip Code</FormLabel>
                   <FormControl>
                     <Input placeholder="12345" {...field} />
                   </FormControl>

@@ -60,15 +60,15 @@ export default function StepTwo({
   };
 
   return (
-    <div className="bg-white rounded-lg shadow-sm p-4 md:p-6">
-      <h3 className="mb-4">Order Confirmation</h3>
+    <div className="bg-card rounded-lg shadow-sm p-4 md:p-6">
+      <h3 className="mb-4 text-foreground">Order Confirmation</h3>
 
       {/* Shipping Information */}
       <div className="mb-8">
-        <h3 className="text-base md:text-lg font-medium mb-4">
+        <h3 className="text-base md:text-lg font-medium mb-4 text-foreground">
           Shipping Information
         </h3>
-        <div className="space-y-2 text-neutral-600 text-sm md:text-base">
+        <div className="space-y-2 text-muted-foreground text-sm md:text-base">
           <p>{`${formData.first_name} ${formData.last_name}`}</p>
           <p>{formData.shipping_address}</p>
           <p>
@@ -81,7 +81,7 @@ export default function StepTwo({
 
       {/* Order Summary */}
       <div className="mb-8">
-        <h4>Order Summary</h4>
+        <h4 className="text-foreground">Order Summary</h4>
         <div className="space-y-4 mt-2">
           {cartData?.items.map((item) => (
             <div
@@ -89,27 +89,29 @@ export default function StepTwo({
               className="flex flex-col  md:justify-between md:items-start gap-1"
             >
               <div className="flex items-center gap-2 md:gap-4">
-                <span className="text-neutral-600 text-sm md:text-base">
+                <span className="text-muted-foreground text-sm md:text-base">
                   {item.quantity}x
                 </span>
-                <span className="text-xs md:text-sm line-clamp-1">
+                <span className="text-xs md:text-sm line-clamp-1 text-foreground">
                   {item.name}
                 </span>
               </div>
               <div className="flex justify-between w-full items-center">
-                <span className="text-neutral-600 text-sm md:text-base">
+                <span className="text-muted-foreground text-sm md:text-base">
                   Size: {item.size}
                 </span>
-                <span className="font-medium text-sm md:text-base">
+                <span className="font-medium text-sm md:text-base text-foreground">
                   ${(parseFloat(item.price) * item.quantity).toFixed(2)}
                 </span>
               </div>
             </div>
           ))}
         </div>
-        <div className="flex w-full border-t pt-2 mt-2 justify-between items-center">
-          <span className="font-medium text-sm md:text-base">Total</span>
-          <span className="text-lg md:text-xl font-semibold">
+        <div className="flex w-full border-t border-border pt-2 mt-2 justify-between items-center">
+          <span className="font-medium text-sm md:text-base text-foreground">
+            Total
+          </span>
+          <span className="text-lg md:text-xl font-semibold text-foreground">
             ${totalPrice.toFixed(2)}
           </span>
         </div>

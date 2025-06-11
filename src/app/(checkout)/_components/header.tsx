@@ -5,7 +5,7 @@ import Link from "next/link";
 
 export default function Header() {
   return (
-    <div className="bg-neutral-200">
+    <div className="bg-neutral-200 dark:bg-neutral-900">
       <div className="flex container px-4 h-[100px] md:h-[120px] mx-auto flex-row justify-between items-center">
         <Link href="/">
           <div className="flex flex-row items-center gap-2 cursor-pointer group">

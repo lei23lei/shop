@@ -11,7 +11,7 @@ import { useGetCartQuery } from "@/services/endpoints/account-endpoints";
 import { useAuth } from "@/contexts/auth-context";
 import { CreateOrderResponse } from "@/services/endpoints/account-endpoints";
 import { z } from "zod";
-
+import LoadingPage from "@/components/loading/loading-page";
 const formSchema = z.object({
   first_name: z.string().min(2, "First name must be at least 2 characters"),
   last_name: z.string().min(2, "Last name must be at least 2 characters"),
@@ -48,11 +48,7 @@ export default function CheckoutPage() {
 
   // Show loading state while checking auth or loading cart
   if (isAuthLoading || isCartLoading) {
-    return (
-      <div className="min-h-screen bg-gray-50 flex items-center justify-center">
-        <div className="text-lg">Loading...</div>
-      </div>
-    );
+    return <LoadingPage />;
   }
 
   // If not authenticated, don't render anything (will redirect)
@@ -97,7 +93,7 @@ export default function CheckoutPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-background">
       <ProgressBar currentStep={currentStep} />
       <div className="flex flex-col-reverse md:flex-row mt-14 items-start justify-center gap-4 md:gap-10">
         <div className="w-full md:w-[600px]">{renderStep()}</div>
