@@ -37,14 +37,14 @@ export default function ProgressBar({ currentStep = 1 }: ProgressBarProps) {
                 <div
                   className={`w-6 h-6 md:w-8 md:h-8 rounded-full flex items-center justify-center border-2 transition-colors duration-300 ${
                     isCompleted
-                      ? "bg-foreground border-foreground"
+                      ? "bg-foreground dark:bg-black "
                       : isCurrent
                       ? "border-foreground border-[2.5px] bg-background"
                       : "border-muted-foreground/20 bg-background"
                   }`}
                 >
                   {isCompleted ? (
-                    <Check className="w-5 h-5 text-background" />
+                    <Check className="w-5 h-5 text-background dark:text-header-font" />
                   ) : (
                     <span
                       className={`text-sm font-medium ${

@@ -96,7 +96,7 @@ export default function Page() {
         {activeTab === "order-history" && <OrderHistory />}
       </div>
       <Dialog open={showConfirmDialog} onOpenChange={setShowConfirmDialog}>
-        <DialogContent className="sm:max-w-[425px]">
+        <DialogContent className="w-[95%] sm:max-w-[425px] p-6 rounded-lg">
           <DialogHeader>
             <DialogTitle>Confirm Sign Out</DialogTitle>
             <DialogDescription>
@@ -104,7 +104,7 @@ export default function Page() {
               to access your account.
             </DialogDescription>
           </DialogHeader>
-          <DialogFooter className="flex gap-2 sm:gap-0">
+          <DialogFooter className="flex flex-row gap-2 sm:gap-0">
             <Button
               variant="outline"
               onClick={() => setShowConfirmDialog(false)}
@@ -118,7 +118,7 @@ export default function Page() {
                 setShowConfirmDialog(false);
                 handleSignOut();
               }}
-              className="w-full sm:w-auto"
+              className="w-full sm:w-auto dark:bg-red-600"
             >
               Sign Out
             </Button>
