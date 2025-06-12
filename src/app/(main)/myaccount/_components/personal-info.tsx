@@ -338,7 +338,7 @@ export default function PersonalInfo() {
                     Password Changed Successfully
                   </h3>
                 </div>
-                <p className="text-sm md:text-base text-gray-600 text-center">
+                <p className="text-sm md:text-base text-header-font text-center">
                   Your password has been updated successfully.
                 </p>
               </div>

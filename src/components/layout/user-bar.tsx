@@ -219,6 +219,7 @@ export default function UserBar() {
                 router.push(
                   `/items/?search=${encodeURIComponent(searchQuery.trim())}`
                 );
+                setIsMobileMenuOpen(false);
                 setSearchQuery("");
               }
             }}
@@ -229,7 +230,9 @@ export default function UserBar() {
               placeholder="Search..."
               className="w-[120px] pl-8 bg-white/90 text-black focus:w-[280px]  transition-all duration-400 ease-in-out !ring-0 !ring-offset-0 !focus-visible:ring-0 !focus-visible:ring-offset-0 !focus:ring-0 !focus:ring-offset-0 !outline-none "
               value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
+              onChange={(e) => {
+                setSearchQuery(e.target.value);
+              }}
             />
           </form>
           <CartSheet

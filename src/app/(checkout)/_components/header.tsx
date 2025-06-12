@@ -20,14 +20,14 @@ export default function Header() {
           alt="logo"
           width={400}
           height={400}
-          className="h-[90px] hidden md:block w-auto"
+          className="h-[70px] hidden md:block w-auto"
         />
         <Image
           src="/images/icon.png"
           alt="logo"
           width={400}
           height={400}
-          className="h-[70px] block md:hidden w-auto"
+          className="h-[50px] block md:hidden w-auto"
         />
       </div>
     </div>
