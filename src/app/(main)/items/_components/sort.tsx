@@ -29,29 +29,33 @@ export default function Sort({
       value={`${currentSort}-${currentOrder}`}
       onValueChange={handleValueChange}
     >
-      <SelectTrigger className="w-[135px] md:w-[150px]">
+      <SelectTrigger className="w-[130px] md:w-[150px]">
         <SelectValue placeholder="Sort by" />
       </SelectTrigger>
       <SelectContent>
         <SelectItem value="created_at-desc">Newest First</SelectItem>
         <SelectItem value="price-asc">
           <div className="flex items-center gap-0.5 md:gap-1">
-            <DollarSign className="w-3 h-3 md:w-4 md:h-4" /> Low to High
+            <DollarSign className="w-3 h-3 md:w-4 md:h-4" />{" "}
+            <p className="text-xs md:text-sm">Low to High</p>
           </div>
         </SelectItem>
         <SelectItem value="price-desc">
           <div className="flex items-center gap-0.5 md:gap-1">
-            <DollarSign className="w-3 h-3 md:w-4 md:h-4" /> High to Low
+            <DollarSign className="w-3 h-3 md:w-4 md:h-4" />{" "}
+            <p className="text-xs md:text-sm">High to Low</p>
           </div>
         </SelectItem>
         <SelectItem value="name-asc">
           <div className="flex items-center gap-0.5 md:gap-1">
-            <ArrowUpDown className="w-3 h-3 md:w-4 md:h-4" /> A to Z
+            <ArrowUpDown className="w-3 h-3 md:w-4 md:h-4" />{" "}
+            <p className="text-xs md:text-sm">A to Z</p>
           </div>
         </SelectItem>
         <SelectItem value="name-desc">
           <div className="flex items-center gap-0.5 md:gap-1">
-            <ArrowUpDown className="w-3 h-3 md:w-4 md:h-4" /> Z to A
+            <ArrowUpDown className="w-3 h-3 md:w-4 md:h-4" />{" "}
+            <p className="text-xs md:text-sm">Z to A</p>
           </div>
         </SelectItem>
       </SelectContent>

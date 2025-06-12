@@ -159,7 +159,7 @@ export default function ItemsPage({
                 ))}
           </div>
           <div className="flex-1 p-4">
-            <div className="grid grid-cols-2 md:grid-cols-3 2xl:grid-cols-4 gap-4">
+            <div className="grid grid-cols-2 md:grid-cols-3 2xl:grid-cols-4 gap-2 md:gap-4">
               {itemsData?.results.map((item) => (
                 <Link href={`/items-detail/${item.id}`} key={item.id}>
                   <Card className="overflow-hidden transition-shadow duration-200 hover:shadow-lg cursor-pointer group">
