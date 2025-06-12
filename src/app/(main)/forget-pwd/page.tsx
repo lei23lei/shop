@@ -31,6 +31,12 @@ const formSchema = z.object({
   }),
 });
 
+type ApiError = {
+  data?: {
+    error?: string;
+  };
+};
+
 export default function ForGetPwdPage() {
   const router = useRouter();
   const [forgotPassword, { isLoading }] = useForgotPasswordMutation();
@@ -50,8 +56,9 @@ export default function ForGetPwdPage() {
 
       toast.success("Password reset link has been sent to your email");
       router.push("/login");
-    } catch (error: any) {
-      const errorMessage = error?.data?.error || "Failed to send reset link";
+    } catch (error) {
+      const apiError = error as ApiError;
+      const errorMessage = apiError?.data?.error || "Failed to send reset link";
       toast.error(errorMessage);
     }
   }
@@ -64,8 +71,8 @@ export default function ForGetPwdPage() {
             Reset Password
           </CardTitle>
           <CardDescription className="text-center">
-            Enter your email address and we'll send you a link to reset your
-            password
+            Enter your email address and we&apos;ll send you a link to reset
+            your password
           </CardDescription>
         </CardHeader>
         <CardContent>

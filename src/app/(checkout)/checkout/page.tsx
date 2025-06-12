@@ -10,26 +10,15 @@ import { CartSummary } from "./_components/cart-summary";
 import { useGetCartQuery } from "@/services/endpoints/account-endpoints";
 import { useAuth } from "@/contexts/auth-context";
 import { CreateOrderResponse } from "@/services/endpoints/account-endpoints";
-import { z } from "zod";
 import LoadingPage from "@/components/loading/loading-page";
-const formSchema = z.object({
-  first_name: z.string().min(2, "First name must be at least 2 characters"),
-  last_name: z.string().min(2, "Last name must be at least 2 characters"),
-  shipping_email: z.string().email("Invalid email address"),
-  shipping_phone: z.string().min(10, "Phone number must be at least 10 digits"),
-  shipping_address: z.string().min(5, "Address must be at least 5 characters"),
-  city: z.string().min(2, "City must be at least 2 characters"),
-  zip_code: z.string().min(5, "Zip code must be at least 5 characters"),
-});
-
-type FormData = z.infer<typeof formSchema>;
+import { CheckoutFormData } from "./_components/schemas";
 
 export default function CheckoutPage() {
   const router = useRouter();
   const { user, isLoading: isAuthLoading } = useAuth();
   const [currentStep, setCurrentStep] = useState(1);
   const [orderData, setOrderData] = useState<CreateOrderResponse | null>(null);
-  const [formData, setFormData] = useState<FormData>({
+  const [formData, setFormData] = useState<CheckoutFormData>({
     first_name: user?.first_name ?? "",
     last_name: user?.last_name ?? "",
     shipping_email: user?.email ?? "",
@@ -84,9 +73,7 @@ export default function CheckoutPage() {
         );
       case 3:
         if (!orderData) return null;
-        return (
-          <StepThree onBack={() => setCurrentStep(2)} orderData={orderData} />
-        );
+        return <StepThree orderData={orderData} />;
       default:
         return null;
     }

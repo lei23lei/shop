@@ -5,25 +5,13 @@ import {
   useCreateOrderMutation,
 } from "@/services/endpoints/account-endpoints";
 import { CreateOrderResponse } from "@/services/endpoints/account-endpoints";
-import { z } from "zod";
 import { toast } from "sonner";
-
-const formSchema = z.object({
-  first_name: z.string().min(2, "First name must be at least 2 characters"),
-  last_name: z.string().min(2, "Last name must be at least 2 characters"),
-  shipping_email: z.string().email("Invalid email address"),
-  shipping_phone: z.string().min(10, "Phone number must be at least 10 digits"),
-  shipping_address: z.string().min(5, "Address must be at least 5 characters"),
-  city: z.string().min(2, "City must be at least 2 characters"),
-  zip_code: z.string().min(5, "Zip code must be at least 5 characters"),
-});
-
-type FormData = z.infer<typeof formSchema>;
+import { CheckoutFormData } from "./schemas";
 
 interface StepTwoProps {
   onNext: () => void;
   onBack: () => void;
-  formData: FormData;
+  formData: CheckoutFormData;
   cartId: number;
   setOrderData: (data: CreateOrderResponse) => void;
 }

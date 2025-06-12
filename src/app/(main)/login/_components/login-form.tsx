@@ -36,11 +36,16 @@ const formSchema = z.object({
   }),
 });
 
+type ApiError = {
+  data?: {
+    error?: string;
+  };
+};
+
 export function LoginForm() {
   const router = useRouter();
   const { login } = useAuth();
   const [isLoading, setIsLoading] = useState(false);
-  const [loginError, setLoginError] = useState<string>("");
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -55,11 +60,11 @@ export function LoginForm() {
       setIsLoading(true);
       await login(values.email, values.password);
       router.push("/");
-    } catch (error: any) {
+    } catch (error) {
       console.log("Login error:", error);
+      const apiError = error as ApiError;
       const errorMessage =
-        error?.data?.error || "Login failed. Please try again.";
-      setLoginError(errorMessage);
+        apiError?.data?.error || "Login failed. Please try again.";
       form.setError("email", {
         type: "manual",
         message: errorMessage,
@@ -128,7 +133,7 @@ export function LoginForm() {
       </CardContent>
       <CardFooter className="flex flex-col space-y-4">
         <div className="text-sm text-center text-muted-foreground">
-          Don't have an account?{" "}
+          Don&apos;t have an account?{" "}
           <Link href="/register" className="text-muted-foreground underline">
             Create an account
           </Link>

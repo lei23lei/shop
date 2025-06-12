@@ -49,7 +49,7 @@ const formSchema = z
 export default function RegForm() {
   const router = useRouter();
   const { login } = useAuth();
-  const [register, { isLoading, error }] = useRegisterMutation();
+  const [register, { isLoading }] = useRegisterMutation();
   const [countdown, setCountdown] = useState(3);
   const [isSuccess, setIsSuccess] = useState(false);
 
@@ -83,17 +83,15 @@ export default function RegForm() {
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     try {
-      const response = await register({
+      await register({
         email: values.email,
         password: values.password,
       }).unwrap();
 
       await login(values.email, values.password);
       setIsSuccess(true);
-    } catch (error: any) {
-      console.log("Registration error:", error);
-      const errorMessage =
-        error?.data?.error || "Registration failed. Please try again.";
+    } catch {
+      const errorMessage = "Registration failed. Please try again.";
       form.setError("email", {
         type: "manual",
         message: errorMessage,

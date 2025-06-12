@@ -6,7 +6,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { DollarSign, ArrowUpDown, ArrowDown } from "lucide-react";
+import { DollarSign, ArrowUpDown } from "lucide-react";
 
 interface SortProps {
   onSortChange: (sort: string, order: "asc" | "desc") => void;
@@ -22,21 +22,6 @@ export default function Sort({
   const handleValueChange = (value: string) => {
     const [sort, order] = value.split("-");
     onSortChange(sort, order as "asc" | "desc");
-  };
-
-  const getDisplayValue = () => {
-    switch (currentSort) {
-      case "price":
-        return currentOrder === "asc"
-          ? "Price: Low to High"
-          : "Price: High to Low";
-      case "name":
-        return currentOrder === "asc" ? "Name: A to Z" : "Name: Z to A";
-      case "created_at":
-        return "Newest First";
-      default:
-        return "Sort by";
-    }
   };
 
   return (

@@ -1,14 +1,12 @@
 import React from "react";
 import { CreateOrderResponse } from "@/services/endpoints/account-endpoints";
-import { Button } from "@/components/ui/button";
 import { CheckCircle2, Mail } from "lucide-react";
 
 interface StepThreeProps {
-  onBack: () => void;
   orderData: CreateOrderResponse;
 }
 
-export default function StepThree({ onBack, orderData }: StepThreeProps) {
+export default function StepThree({ orderData }: StepThreeProps) {
   return (
     <div className="bg-card rounded-lg shadow-sm p-4 md:p-6">
       <div className="flex flex-col items-center text-center space-y-4 md:space-y-6">

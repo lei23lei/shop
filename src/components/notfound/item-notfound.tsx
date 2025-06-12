@@ -15,8 +15,8 @@ export default function ItemNotFound() {
         <div className="space-y-2">
           <h3>Item Not Found</h3>
           <p className="text-muted-foreground text-xs sm:text-sm md:text-base">
-            We couldn't find the item you're looking for. It might have been
-            removed or is no longer available.
+            We couldn&apos;t find the item you&apos;re looking for. It might
+            have been removed or is no longer available.
           </p>
         </div>
         <div className="flex flex-row gap-2 sm:gap-4 justify-center">

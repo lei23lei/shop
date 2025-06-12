@@ -18,8 +18,12 @@ import { Textarea } from "@/components/ui/textarea";
 import { categories } from "@/lib/data";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Plus, X } from "lucide-react";
-import { CldUploadWidget } from "next-cloudinary";
+import {
+  CldUploadWidget,
+  CloudinaryUploadWidgetResults,
+} from "next-cloudinary";
 import { useCreateItemMutation } from "@/services/endpoints/items-endpoints";
+import Image from "next/image";
 
 const formSchema = z.object({
   name: z.string().min(1, "Name is required"),
@@ -86,10 +90,14 @@ export default function UploadPage() {
     }
   };
 
-  const handleDisplayImageUpload = (result: any) => {
+  const handleDisplayImageUpload = (result: CloudinaryUploadWidgetResults) => {
     console.log("Display Image Upload Result:", result);
     const uploadInfo = result.info;
-    if (uploadInfo?.secure_url) {
+    if (
+      uploadInfo &&
+      typeof uploadInfo === "object" &&
+      "secure_url" in uploadInfo
+    ) {
       const imageUrl = uploadInfo.secure_url;
       console.log("Setting display image URL:", imageUrl);
       setDisplayImage(imageUrl);
@@ -98,14 +106,17 @@ export default function UploadPage() {
     }
   };
 
-  const handleImageUpload = (result: any) => {
+  const handleImageUpload = (result: CloudinaryUploadWidgetResults) => {
     console.log("Additional Image Upload Result:", result);
     const uploadInfo = result.info;
-    if (uploadInfo?.secure_url) {
+    if (
+      uploadInfo &&
+      typeof uploadInfo === "object" &&
+      "secure_url" in uploadInfo
+    ) {
       const imageUrl = uploadInfo.secure_url;
       console.log("Adding additional image URL:", imageUrl);
       console.log("Current images:", images);
-      // Get current images and append new one
       const currentImages = form.getValues("images") || [];
       const newImages = [...currentImages, imageUrl];
       console.log("New images array before update:", newImages);
@@ -115,14 +126,17 @@ export default function UploadPage() {
     }
   };
 
-  const handleDetailImageUpload = (result: any) => {
+  const handleDetailImageUpload = (result: CloudinaryUploadWidgetResults) => {
     console.log("Detail Image Upload Result:", result);
     const uploadInfo = result.info;
-    if (uploadInfo?.secure_url) {
+    if (
+      uploadInfo &&
+      typeof uploadInfo === "object" &&
+      "secure_url" in uploadInfo
+    ) {
       const imageUrl = uploadInfo.secure_url;
       console.log("Adding detail image URL:", imageUrl);
       console.log("Current detail images:", detailImages);
-      // Get current detail images and append new one
       const currentDetailImages = form.getValues("detailImages") || [];
       const newDetailImages = [...currentDetailImages, imageUrl];
       console.log("New detail images array before update:", newDetailImages);
@@ -170,11 +184,8 @@ export default function UploadPage() {
         return;
       }
 
-      // Destructure to remove parent_category_id and category_id
-      const { parent_category_id, category_id, ...rest } = values;
-
       const requestData = {
-        ...rest,
+        ...values,
         categories: [selectedCategory, selectedSubcategory],
         details: {
           color: values.color,
@@ -197,7 +208,6 @@ export default function UploadPage() {
       try {
         const response = await createItem(requestData).unwrap();
         console.log("Item created successfully:", response);
-        // You might want to redirect to the item detail page or show a success message
       } catch (error) {
         console.error("Failed to create item:", error);
         alert("Failed to create item. Please try again.");
@@ -542,10 +552,11 @@ export default function UploadPage() {
                       <div className="flex flex-col items-center gap-4">
                         {displayImage && (
                           <div className="relative aspect-square w-full max-w-[300px] group">
-                            <img
+                            <Image
                               src={displayImage}
                               alt="Display image"
-                              className="object-cover w-full h-full rounded-lg"
+                              fill
+                              className="object-cover rounded-lg"
                             />
                             <button
                               type="button"
@@ -576,10 +587,11 @@ export default function UploadPage() {
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                   {images.map((image, index) => (
                     <div key={index} className="relative aspect-square group">
-                      <img
+                      <Image
                         src={image}
                         alt={`Item image ${index + 1}`}
-                        className="object-cover w-full h-full rounded-lg"
+                        fill
+                        className="object-cover rounded-lg"
                       />
                       <button
                         type="button"
@@ -645,10 +657,11 @@ export default function UploadPage() {
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
                   {detailImages.map((image, index) => (
                     <div key={index} className="relative aspect-square group">
-                      <img
+                      <Image
                         src={image}
                         alt={`Detail image ${index + 1}`}
-                        className="object-cover w-full h-full rounded-lg"
+                        fill
+                        className="object-cover rounded-lg"
                       />
                       <button
                         type="button"

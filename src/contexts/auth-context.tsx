@@ -6,7 +6,7 @@ import {
   useVerifyQuery,
 } from "@/services/endpoints/account-endpoints";
 
-interface User {
+export interface User {
   id: number;
   email: string;
   first_name: string;
@@ -87,7 +87,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       localStorage.setItem("access_token", response.tokens.access);
       localStorage.setItem("refresh_token", response.tokens.refresh);
       localStorage.setItem("user", JSON.stringify(response.user));
-    } catch (error: any) {
+    } catch (error) {
       console.error("Login failed:", error);
       throw error;
     }

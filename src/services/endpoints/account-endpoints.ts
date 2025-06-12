@@ -43,7 +43,7 @@ interface VerifyResponse {
   };
 }
 
-interface UserDetailResponse {
+export interface UserDetailResponse {
   user: {
     id: number;
     email: string;

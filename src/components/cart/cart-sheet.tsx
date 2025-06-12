@@ -1,7 +1,7 @@
 import React from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { Minus, Plus, ShoppingCart, Trash2 } from "lucide-react";
+import { ShoppingCart, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   Sheet,
@@ -25,6 +25,7 @@ interface CartItem {
   size: string;
   total_available: number;
 }
+import { User } from "@/contexts/auth-context";
 
 interface CartSheetProps {
   isCartOpen: boolean;
@@ -37,7 +38,7 @@ interface CartSheetProps {
     cartItemId: number,
     newQuantity: number
   ) => Promise<void>;
-  user: any;
+  user: User | null;
   cartCount: { total_items: number } | undefined;
 }
 

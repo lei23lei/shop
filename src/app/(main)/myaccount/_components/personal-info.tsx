@@ -8,13 +8,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import {
-  PencilLine,
-  ChevronDown,
-  CheckCircle2,
-  Circle,
-  CheckCircle,
-} from "lucide-react";
+import { PencilLine, CheckCircle2, Circle, CheckCircle } from "lucide-react";
 import { toast } from "sonner";
 import {
   Accordion,
@@ -29,7 +23,6 @@ export default function PersonalInfo() {
   const [updateUser] = useUpdateUserMutation();
   const [changePassword] = useChangePasswordMutation();
   const [isEditing, setIsEditing] = useState(false);
-  const [isChangingPassword, setIsChangingPassword] = useState(false);
   const [formData, setFormData] = useState({
     first_name: "",
     last_name: "",
@@ -137,13 +130,9 @@ export default function PersonalInfo() {
       });
       setIsPasswordChanged(true);
       toast.success("Password changed successfully");
-    } catch (error: any) {
-      setPasswordError(error.data?.error || "Failed to change password");
+    } catch {
+      setPasswordError("Failed to change password");
     }
-  };
-
-  const handleCloseSuccess = () => {
-    setIsPasswordChanged(false);
   };
 
   if (isLoading) {

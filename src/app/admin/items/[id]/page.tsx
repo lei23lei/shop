@@ -73,7 +73,7 @@ export default function EditItemPage() {
       }).unwrap();
       toast.success("Item updated successfully");
       router.push("/admin");
-    } catch (error) {
+    } catch {
       toast.error("Failed to update item");
     }
   };
@@ -148,7 +148,7 @@ export default function EditItemPage() {
         <div className="text-center">
           <h1 className="text-2xl font-bold mb-4">Item Not Found</h1>
           <p className="text-muted-foreground">
-            The item you're looking for doesn't exist.
+            The item you&apos;re looking for doesn&apos;t exist.
           </p>
           <Button className="mt-4" onClick={() => router.push("/admin")}>
             Back to Admin

@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect } from "react";
+import React, { useEffect, Suspense } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
@@ -43,7 +43,7 @@ const formSchema = z
     path: ["confirmPassword"],
   });
 
-export default function ResetPasswordPage() {
+function ResetPasswordForm() {
   const searchParams = useSearchParams();
   const token = searchParams.get("token");
   const router = useRouter();
@@ -83,8 +83,8 @@ export default function ResetPasswordPage() {
 
       toast.success("Password has been reset successfully");
       router.push("/login");
-    } catch (error: any) {
-      const errorMessage = error?.data?.error || "Failed to reset password";
+    } catch {
+      const errorMessage = "Failed to reset password";
       toast.error(errorMessage);
     }
   }
@@ -197,5 +197,13 @@ export default function ResetPasswordPage() {
         </CardContent>
       </Card>
     </div>
+  );
+}
+
+export default function ResetPasswordPage() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <ResetPasswordForm />
+    </Suspense>
   );
 }

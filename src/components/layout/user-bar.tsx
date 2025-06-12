@@ -127,7 +127,7 @@ export default function UserBar() {
     try {
       await deleteCartItem(cartItemId).unwrap();
       toast.success("Item removed from cart");
-    } catch (error) {
+    } catch {
       toast.error("Failed to remove item from cart");
     }
   };

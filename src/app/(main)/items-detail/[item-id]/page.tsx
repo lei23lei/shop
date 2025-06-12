@@ -2,10 +2,7 @@
 
 import React from "react";
 import Image from "next/image";
-import {
-  useGetItemDetailQuery,
-  useDeleteItemMutation,
-} from "@/services/endpoints/items-endpoints";
+import { useGetItemDetailQuery } from "@/services/endpoints/items-endpoints";
 import { useAddToCartMutation } from "@/services/endpoints/account-endpoints";
 import { useRouter } from "next/navigation";
 import LoadingSpin from "@/components/loading/loading-spin";
@@ -19,17 +16,7 @@ import {
   DialogTrigger,
   DialogTitle,
 } from "@/components/ui/dialog";
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogTrigger,
-} from "@/components/ui/alert-dialog";
+
 import ReactMarkdown from "react-markdown";
 import {
   Accordion,
@@ -43,7 +30,7 @@ import remarkGfm from "remark-gfm";
 import LoadingPage from "@/components/loading/loading-page";
 import ItemNotFound from "@/components/notfound/item-notfound";
 import { Badge } from "@/components/ui/badge";
-import { Minus, Plus, X } from "lucide-react";
+import { X } from "lucide-react";
 import { Quantity } from "@/components/cart/quantity";
 import {
   Tooltip,
@@ -63,9 +50,7 @@ export default function ItemDetailPage({
   const { data: itemDetail, isLoading } = useGetItemDetailQuery(
     Number(resolvedParams["item-id"])
   );
-  const [deleteItem] = useDeleteItemMutation();
   const [addToCart, { isLoading: isAddingToCart }] = useAddToCartMutation();
-  const [isDeleting, setIsDeleting] = React.useState(false);
 
   const [selectedImage, setSelectedImage] = React.useState<number>(0);
   const [dialogOpen, setDialogOpen] = React.useState(false);
@@ -90,10 +75,6 @@ export default function ItemDetailPage({
     const sortedImages = [...itemDetail.images].sort((a, b) =>
       b.is_primary ? 1 : -1
     );
-
-    // const sortedDetailImages = [...itemDetail.detail_images].sort(
-    //   (a, b) => a.display_order - b.display_order
-    // );
 
     return [...sortedImages];
   }, [itemDetail]);
@@ -375,7 +356,7 @@ export default function ItemDetailPage({
                       <ReactMarkdown
                         remarkPlugins={[remarkGfm]}
                         components={{
-                          table: ({ node, ...props }) => (
+                          table: ({ ...props }) => (
                             <div className="overflow-x-auto">
                               <table
                                 className="min-w-full divide-y border my-2 sm:my-4 border-border"
@@ -383,31 +364,31 @@ export default function ItemDetailPage({
                               />
                             </div>
                           ),
-                          th: ({ node, ...props }) => (
+                          th: ({ ...props }) => (
                             <th
                               className="px-3 sm:px-6 py-2 sm:py-3 bg-muted border-b text-left text-xs font-medium text-foreground/80 uppercase tracking-wider"
                               {...props}
                             />
                           ),
-                          td: ({ node, ...props }) => (
+                          td: ({ ...props }) => (
                             <td
                               className="px-3 sm:px-6 py-2 sm:py-4 whitespace-nowrap text-xs sm:text-sm text-foreground/80 border-b"
                               {...props}
                             />
                           ),
-                          p: ({ node, ...props }) => (
+                          p: ({ ...props }) => (
                             <p
                               className="text-sm sm:text-base whitespace-pre-line text-foreground/80"
                               {...props}
                             />
                           ),
-                          h3: ({ node, ...props }) => (
+                          h3: ({ ...props }) => (
                             <h3
                               className="mt-6 sm:mt-8 mb-3 sm:mb-4 text-lg sm:text-xl font-semibold text-foreground/80"
                               {...props}
                             />
                           ),
-                          hr: ({ node, ...props }) => (
+                          hr: ({ ...props }) => (
                             <hr
                               className="my-6 sm:my-8 border-t border-border"
                               {...props}
