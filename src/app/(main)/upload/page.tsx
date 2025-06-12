@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
@@ -24,6 +24,7 @@ import {
 } from "next-cloudinary";
 import { useCreateItemMutation } from "@/services/endpoints/items-endpoints";
 import Image from "next/image";
+import { toast } from "sonner";
 
 const formSchema = z.object({
   name: z.string().min(1, "Name is required"),
@@ -54,6 +55,18 @@ export default function UploadPage() {
   const [detailImages, setDetailImages] = useState<string[]>([]);
   const [displayImage, setDisplayImage] = useState<string>("");
   const [createItem, { isLoading }] = useCreateItemMutation();
+  const [isCloudinaryConfigured, setIsCloudinaryConfigured] = useState(false);
+
+  useEffect(() => {
+    // Check if Cloudinary is configured
+    const cloudName = process.env.NEXT_PUBLIC_CLOUDINARY_CLOUD_NAME;
+    if (!cloudName) {
+      console.error("Cloudinary cloud name is not configured");
+      toast.error("Image upload is not available. Please contact support.");
+    } else {
+      setIsCloudinaryConfigured(true);
+    }
+  }, []);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -289,6 +302,65 @@ export default function UploadPage() {
     }
   };
 
+  const renderUploadWidget = (
+    onSuccess: (result: CloudinaryUploadWidgetResults) => void,
+    buttonText: string,
+    maxFiles: number = 1
+  ) => {
+    if (!isCloudinaryConfigured) {
+      return (
+        <Button type="button" variant="outline" disabled className="w-full">
+          Image Upload Unavailable
+        </Button>
+      );
+    }
+
+    return (
+      <CldUploadWidget
+        uploadPreset="myshop"
+        onSuccess={onSuccess}
+        onError={(error) => {
+          console.error("Upload error:", error);
+          toast.error("Failed to upload image. Please try again.");
+        }}
+        options={{
+          maxFiles,
+          sources: ["local", "url", "camera"],
+          clientAllowedFormats: ["jpg", "jpeg", "png", "gif"],
+          maxFileSize: 10000000,
+          styles: {
+            palette: {
+              window: "#FFFFFF",
+              windowBorder: "#90A0B3",
+              tabIcon: "#0078FF",
+              menuIcons: "#5A616A",
+              textDark: "#000000",
+              textLight: "#FFFFFF",
+              link: "#0078FF",
+              action: "#FF620C",
+              inactiveTabIcon: "#0E2F5A",
+              error: "#F44235",
+              inProgress: "#0078FF",
+              complete: "#20B832",
+              sourceBg: "#E4EBF1",
+            },
+          },
+        }}
+      >
+        {({ open }) => (
+          <Button
+            type="button"
+            variant="outline"
+            onClick={() => open()}
+            className="w-full"
+          >
+            {buttonText}
+          </Button>
+        )}
+      </CldUploadWidget>
+    );
+  };
+
   return (
     <div className="container mx-auto py-8">
       <Card>
@@ -511,77 +583,31 @@ export default function UploadPage() {
               <div className="space-y-4">
                 <h3 className="text-lg font-medium">Display Image</h3>
                 <div className="grid grid-cols-1 gap-4">
-                  <CldUploadWidget
-                    uploadPreset="myshop"
-                    onUpload={handleDisplayImageUpload}
-                    options={{
-                      maxFiles: 1,
-                      sources: ["local", "url", "camera"],
-                      clientAllowedFormats: ["jpg", "jpeg", "png", "gif"],
-                      maxFileSize: 10000000,
-                      styles: {
-                        palette: {
-                          window: "#FFFFFF",
-                          windowBorder: "#90A0B3",
-                          tabIcon: "#0078FF",
-                          menuIcons: "#5A616A",
-                          textDark: "#000000",
-                          textLight: "#FFFFFF",
-                          link: "#0078FF",
-                          action: "#FF620C",
-                          inactiveTabIcon: "#0E2F5A",
-                          error: "#F44235",
-                          inProgress: "#0078FF",
-                          complete: "#20B832",
-                          sourceBg: "#E4EBF1",
-                        },
-                        frame: {
-                          background: "#0078FF",
-                        },
-                      },
-                    }}
-                    onSuccess={(result) => {
-                      console.log("Upload success:", result);
-                      handleDisplayImageUpload(result);
-                    }}
-                    onError={(error) => {
-                      console.error("Upload error:", error);
-                    }}
-                  >
-                    {({ open }) => (
-                      <div className="flex flex-col items-center gap-4">
-                        {displayImage && (
-                          <div className="relative aspect-square w-full max-w-[300px] group">
-                            <Image
-                              src={displayImage}
-                              alt="Display image"
-                              fill
-                              className="object-cover rounded-lg"
-                            />
-                            <button
-                              type="button"
-                              onClick={removeDisplayImage}
-                              className="absolute top-2 right-2 p-1 bg-black/50 hover:bg-black/70 rounded-full text-white opacity-0 group-hover:opacity-100 transition-opacity"
-                            >
-                              <X className="h-4 w-4" />
-                            </button>
-                          </div>
-                        )}
-                        <Button
-                          type="button"
-                          variant="outline"
-                          onClick={() => open()}
-                          className="w-full"
-                        >
-                          Upload Display Image
-                        </Button>
-                      </div>
-                    )}
-                  </CldUploadWidget>
+                  {displayImage && (
+                    <div className="relative aspect-square w-full max-w-[300px] group">
+                      <Image
+                        src={displayImage}
+                        alt="Display image"
+                        fill
+                        className="object-cover rounded-lg"
+                      />
+                      <button
+                        type="button"
+                        onClick={removeDisplayImage}
+                        className="absolute top-2 right-2 p-1 bg-black/50 hover:bg-black/70 rounded-full text-white opacity-0 group-hover:opacity-100 transition-opacity"
+                      >
+                        <X className="h-4 w-4" />
+                      </button>
+                    </div>
+                  )}
+                  {renderUploadWidget(
+                    handleDisplayImageUpload,
+                    "Upload Display Image"
+                  )}
                 </div>
               </div>
 
-              {/* Images */}
+              {/* Additional Images */}
               <div className="space-y-4">
                 <h3 className="text-lg font-medium">Additional Images</h3>
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
@@ -603,52 +629,11 @@ export default function UploadPage() {
                     </div>
                   ))}
                 </div>
-                <CldUploadWidget
-                  uploadPreset="myshop"
-                  onSuccess={(result) => {
-                    console.log("Upload success:", result);
-                    handleImageUpload(result);
-                  }}
-                  onError={(error) => {
-                    console.error("Upload error:", error);
-                  }}
-                  options={{
-                    maxFiles: 5,
-                    sources: ["local", "url", "camera"],
-                    clientAllowedFormats: ["jpg", "jpeg", "png", "gif"],
-                    maxFileSize: 10000000,
-                    styles: {
-                      palette: {
-                        window: "#FFFFFF",
-                        windowBorder: "#90A0B3",
-                        tabIcon: "#0078FF",
-                        menuIcons: "#5A616A",
-                        textDark: "#000000",
-                        textLight: "#FFFFFF",
-                        link: "#0078FF",
-                        action: "#FF620C",
-                        inactiveTabIcon: "#0E2F5A",
-                        error: "#F44235",
-                        inProgress: "#0078FF",
-                        complete: "#20B832",
-                        sourceBg: "#E4EBF1",
-                      },
-                    },
-                  }}
-                >
-                  {({ open }) => (
-                    <div className="flex flex-col gap-4">
-                      <Button
-                        type="button"
-                        variant="outline"
-                        onClick={() => open()}
-                        className="w-full"
-                      >
-                        Upload Additional Images
-                      </Button>
-                    </div>
-                  )}
-                </CldUploadWidget>
+                {renderUploadWidget(
+                  handleImageUpload,
+                  "Upload Additional Images",
+                  5
+                )}
               </div>
 
               {/* Detail Images */}
@@ -673,52 +658,11 @@ export default function UploadPage() {
                     </div>
                   ))}
                 </div>
-                <CldUploadWidget
-                  uploadPreset="myshop"
-                  onSuccess={(result) => {
-                    console.log("Upload success:", result);
-                    handleDetailImageUpload(result);
-                  }}
-                  onError={(error) => {
-                    console.error("Upload error:", error);
-                  }}
-                  options={{
-                    maxFiles: 5,
-                    sources: ["local", "url", "camera"],
-                    clientAllowedFormats: ["jpg", "jpeg", "png", "gif"],
-                    maxFileSize: 10000000,
-                    styles: {
-                      palette: {
-                        window: "#FFFFFF",
-                        windowBorder: "#90A0B3",
-                        tabIcon: "#0078FF",
-                        menuIcons: "#5A616A",
-                        textDark: "#000000",
-                        textLight: "#FFFFFF",
-                        link: "#0078FF",
-                        action: "#FF620C",
-                        inactiveTabIcon: "#0E2F5A",
-                        error: "#F44235",
-                        inProgress: "#0078FF",
-                        complete: "#20B832",
-                        sourceBg: "#E4EBF1",
-                      },
-                    },
-                  }}
-                >
-                  {({ open }) => (
-                    <div className="flex flex-col gap-4">
-                      <Button
-                        type="button"
-                        variant="outline"
-                        onClick={() => open()}
-                        className="w-full"
-                      >
-                        Upload Detail Images
-                      </Button>
-                    </div>
-                  )}
-                </CldUploadWidget>
+                {renderUploadWidget(
+                  handleDetailImageUpload,
+                  "Upload Detail Images",
+                  5
+                )}
               </div>
 
               <Button type="submit" className="w-full" disabled={isLoading}>
