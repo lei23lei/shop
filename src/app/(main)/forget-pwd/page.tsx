@@ -24,6 +24,7 @@ import {
 import { useRouter } from "next/navigation";
 import { useForgotPasswordMutation } from "@/services/endpoints/account-endpoints";
 import { toast } from "sonner";
+import { ApiError } from "@/lib/type";
 
 const formSchema = z.object({
   email: z.string().email({
@@ -31,16 +32,11 @@ const formSchema = z.object({
   }),
 });
 
-type ApiError = {
-  data?: {
-    error?: string;
-  };
-};
-
 export default function ForGetPwdPage() {
   const router = useRouter();
   const [forgotPassword, { isLoading }] = useForgotPasswordMutation();
   const [isSuccess, setIsSuccess] = React.useState(false);
+  const [formError, setFormError] = React.useState<string>("");
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -51,6 +47,7 @@ export default function ForGetPwdPage() {
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     try {
+      setFormError(""); // Clear any previous errors
       await forgotPassword({
         email: values.email,
       }).unwrap();
@@ -59,8 +56,13 @@ export default function ForGetPwdPage() {
       toast.success("Password reset link has been sent to your email");
     } catch (error) {
       const apiError = error as ApiError;
-      const errorMessage = apiError?.data?.error || "Failed to send reset link";
-      toast.error(errorMessage);
+      const errorMessage =
+        apiError?.data?.error ||
+        apiError?.data?.message ||
+        apiError?.data?.detail ||
+        apiError?.data?.non_field_errors?.[0] ||
+        "Failed to send reset link";
+      setFormError(errorMessage);
     }
   }
 
@@ -113,6 +115,11 @@ export default function ForGetPwdPage() {
                 onSubmit={form.handleSubmit(onSubmit)}
                 className="space-y-4"
               >
+                {formError && (
+                  <div className="p-3 text-sm text-red-500 bg-red-50 rounded-md border border-red-200">
+                    {formError}
+                  </div>
+                )}
                 <FormField
                   control={form.control}
                   name="email"

@@ -29,7 +29,7 @@ import { CartSheet } from "@/components/cart/cart-sheet";
 export default function UserBar() {
   const { user } = useAuth();
   const { data: cartCount } = useGetCartCountQuery(undefined, {
-    skip: !user, // Skip the query if user is not logged in
+    skip: !user,
   });
   const { data: cartData } = useGetCartQuery(undefined, {
     skip: !user,
@@ -54,10 +54,13 @@ export default function UserBar() {
   const { theme, setTheme } = useTheme();
   const [isAnimating, setIsAnimating] = useState(false);
 
+  // Ensure client-side only rendering for user-dependent content
   useEffect(() => {
     setIsClient(true);
     setIsMounted(true);
+  }, []);
 
+  useEffect(() => {
     const handleScroll = () => {
       const currentScrollPos = window.scrollY;
 
@@ -384,34 +387,38 @@ export default function UserBar() {
               </AccordionItem>
             ))}
           </Accordion>
-          <div className="border-t  dark:border-t-0 flex items-center justify-between cursor-pointer border-gray-300 pt-4">
-            {user ? (
-              <Link
-                href="/myaccount"
-                className="w-full"
-                onClick={() => setIsMobileMenuOpen(false)}
-              >
-                <div className="flex w-full items-center justify-between">
-                  <div className="flex items-center gap-2 ">
-                    <div className="w-8 h-8 rounded-full bg-blue-300/40 flex items-center justify-center text-header-font font-medium">
-                      {user.email.charAt(0).toUpperCase()}
+          <div className="border-t dark:border-t-0 flex items-center justify-between cursor-pointer border-gray-300 pt-4">
+            {isClient && (
+              <>
+                {user ? (
+                  <Link
+                    href="/myaccount"
+                    className="w-full"
+                    onClick={() => setIsMobileMenuOpen(false)}
+                  >
+                    <div className="flex w-full items-center justify-between">
+                      <div className="flex items-center gap-2">
+                        <div className="w-8 h-8 rounded-full bg-blue-300/40 flex items-center justify-center text-header-font font-medium">
+                          {user.email.charAt(0).toUpperCase()}
+                        </div>
+                        <p className="text-md">{user.email}</p>
+                      </div>
+                      <ChevronRight className="w-4 h-4 text-header-font" />
                     </div>
-                    <p className="text-md">{user.email}</p>
-                  </div>
-                  <ChevronRight className="w-4 h-4  text-header-font" />
-                </div>
-              </Link>
-            ) : (
-              <Link
-                href="/login"
-                className="w-full"
-                onClick={() => setIsMobileMenuOpen(false)}
-              >
-                <div className="flex w-full items-center justify-between">
-                  <h5 className="text-md">Login</h5>
-                  <ChevronRight className="w-4 h-4  text-header-font" />
-                </div>
-              </Link>
+                  </Link>
+                ) : (
+                  <Link
+                    href="/login"
+                    className="w-full"
+                    onClick={() => setIsMobileMenuOpen(false)}
+                  >
+                    <div className="flex w-full items-center justify-between">
+                      <h5 className="text-md">Login</h5>
+                      <ChevronRight className="w-4 h-4 text-header-font" />
+                    </div>
+                  </Link>
+                )}
+              </>
             )}
           </div>
         </div>

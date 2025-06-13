@@ -25,6 +25,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { CheckCircle2, Circle } from "lucide-react";
 import { useResetPasswordMutation } from "@/services/endpoints/account-endpoints";
 import { toast } from "sonner";
+import { ApiError } from "@/lib/type";
 
 const formSchema = z
   .object({
@@ -48,6 +49,7 @@ function ResetPasswordForm() {
   const token = searchParams.get("token");
   const router = useRouter();
   const [resetPassword, { isLoading }] = useResetPasswordMutation();
+  const [formError, setFormError] = React.useState<string>("");
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -76,6 +78,7 @@ function ResetPasswordForm() {
     }
 
     try {
+      setFormError(""); // Clear any previous errors
       await resetPassword({
         token,
         new_password: values.password,
@@ -83,9 +86,15 @@ function ResetPasswordForm() {
 
       toast.success("Password has been reset successfully");
       router.push("/login");
-    } catch {
-      const errorMessage = "Failed to reset password";
-      toast.error(errorMessage);
+    } catch (error) {
+      const apiError = error as ApiError;
+      const errorMessage =
+        apiError?.data?.error ||
+        apiError?.data?.message ||
+        apiError?.data?.detail ||
+        apiError?.data?.non_field_errors?.[0] ||
+        "Failed to reset password";
+      setFormError(errorMessage);
     }
   }
 
@@ -103,6 +112,11 @@ function ResetPasswordForm() {
         <CardContent>
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+              {formError && (
+                <div className="p-3 text-sm text-red-500 bg-red-50 rounded-md border border-red-200">
+                  {formError}
+                </div>
+              )}
               <FormField
                 control={form.control}
                 name="password"

@@ -17,6 +17,7 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { Label } from "@/components/ui/label";
+import { ApiError } from "@/lib/type";
 
 export default function PersonalInfo() {
   const { data, isLoading, error } = useGetUserDetailQuery();
@@ -65,8 +66,16 @@ export default function PersonalInfo() {
     try {
       await updateUser(formData).unwrap();
       setIsEditing(false);
+      toast.success("Profile updated successfully");
     } catch (error) {
-      console.error("Failed to update user:", error);
+      const apiError = error as ApiError;
+      const errorMessage =
+        apiError?.data?.error ||
+        apiError?.data?.message ||
+        apiError?.data?.detail ||
+        apiError?.data?.non_field_errors?.[0] ||
+        "Failed to update profile";
+      toast.error(errorMessage);
     }
   };
 
@@ -130,8 +139,15 @@ export default function PersonalInfo() {
       });
       setIsPasswordChanged(true);
       toast.success("Password changed successfully");
-    } catch {
-      setPasswordError("Failed to change password");
+    } catch (error) {
+      const apiError = error as ApiError;
+      const errorMessage =
+        apiError?.data?.error ||
+        apiError?.data?.message ||
+        apiError?.data?.detail ||
+        apiError?.data?.non_field_errors?.[0] ||
+        "Failed to change password";
+      setPasswordError(errorMessage);
     }
   };
 
@@ -261,7 +277,7 @@ export default function PersonalInfo() {
                 Cancel
               </Button>
               <Button type="submit" className="w-full sm:w-auto">
-                Save Changes
+                {isLoading ? "Saving..." : "Save Changes"}
               </Button>
             </div>
           </form>
