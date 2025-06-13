@@ -63,6 +63,13 @@ export default function ItemDetailPage({
     return itemDetail.sizes.find((size) => size.size === selectedSize);
   }, [selectedSize, itemDetail]);
 
+  // Auto-select size if there's only one size available
+  React.useEffect(() => {
+    if (itemDetail?.sizes.length === 1 && itemDetail.sizes[0].quantity > 0) {
+      setSelectedSize(itemDetail.sizes[0].size);
+    }
+  }, [itemDetail]);
+
   // Reset quantity when size changes
   React.useEffect(() => {
     setQuantity(1);
@@ -214,20 +221,21 @@ export default function ItemDetailPage({
                 )}
 
                 {/* Color */}
-                {itemDetail.details?.color && (
-                  <div className="border-t border-muted-foreground/50 pt-3 sm:pt-4">
-                    <div className="flex items-center gap-2">
-                      <h4>Color: </h4>
-                      <div
-                        className="w-5 h-5 sm:w-6 sm:h-6 rounded-full border"
-                        style={{ backgroundColor: itemDetail.details.color }}
-                      />
-                      <span className="text-sm sm:text-base">
-                        {itemDetail.details.color}
-                      </span>
+                {itemDetail.details?.color &&
+                  itemDetail.details.color !== "null" && (
+                    <div className="border-t border-muted-foreground/50 pt-3 sm:pt-4">
+                      <div className="flex items-center gap-2">
+                        <h4>Color: </h4>
+                        <div
+                          className="w-5 h-5 sm:w-6 sm:h-6 rounded-full border"
+                          style={{ backgroundColor: itemDetail.details.color }}
+                        />
+                        <span className="text-sm sm:text-base">
+                          {itemDetail.details.color}
+                        </span>
+                      </div>
                     </div>
-                  </div>
-                )}
+                  )}
               </div>
 
               <div className="mt-6 sm:mt-8 space-y-6 sm:space-y-8">

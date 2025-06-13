@@ -30,6 +30,12 @@ export default function CheckoutPage() {
   const { data: cartData, isLoading: isCartLoading } = useGetCartQuery();
 
   useEffect(() => {
+    if (!cartData || !cartData.items || cartData.items.length === 0) {
+      router.push("/");
+    }
+  }, []);
+
+  useEffect(() => {
     if (!isAuthLoading && !user) {
       router.push("/login?redirect=/checkout");
     }

@@ -24,7 +24,7 @@ export default function StepTwo({
   setOrderData,
 }: StepTwoProps) {
   const { data: cartData } = useGetCartQuery();
-  const [createOrder] = useCreateOrderMutation();
+  const [createOrder, { isLoading }] = useCreateOrderMutation();
 
   const totalPrice =
     cartData?.items.reduce(
@@ -111,7 +111,7 @@ export default function StepTwo({
           Edit
         </Button>
         <Button onClick={handleProceedToPayment} className="w-full md:w-auto">
-          Proceed to Payment
+          {isLoading ? "Processing..." : "Proceed to Payment"}
         </Button>
       </div>
     </div>
