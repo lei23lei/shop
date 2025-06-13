@@ -244,6 +244,12 @@ export const accountApi = api.injectEndpoints({
         method: "POST",
         body: data,
       }),
+      invalidatesTags: [
+        { type: "User", id: "DETAIL" },
+        { type: "Items", id: "CART" },
+        { type: "Items", id: "CART_COUNT" },
+        { type: "Items", id: "USER_ORDERS" },
+      ],
     }),
     verify: builder.query<VerifyResponse, void>({
       query: () => ({
