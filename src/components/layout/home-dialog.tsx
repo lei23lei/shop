@@ -16,7 +16,7 @@ export default function HomeDialog() {
   useEffect(() => {
     // Check if user has seen the welcome dialog before
     const hasSeenWelcome = localStorage.getItem("hasSeenWelcome");
-    if (!hasSeenWelcome) {
+    if (hasSeenWelcome) {
       // Show dialog after a short delay for better UX
       const timer = setTimeout(() => {
         setShowWelcomeDialog(true);
@@ -34,18 +34,34 @@ export default function HomeDialog() {
   const handleStartShopping = () => {
     handleCloseDialog();
     // Optional: Navigate to a specific category or scroll to products
-    window.scrollTo({ top: window.innerHeight, behavior: "smooth" });
+    // window.scrollTo({ top: window.innerHeight, behavior: "smooth" });
   };
 
   return (
     <Dialog open={showWelcomeDialog} onOpenChange={setShowWelcomeDialog}>
-      <DialogContent className="max-w-[95%] rounded-lg md:max-w-lg border-0 bg-gradient-to-br from-white to-gray-50 dark:from-gray-900 dark:to-gray-800">
+      <DialogContent
+        className="max-w-[95%] rounded-lg md:max-w-lg border-0 bg-gradient-to-br from-white to-gray-50 dark:from-gray-900 dark:to-gray-800"
+        onOpenAutoFocus={(e) => {
+          e.preventDefault();
+          // Focus the title instead for better accessibility
+          const target = e.currentTarget as HTMLElement;
+          const title = target?.querySelector(
+            '[role="heading"]'
+          ) as HTMLElement;
+          if (title) {
+            title.focus();
+          }
+        }}
+      >
         <DialogHeader className="text-center space-y-4">
-          <div className="mx-auto w-12 h-12 md:w-16 md:h-16 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full flex items-center justify-center">
+          <div className="mx-auto w-12 h-12 md:w-16 md:h-16 bg-gradient-to-r from-pink-300 to-purple-600 rounded-full flex items-center justify-center">
             <Sparkles className="w-6 h-6 md:w-8 md:h-8 text-white" />
           </div>
 
-          <DialogTitle className="text-xl md:text-3xl font-bold text-center bg-gradient-to-r from-gray-900 to-gray-600 dark:from-gray-100 dark:to-gray-400 bg-clip-text text-transparent">
+          <DialogTitle
+            className="text-xl md:text-3xl font-bold text-center bg-gradient-to-r from-gray-900 to-gray-600 dark:from-gray-100 dark:to-gray-400 bg-clip-text text-transparent focus:outline-none"
+            tabIndex={0}
+          >
             Welcome to Peter&apos;s Shop!
           </DialogTitle>
         </DialogHeader>
@@ -96,7 +112,7 @@ export default function HomeDialog() {
         <div className="flex flex-col gap-3 pt-6">
           <Button
             onClick={handleStartShopping}
-            className="w-full h-10 md:h-12 text-sm md:text-base font-semibold bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white border-0"
+            className="w-full h-10  md:h-12 text-sm md:text-base font-semibold bg-gradient-to-r from-pink-300 to-purple-600 hover:from-pink-400 hover:to-purple-700 text-white border-0"
           >
             Start Shopping
           </Button>

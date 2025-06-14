@@ -62,7 +62,10 @@ export function CartSheet({
         <SheetHeader>
           <SheetTitle>{""}</SheetTitle>
         </SheetHeader>
-        <SheetContent className="w-full  sm:w-[540px]  border-l-0">
+        <SheetContent
+          className="w-full  sm:w-[540px]  border-l-0"
+          onOpenAutoFocus={(e) => e.preventDefault()}
+        >
           <div className="flex flex-col h-full overflow-hidden ">
             <ScrollArea className="flex-1 pr-4">
               <div className="flex flex-col gap-4 mt-4">
