@@ -204,7 +204,6 @@ export default function PersonalInfo() {
                     value={formData.first_name}
                     onChange={handleChange}
                     placeholder="Enter first name"
-                    className="text-sm md:text-base"
                   />
                 </div>
                 <div>
@@ -214,16 +213,11 @@ export default function PersonalInfo() {
                     value={formData.last_name}
                     onChange={handleChange}
                     placeholder="Enter last name"
-                    className="text-sm md:text-base"
                   />
                 </div>
                 <div>
                   <Label className="text-sm ">Email Address</Label>
-                  <Input
-                    value={user?.email}
-                    disabled
-                    className="bg-gray-100 text-sm md:text-base"
-                  />
+                  <Input value={user?.email} disabled className="bg-gray-100" />
                 </div>
               </div>
               <div className="space-y-4">
@@ -234,7 +228,6 @@ export default function PersonalInfo() {
                     value={formData.phone_number}
                     onChange={handleChange}
                     placeholder="Enter phone number"
-                    className="text-sm md:text-base"
                   />
                 </div>
                 <div>
@@ -242,7 +235,7 @@ export default function PersonalInfo() {
                   <Input
                     value={user?.is_superuser ? "Administrator" : "Customer"}
                     disabled
-                    className="bg-gray-100 text-sm md:text-base"
+                    className="bg-gray-100"
                   />
                 </div>
                 <div>
@@ -252,7 +245,7 @@ export default function PersonalInfo() {
                       user?.created_at || ""
                     ).toLocaleDateString()}
                     disabled
-                    className="bg-gray-100 text-sm md:text-base"
+                    className="bg-gray-100"
                   />
                 </div>
               </div>
@@ -264,7 +257,7 @@ export default function PersonalInfo() {
                 value={formData.address}
                 onChange={handleChange}
                 placeholder="Enter address"
-                className="min-h-[100px] text-sm md:text-base"
+                className="min-h-[100px]"
               />
             </div>
             <div className="flex flex-col sm:flex-row justify-end gap-2 sm:gap-4">
@@ -373,9 +366,7 @@ export default function PersonalInfo() {
                       onChange={handlePasswordChange}
                       placeholder="Enter current password"
                       required
-                      className={`text-sm md:text-base ${
-                        passwordError ? "border-red-500" : ""
-                      }`}
+                      className={`${passwordError ? "border-red-500" : ""}`}
                     />
                     {passwordError && (
                       <p className="text-sm text-red-500 mt-1">
@@ -392,9 +383,7 @@ export default function PersonalInfo() {
                       onChange={handlePasswordChange}
                       placeholder="Enter new password"
                       required
-                      className={`text-sm md:text-base ${
-                        newPasswordError ? "border-red-500" : ""
-                      }`}
+                      className={`${newPasswordError ? "border-red-500" : ""}`}
                     />
                     {newPasswordError && (
                       <p className="text-sm text-red-500 mt-1">
@@ -411,7 +400,7 @@ export default function PersonalInfo() {
                       onChange={handlePasswordChange}
                       placeholder="Confirm new password"
                       required
-                      className={`text-sm md:text-base ${
+                      className={`${
                         confirmPasswordError ? "border-red-500" : ""
                       }`}
                     />
