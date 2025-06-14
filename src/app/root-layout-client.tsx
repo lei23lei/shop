@@ -13,8 +13,11 @@ export default function RootLayoutClient({
     <ThemeProvider
       attribute="class"
       defaultTheme="system"
-      enableSystem
-      disableTransitionOnChange
+      enableSystem={true}
+      enableColorScheme={true}
+      storageKey="theme"
+      themes={["light", "dark", "system"]}
+      disableTransitionOnChange={false}
     >
       <StoreProvider>
         <AuthProvider>{children}</AuthProvider>

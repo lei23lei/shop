@@ -51,7 +51,7 @@ export default function UserBar() {
   const router = useRouter();
   const SCROLL_THRESHOLD = 100;
   const [isCartOpen, setIsCartOpen] = React.useState(false);
-  const { theme, setTheme } = useTheme();
+  const { theme, setTheme, resolvedTheme, systemTheme } = useTheme();
   const [isAnimating, setIsAnimating] = useState(false);
 
   // Ensure client-side only rendering for user-dependent content
@@ -177,16 +177,25 @@ export default function UserBar() {
       });
   };
 
-  // Handle theme toggle with animation
+  // Handle theme toggle with better system theme support
   const handleThemeToggle = () => {
     setIsAnimating(true);
     setTimeout(() => {
-      setTheme(theme === "dark" ? "light" : "dark");
+      if (theme === "system") {
+        // If currently on system, switch to the opposite of system preference
+        setTheme(systemTheme === "dark" ? "light" : "dark");
+      } else {
+        // Toggle between light and dark
+        setTheme(theme === "dark" ? "light" : "dark");
+      }
       setTimeout(() => {
         setIsAnimating(false);
       }, 300);
     }, 200);
   };
+
+  // Get the actual theme being displayed (resolves system theme)
+  const currentTheme = resolvedTheme || theme;
 
   return (
     <div
@@ -259,11 +268,11 @@ export default function UserBar() {
             {isMounted && (
               <div
                 className={`transform transition-all duration-500 ${
-                  theme === "dark" ? "rotate-0" : "rotate-180"
+                  currentTheme === "dark" ? "rotate-0" : "rotate-180"
                 }`}
                 style={{ transformOrigin: "center" }}
               >
-                {theme === "dark" ? (
+                {currentTheme === "dark" ? (
                   <MoonStar
                     className={`h-4 w-4 text-yellow-300 ${
                       isAnimating ? "scale-90" : "scale-[1.4]"
@@ -326,11 +335,11 @@ export default function UserBar() {
             {isMounted && (
               <div
                 className={`transform transition-all duration-500 ${
-                  theme === "dark" ? "rotate-0" : "rotate-180"
+                  currentTheme === "dark" ? "rotate-0" : "rotate-180"
                 }`}
                 style={{ transformOrigin: "center" }}
               >
-                {theme === "dark" ? (
+                {currentTheme === "dark" ? (
                   <MoonStar
                     className={`h-4 w-4 text-yellow-300 ${
                       isAnimating ? "scale-90" : "scale-[1.4]"
