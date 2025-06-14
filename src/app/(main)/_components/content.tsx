@@ -69,9 +69,9 @@ export default function Content() {
           transition={{ duration: 0.5, delay: 0.7 }}
           className="max-w-md md:text-left text-center text-gray-600 dark:text-gray-300 text-sm sm:text-base md:leading-relaxed leading-tight"
         >
-          Discover premium men's fashion that defines modern masculinity. From
-          sharp business attire to casual weekend wear, find pieces that reflect
-          your confidence and sophistication.
+          Discover premium men&apos;s fashion that defines modern masculinity.
+          From sharp business attire to casual weekend wear, find pieces that
+          reflect your confidence and sophistication.
         </motion.p>
         <Link href="/items/1" className="w-full sm:w-auto flex justify-center">
           <motion.button
@@ -80,7 +80,7 @@ export default function Content() {
             transition={{ duration: 0.5, delay: 0.9 }}
             className="px-4 py-2 sm:px-8 sm:py-3 bg-black dark:bg-white text-white dark:text-black rounded-full hover:bg-gray-800 dark:hover:bg-gray-200 transition-colors duration-300 transform hover:scale-105 text-sm sm:text-base"
           >
-            Shop Men's Collection
+            Shop Men&apos;s Collection
           </motion.button>
         </Link>
       </motion.div>
