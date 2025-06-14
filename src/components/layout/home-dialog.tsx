@@ -16,7 +16,7 @@ export default function HomeDialog() {
   useEffect(() => {
     // Check if user has seen the welcome dialog before
     const hasSeenWelcome = localStorage.getItem("hasSeenWelcome");
-    if (hasSeenWelcome) {
+    if (!hasSeenWelcome) {
       // Show dialog after a short delay for better UX
       const timer = setTimeout(() => {
         setShowWelcomeDialog(true);

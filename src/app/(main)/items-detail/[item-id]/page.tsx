@@ -188,9 +188,7 @@ export default function ItemDetailPage({
             <div className="flex-1 flex flex-col justify-between">
               <div className="space-y-4 sm:space-y-6">
                 <div className="space-y-2 sm:space-y-3">
-                  <h2 className="text-base sm:text-lg  md:text-xl lg:text-2xl font-extrabold">
-                    {itemDetail.name}
-                  </h2>
+                  <h3>{itemDetail.name}</h3>
 
                   {/* Categories */}
                   <div className="flex flex-wrap items-center gap-1.5 sm:gap-2">
@@ -304,7 +302,7 @@ export default function ItemDetailPage({
 
                 {/* Add to Cart Button */}
                 <Button
-                  className="w-full h-10 sm:h-12  text-sm sm:text-base font-medium"
+                  className="w-full max-w-[600px] h-10 sm:h-[44px]  text-sm sm:text-base font-medium"
                   disabled={!selectedSize || isAddingToCart}
                   variant="default"
                   onClick={async () => {
@@ -338,10 +336,10 @@ export default function ItemDetailPage({
                   {isAddingToCart ? (
                     <div className="flex items-center gap-2">
                       <LoadingSpin />
-                      <span className="text-sm sm:text-base">Adding...</span>
+                      <span className="text-xs sm:text-sm">Adding...</span>
                     </div>
                   ) : (
-                    <p className="text-sm font-extrabold sm:text-base">
+                    <p className="text-xs font-extrabold sm:text-sm">
                       ADD TO CART
                     </p>
                   )}
