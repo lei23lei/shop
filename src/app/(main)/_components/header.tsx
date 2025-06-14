@@ -92,14 +92,14 @@ export default function Header() {
                       {/* Text overlay with improved layout */}
                       <div className="absolute inset-0 flex flex-col justify-center items-center text-center text-white px-4 sm:px-8 md:px-16 lg:px-24">
                         <div className="max-w-4xl space-y-4 sm:space-y-6">
-                          <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl  font-extrabold leading-tight tracking-tight drop-shadow-2xl shadow-black/90">
+                          <h1 className="text-3xl sm:text-4xl md:text-5xl  font-extrabold leading-tight tracking-tight drop-shadow-2xl shadow-black/90">
                             {image.title}
                           </h1>
-                          <h2 className="text-lg sm:text-xl md:text-2xl lg:text-3xl  font-light italic opacity-90 drop-shadow-xl shadow-black/80">
+                          <h2 className="text-lg sm:text-xl md:text-2xl  font-light italic opacity-90 drop-shadow-xl shadow-black/80">
                             {image.subtitle}
                           </h2>
                           <div className="w-16 sm:w-20 md:w-24 h-1 bg-white/80 mx-auto my-4 sm:my-6"></div>
-                          <p className="text-base sm:text-lg md:text-xl lg:text-2xl  font-light leading-relaxed max-w-3xl mx-auto opacity-95 drop-shadow-lg shadow-black/70">
+                          <p className="text-base sm:text-lg md:text-xl  font-light leading-relaxed max-w-3xl mx-auto opacity-95 drop-shadow-lg shadow-black/70">
                             {image.description}
                           </p>
                           <div className="pt-4 sm:pt-6 md:pt-8">

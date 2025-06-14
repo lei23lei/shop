@@ -85,7 +85,7 @@ export function CartSheet({
                         </Link>
                         <div className="flex flex-col pr-2 flex-1">
                           <div className="flex flex-row justify-between items-center">
-                            <div className="font-medium line-clamp-1">
+                            <div className="font-medium text-sm line-clamp-1">
                               {item.name}
                             </div>
                             <div>
@@ -131,8 +131,27 @@ export function CartSheet({
                     ))}
                   </>
                 ) : (
-                  <div className="text-center py-8 text-neutral-500">
-                    Your cart is empty
+                  <div className="flex flex-col items-center justify-center py-16 px-6 space-y-6">
+                    <div className="relative">
+                      <div className="w-12 h-12 md:w-16 md:h-16 bg-gradient-to-br from-gray-100 to-gray-200 dark:from-gray-800 dark:to-gray-700 rounded-full flex items-center justify-center shadow-inner">
+                        <ShoppingCart className="w-8 h-8 md:w-10 md:h-10 text-gray-400 dark:text-gray-500" />
+                      </div>
+                    </div>
+                    <div className="text-center space-y-2">
+                      <h3 className="text-md md:text-lg font-semibold text-gray-900 dark:text-gray-100">
+                        Your cart is empty
+                      </h3>
+                      <p className="text-sm text-gray-500 dark:text-gray-400 max-w-xs">
+                        Discover amazing products and add them to your cart to
+                        get started shopping!
+                      </p>
+                    </div>
+                    <Button
+                      variant="outline"
+                      onClick={() => setIsCartOpen(false)}
+                    >
+                      Start Shopping
+                    </Button>
                   </div>
                 )}
               </div>
@@ -140,14 +159,14 @@ export function CartSheet({
             {cartData && cartData.items.length > 0 && (
               <div className="mt-4 pt-4 border-t">
                 <div className="flex justify-between items-center mb-4">
-                  <span className="font-medium">Total Price:</span>
-                  <span className="font-medium">
+                  <span className="font-medium text-sm">Total Price:</span>
+                  <span className="font-medium text-sm">
                     ${localTotalPrice.toFixed(2)}
                   </span>
                 </div>
                 <Link href="/checkout">
                   <Button className="w-full font-extrabold bg-zinc-950/80 hover:bg-zinc-950/60 dark:bg-zinc-950 dark:hover:bg-zinc-950/60 text-zinc-100">
-                    Checkout
+                    <p className="text-sm">Checkout</p>
                   </Button>
                 </Link>
               </div>

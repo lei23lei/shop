@@ -204,21 +204,21 @@ export default function UserBar() {
       }`}
       ref={menuRef}
     >
-      <div className="px-3 md:px-10  h-[70px]  flex items-center justify-between">
+      <div className="px-3 md:px-10  h-[55px]  flex items-center justify-between">
         <Link href="/" onClick={() => setIsMobileMenuOpen(false)}>
           <Image
             src="/images/icon-full.png"
             alt="Logo"
             width={400}
             height={400}
-            className="w-64 mt-4 hidden md:block  "
+            className="w-56 mt-4 hidden md:block  "
           />
           <Image
             src="/images/icon.png"
             alt="Logo"
             width={250}
             height={250}
-            className="w-14 md:hidden  "
+            className="w-12 md:hidden  "
           />
         </Link>
 
@@ -239,8 +239,8 @@ export default function UserBar() {
             <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
             <Input
               type="search"
-              placeholder="Search..."
-              className="w-[120px] pl-8 bg-white/90 text-black focus:w-[280px]  transition-all duration-400 ease-in-out !ring-0 !ring-offset-0 !focus-visible:ring-0 !focus-visible:ring-offset-0 !focus:ring-0 !focus:ring-offset-0 !outline-none "
+              placeholder="Search"
+              className="w-[120px] pl-8 bg-white/90 text-black focus:w-[280px]  transition-all duration-600 ease-in-out !ring-0 !ring-offset-0 !focus-visible:ring-0 !focus-visible:ring-offset-0 !focus:ring-0 !focus:ring-offset-0 !outline-none "
               value={searchQuery}
               onChange={(e) => {
                 setSearchQuery(e.target.value);
@@ -308,17 +308,17 @@ export default function UserBar() {
               {user ? (
                 <Link href="/myaccount">
                   <div className="flex items-center  gap-2 text-white">
-                    <div className="w-8 h-8 rounded-full   bg-blue-300/40 flex items-center justify-center text-white font-medium">
+                    <div className="w-6 h-6 rounded-full   bg-blue-300/40 flex items-center justify-center text-white font-medium">
                       {user.email.charAt(0).toUpperCase()}
                     </div>
-                    <p className="text-md text-header-font hover:underline">
+                    <p className="text-sm text-header-font hover:underline">
                       {user.email}
                     </p>
                   </div>
                 </Link>
               ) : (
                 <Link href="/login">
-                  <div className="text-header-font hover:text-foreground  text-lg">
+                  <div className="text-header-font hover:text-foreground  text-md">
                     Login
                   </div>
                 </Link>
@@ -410,7 +410,7 @@ export default function UserBar() {
                         <div className="w-8 h-8 rounded-full bg-blue-300/40 flex items-center justify-center text-header-font font-medium">
                           {user.email.charAt(0).toUpperCase()}
                         </div>
-                        <p className="text-md">{user.email}</p>
+                        <p className="text-sm">{user.email}</p>
                       </div>
                       <ChevronRight className="w-4 h-4 text-header-font" />
                     </div>
@@ -442,7 +442,9 @@ export default function UserBar() {
               className="group cursor-pointer relative py-2"
               onClick={() => handleCategoryClick(Number(category.id))}
             >
-              <div className="px-2 text-header-font">{category.name}</div>
+              <div className="px-2 text-sm text-header-font">
+                {category.name}
+              </div>
               <div className="absolute bottom-0 left-0 w-full h-[3px]">
                 <div
                   className={`h-full bg-header-font transition-all duration-400 mx-auto
@@ -473,7 +475,7 @@ export default function UserBar() {
             <Input
               type="search"
               placeholder="Search..."
-              className="w-[200px] pl-8 text-black bg-white/90 focus:w-[350px] transition-all duration-400 ease-in-out !ring-0 !ring-offset-0 !focus-visible:ring-0 !focus-visible:ring-offset-0 !focus:ring-0 !focus:ring-offset-0 !outline-none text-base sm:text-sm"
+              className="w-[200px] h-[35px] pl-8 text-black bg-white/90 focus:w-[350px] transition-all duration-600 ease-in-out !ring-0 !ring-offset-0 !focus-visible:ring-0 !focus-visible:ring-offset-0 !focus:ring-0 !focus:ring-offset-0 !outline-none text-base sm:text-sm"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
             />
