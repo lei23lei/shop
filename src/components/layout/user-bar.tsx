@@ -240,7 +240,7 @@ export default function UserBar() {
             <Input
               type="search"
               placeholder="Search"
-              className="w-[120px] pl-8 bg-white/90 text-black focus:w-[280px]  transition-all duration-600 ease-in-out !ring-0 !ring-offset-0 !focus-visible:ring-0 !focus-visible:ring-offset-0 !focus:ring-0 !focus:ring-offset-0 !outline-none "
+              className="w-[120px] pl-8 bg-white/90 text-black focus:w-[280px]  transition-all duration-1000 ease-in-out !ring-0 !ring-offset-0 !focus-visible:ring-0 !focus-visible:ring-offset-0 !focus:ring-0 !focus:ring-offset-0 !outline-none "
               value={searchQuery}
               onChange={(e) => {
                 setSearchQuery(e.target.value);
@@ -475,7 +475,7 @@ export default function UserBar() {
             <Input
               type="search"
               placeholder="Search..."
-              className="w-[200px] h-[35px] pl-8 text-black bg-white/90 focus:w-[350px] transition-all duration-600 ease-in-out !ring-0 !ring-offset-0 !focus-visible:ring-0 !focus-visible:ring-offset-0 !focus:ring-0 !focus:ring-offset-0 !outline-none text-base sm:text-sm"
+              className="w-[200px] h-[35px] pl-8 text-black bg-white/90 focus:w-[350px] transition-all duration-1000 ease-in-out !ring-0 !ring-offset-0 !focus-visible:ring-0 !focus-visible:ring-offset-0 !focus:ring-0 !focus:ring-offset-0 !outline-none text-base sm:text-sm"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
             />
