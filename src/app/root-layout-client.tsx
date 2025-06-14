@@ -3,6 +3,7 @@
 import { StoreProvider } from "@/providers/store-provider";
 import { AuthProvider } from "@/contexts/auth-context";
 import { ThemeProvider } from "@/providers/theme-provider";
+import HomeDialog from "@/components/layout/home-dialog";
 
 export default function RootLayoutClient({
   children,
@@ -20,7 +21,10 @@ export default function RootLayoutClient({
       disableTransitionOnChange={false}
     >
       <StoreProvider>
-        <AuthProvider>{children}</AuthProvider>
+        <AuthProvider>
+          {children}
+          <HomeDialog />
+        </AuthProvider>
       </StoreProvider>
     </ThemeProvider>
   );
