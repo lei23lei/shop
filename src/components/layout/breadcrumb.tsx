@@ -43,7 +43,9 @@ export default function BreadcrumbNavigation({
     <Breadcrumb>
       <BreadcrumbList>
         <BreadcrumbItem>
-          <BreadcrumbLink href="/">Home</BreadcrumbLink>
+          <BreadcrumbLink href="/">
+            <p className="font-medium">Home</p>
+          </BreadcrumbLink>
         </BreadcrumbItem>
 
         {categoryInfo && (
@@ -51,7 +53,7 @@ export default function BreadcrumbNavigation({
             <BreadcrumbSeparator />
             <BreadcrumbItem>
               <BreadcrumbLink href={`/items/${categoryInfo.categoryId}`}>
-                {categoryInfo.category}
+                <p className="font-medium">{categoryInfo.category}</p>
               </BreadcrumbLink>
             </BreadcrumbItem>
             {categoryInfo.subcategory && (
@@ -59,7 +61,7 @@ export default function BreadcrumbNavigation({
                 <BreadcrumbSeparator />
                 <BreadcrumbItem>
                   <BreadcrumbLink href={`/items/${categoryInfo.subcategoryId}`}>
-                    {categoryInfo.subcategory}
+                    <p className="font-medium">{categoryInfo.subcategory}</p>
                   </BreadcrumbLink>
                 </BreadcrumbItem>
               </>

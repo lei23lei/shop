@@ -442,7 +442,7 @@ export default function UserBar() {
               className="group cursor-pointer relative py-2"
               onClick={() => handleCategoryClick(Number(category.id))}
             >
-              <div className="px-2 text-sm text-header-font">
+              <div className="px-2 font-semibold text-sm text-header-font">
                 {category.name}
               </div>
               <div className="absolute bottom-0 left-0 w-full h-[3px]">

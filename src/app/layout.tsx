@@ -1,11 +1,11 @@
 import type { Metadata } from "next";
-import { Work_Sans } from "next/font/google";
+import { Signika_Negative } from "next/font/google";
 import "./globals.css";
 import RootLayoutClient from "./root-layout-client";
 
-const workSans = Work_Sans({
-  weight: "500",
-  variable: "--font-work-sans",
+const signikaNegative = Signika_Negative({
+  weight: ["300", "400", "500", "600", "700"],
+  variable: "--font-signika-negative",
   subsets: ["latin"],
 });
 
@@ -36,7 +36,7 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body
-        className={`${workSans.variable} font-work-sans bg-background overflow-x-hidden antialiased`}
+        className={`${signikaNegative.variable} font-signika-negative bg-background overflow-x-hidden antialiased`}
       >
         <RootLayoutClient>{children}</RootLayoutClient>
       </body>

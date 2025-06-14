@@ -99,7 +99,7 @@ export default function Header() {
                             {image.subtitle}
                           </h2>
                           <div className="w-16 sm:w-20 md:w-24 h-1 bg-white/80 mx-auto my-4 sm:my-6"></div>
-                          <p className="text-base sm:text-lg md:text-xl  font-light leading-relaxed max-w-3xl mx-auto opacity-95 drop-shadow-lg shadow-black/70">
+                          <p className="text-base px-2 sm:text-lg md:text-xl   leading-relaxed max-w-3xl mx-auto opacity-95 drop-shadow-lg shadow-black/70">
                             {image.description}
                           </p>
                           <div className="pt-4 sm:pt-6 md:pt-8">

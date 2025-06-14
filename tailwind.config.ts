@@ -81,7 +81,7 @@ export default {
         "accordion-up": "accordion-up 0.2s ease-out",
       },
       fontFamily: {
-        "work-sans": ["var(--font-work-sans)"],
+        "signika-negative": ["var(--font-signika-negative)"],
       },
       fontSize: {
         md: "17px",
