@@ -1,11 +1,11 @@
 import type { Metadata } from "next";
-import { Signika_Negative } from "next/font/google";
+import { Maven_Pro } from "next/font/google";
 import "./globals.css";
 import RootLayoutClient from "./root-layout-client";
 
-const signikaNegative = Signika_Negative({
-  weight: ["300", "400", "500", "600", "700"],
-  variable: "--font-signika-negative",
+const mavenPro = Maven_Pro({
+  weight: ["400", "500", "600", "700", "800", "900"],
+  variable: "--font-maven-pro",
   subsets: ["latin"],
 });
 
@@ -36,7 +36,7 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body
-        className={`${signikaNegative.variable} font-signika-negative bg-background overflow-x-hidden antialiased`}
+        className={`${mavenPro.variable} font-maven-pro bg-background overflow-x-hidden antialiased`}
       >
         <RootLayoutClient>{children}</RootLayoutClient>
       </body>

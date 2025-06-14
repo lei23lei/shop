@@ -81,7 +81,7 @@ export default {
         "accordion-up": "accordion-up 0.2s ease-out",
       },
       fontFamily: {
-        "signika-negative": ["var(--font-signika-negative)"],
+        "maven-pro": ["var(--font-maven-pro)"],
       },
       fontSize: {
         md: "17px",
