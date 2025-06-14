@@ -204,7 +204,7 @@ export default function UserBar() {
       }`}
       ref={menuRef}
     >
-      <div className="px-3 md:px-10  h-[55px]  flex items-center justify-between">
+      <div className="px-3 md:px-10  h-[60px]  flex items-center justify-between">
         <Link href="/" onClick={() => setIsMobileMenuOpen(false)}>
           <Image
             src="/images/icon-full.png"
@@ -434,7 +434,7 @@ export default function UserBar() {
       </div>
 
       {/* Desktop Menu */}
-      <div className="hidden md:flex relative flex-row justify-between h-[55px] items-center w-full mx-auto px-10">
+      <div className="hidden md:flex relative flex-row justify-between h-[50px] items-center w-full mx-auto px-10">
         <div className="flex space-x-4 items-center">
           {categories.map((category) => (
             <div
@@ -495,12 +495,12 @@ export default function UserBar() {
         {/* expandable categories */}
         {activeCategory !== null && (
           <div
-            className="hidden md:flex text-header-font absolute  rounded-b-sm flex-row left-0 top-[55px] w-[600px] h-[290px] bg-header-background shadow-lg 
+            className="hidden md:flex text-header-font absolute  rounded-b-sm flex-row left-0 top-[50px] w-[600px] h-[290px] bg-header-background shadow-lg 
             transform transition-all duration-300 ease-in-out opacity-100 translate-y-0 space-x-6
             origin-top animate-in fade-in slide-in-from-top-2"
           >
             <div className="flex flex-col w-40 h-full">
-              <div className="flex flex-col pl-6 pt-4">
+              <div className="flex flex-col pl-8 pt-4">
                 {categories
                   .find((c) => c.id === activeCategory)
                   ?.subcategories?.map((subcategory) => (
@@ -510,7 +510,7 @@ export default function UserBar() {
                       className="hover:bg-foreground/10 rounded-md px-4 py-2 cursor-pointer   hover:text-primary"
                       onClick={handleLinkClick}
                     >
-                      {subcategory.name}
+                      <p className="text-sm">{subcategory.name}</p>
                     </Link>
                   )) ?? null}
               </div>

@@ -11,7 +11,7 @@ export default function MainLayout({
   return (
     <>
       <UserBar />
-      <div className="pt-[55px] md:pt-[110px]">{children}</div>
+      <div className="pt-[60px] md:pt-[110px]">{children}</div>
       <Footer />
     </>
   );
