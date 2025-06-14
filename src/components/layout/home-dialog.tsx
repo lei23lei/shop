@@ -39,13 +39,13 @@ export default function HomeDialog() {
 
   return (
     <Dialog open={showWelcomeDialog} onOpenChange={setShowWelcomeDialog}>
-      <DialogContent className="sm:max-w-lg border-0 bg-gradient-to-br from-white to-gray-50 dark:from-gray-900 dark:to-gray-800">
+      <DialogContent className="max-w-[95%] rounded-lg md:max-w-lg border-0 bg-gradient-to-br from-white to-gray-50 dark:from-gray-900 dark:to-gray-800">
         <DialogHeader className="text-center space-y-4">
           <div className="mx-auto w-12 h-12 md:w-16 md:h-16 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full flex items-center justify-center">
             <Sparkles className="w-6 h-6 md:w-8 md:h-8 text-white" />
           </div>
 
-          <DialogTitle className="text-lg md:text-3xl font-bold text-center bg-gradient-to-r from-gray-900 to-gray-600 dark:from-gray-100 dark:to-gray-400 bg-clip-text text-transparent">
+          <DialogTitle className="text-xl md:text-3xl font-bold text-center bg-gradient-to-r from-gray-900 to-gray-600 dark:from-gray-100 dark:to-gray-400 bg-clip-text text-transparent">
             Welcome to Peter&apos;s Shop!
           </DialogTitle>
         </DialogHeader>
