@@ -48,7 +48,7 @@ const formSchema = z
 
 export default function RegForm() {
   const router = useRouter();
-  const { login } = useAuth();
+  const { login, isLoading: isAuthLoading } = useAuth();
   const [register, { isLoading }] = useRegisterMutation();
   const [countdown, setCountdown] = useState(3);
   const [isSuccess, setIsSuccess] = useState(false);
@@ -216,8 +216,14 @@ export default function RegForm() {
                 </li>
               </ul>
             </div>
-            <Button type="submit" className="w-full" disabled={isLoading}>
-              {isLoading ? "Creating account..." : "Create account"}
+            <Button
+              type="submit"
+              className="w-full"
+              disabled={isAuthLoading || isLoading}
+            >
+              {isAuthLoading || isLoading
+                ? "Creating account..."
+                : "Create account"}
             </Button>
           </form>
         </Form>

@@ -44,7 +44,7 @@ type ApiError = {
 
 export function LoginForm() {
   const router = useRouter();
-  const { login } = useAuth();
+  const { login, isLoading: isAuthLoading } = useAuth();
   const [isLoading, setIsLoading] = useState(false);
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -125,8 +125,12 @@ export function LoginForm() {
                 Forgot password?
               </Link>
             </div>
-            <Button type="submit" className="w-full" disabled={isLoading}>
-              {isLoading ? "Signing in..." : "Sign in"}
+            <Button
+              type="submit"
+              className="w-full"
+              disabled={isAuthLoading || isLoading}
+            >
+              {isAuthLoading || isLoading ? "Signing in..." : "Sign in"}
             </Button>
           </form>
         </Form>
