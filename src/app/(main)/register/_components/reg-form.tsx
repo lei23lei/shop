@@ -26,6 +26,12 @@ import { useRegisterMutation } from "@/services/endpoints/account-endpoints";
 import { useRouter } from "next/navigation";
 import { useAuth } from "@/contexts/auth-context";
 
+type ApiError = {
+  data?: {
+    error?: string;
+  };
+};
+
 const formSchema = z
   .object({
     email: z.string().email({
@@ -90,8 +96,10 @@ export default function RegForm() {
 
       await login(values.email, values.password);
       setIsSuccess(true);
-    } catch {
-      const errorMessage = "Registration failed. Please try again.";
+    } catch (error) {
+      const apiError = error as ApiError;
+      const errorMessage =
+        apiError?.data?.error || "Registration failed. Please try again.";
       form.setError("email", {
         type: "manual",
         message: errorMessage,
