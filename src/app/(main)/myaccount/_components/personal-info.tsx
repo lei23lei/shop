@@ -22,7 +22,8 @@ import { ApiError } from "@/lib/type";
 export default function PersonalInfo() {
   const { data, isLoading, error } = useGetUserDetailQuery();
   const [updateUser] = useUpdateUserMutation();
-  const [changePassword] = useChangePasswordMutation();
+  const [changePassword, { isLoading: isPasswordLoading }] =
+    useChangePasswordMutation();
   const [isEditing, setIsEditing] = useState(false);
   const [formData, setFormData] = useState({
     first_name: "",
@@ -441,8 +442,12 @@ export default function PersonalInfo() {
                       </li>
                     </ul>
                   </div>
-                  <Button type="submit" className="w-full md:w-fit mt-2">
-                    Change Password
+                  <Button
+                    type="submit"
+                    className="w-full md:w-fit mt-2"
+                    disabled={isPasswordLoading}
+                  >
+                    {isPasswordLoading ? "Changing..." : "Change Password"}
                   </Button>
                 </form>
                 <div className=" hidden md:flex flex-col gap-2 w-full md:w-auto">
