@@ -318,7 +318,7 @@ export default function UserBar() {
                 </Link>
               ) : (
                 <Link href="/login">
-                  <div className="text-header-font hover:text-foreground  text-md">
+                  <div className="text-header-font font-semibold hover:text-foreground hover:underline text-sm">
                     Login
                   </div>
                 </Link>
