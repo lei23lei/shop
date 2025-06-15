@@ -78,7 +78,8 @@ export default function ForGetPwdPage() {
               <>
                 We&apos;ve sent a password reset link to your email address.
                 Please check your inbox and follow the instructions to reset
-                your password.
+                your password. It may take up to 5 minutes for the email to
+                arrive.
               </>
             ) : (
               "Enter your email address and we&apos;ll send you a link to reset your password"
