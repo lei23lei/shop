@@ -51,7 +51,7 @@ export default function Footer() {
               <GrInstagram className="text-header-font text-xl sm:text-2xl" />
             </Link>
             <Link
-              href="https://www.linkedin.com/in/lei-ieong-tam-6602a92bb/"
+              href="https://www.linkedin.com/in/leeli-peter/"
               className="hover:opacity-70 transition-opacity"
             >
               <GrLinkedin className="text-header-font text-xl sm:text-2xl" />
