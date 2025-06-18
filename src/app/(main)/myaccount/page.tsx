@@ -31,9 +31,15 @@ export default function Page() {
     setIsLoading(false);
   }, [user, router]);
 
-  const handleSignOut = () => {
-    logout();
-    router.push("/login");
+  const handleSignOut = async () => {
+    try {
+      await logout();
+      router.push("/login");
+    } catch (error) {
+      console.error("Sign out failed:", error);
+      // Still redirect even if logout endpoint fails
+      router.push("/login");
+    }
   };
 
   // Show loading state while checking authentication

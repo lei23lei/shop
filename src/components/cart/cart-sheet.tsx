@@ -69,7 +69,7 @@ export function CartSheet({
           <div className="flex flex-col h-full overflow-hidden ">
             <ScrollArea className="flex-1 pr-4">
               <div className="flex flex-col gap-4 mt-4">
-                {cartData && cartData.items.length > 0 ? (
+                {user && cartData && cartData.items.length > 0 ? (
                   <>
                     {cartData.items.map((item) => (
                       <div
@@ -159,7 +159,7 @@ export function CartSheet({
                 )}
               </div>
             </ScrollArea>
-            {cartData && cartData.items.length > 0 && (
+            {user && cartData && cartData.items.length > 0 && (
               <div className="mt-4 pt-4 border-t">
                 <div className="flex justify-between items-center mb-4">
                   <span className="font-medium text-sm">Total Price:</span>

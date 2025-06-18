@@ -51,6 +51,72 @@ export default function Header() {
 
   return (
     <div>
+      <style jsx>{`
+        @keyframes fadeInUp {
+          from {
+            opacity: 0;
+            transform: translateY(30px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+
+        @keyframes fadeInScale {
+          from {
+            opacity: 0;
+            transform: scale(0.95);
+          }
+          to {
+            opacity: 1;
+            transform: scale(1);
+          }
+        }
+
+        @keyframes slideInFromLeft {
+          from {
+            opacity: 0;
+            transform: translateX(-50px);
+          }
+          to {
+            opacity: 1;
+            transform: translateX(0);
+          }
+        }
+
+        .animate-fade-in-up {
+          animation: fadeInUp 0.8s ease-out forwards;
+        }
+
+        .animate-fade-in-scale {
+          animation: fadeInScale 0.6s ease-out forwards;
+        }
+
+        .animate-slide-in-left {
+          animation: slideInFromLeft 0.7s ease-out forwards;
+        }
+
+        .animate-delay-200 {
+          animation-delay: 0.2s;
+          opacity: 0;
+        }
+
+        .animate-delay-400 {
+          animation-delay: 0.4s;
+          opacity: 0;
+        }
+
+        .animate-delay-600 {
+          animation-delay: 0.6s;
+          opacity: 0;
+        }
+
+        .animate-delay-800 {
+          animation-delay: 0.8s;
+          opacity: 0;
+        }
+      `}</style>
       <Carousel
         className="w-full overflow-x-hidden"
         plugins={[plugin.current]}
@@ -89,20 +155,20 @@ export default function Header() {
                       <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/40 to-black/20"></div>
                       <div className="absolute inset-0 bg-gradient-to-r from-black/30 via-transparent to-black/30"></div>
 
-                      {/* Text overlay with improved layout */}
+                      {/* Text overlay with improved layout and animations */}
                       <div className="absolute inset-0 flex flex-col justify-center items-center text-center text-white px-4 sm:px-8 md:px-16 lg:px-24">
                         <div className="max-w-4xl space-y-4 sm:space-y-6">
-                          <h1 className="text-3xl sm:text-4xl md:text-5xl font-extrabold leading-tight tracking-tight bg-gradient-to-r from-white via-gray-200 to-gray-400 bg-clip-text text-transparent drop-shadow-2xl">
+                          <h1 className="animate-fade-in-up text-3xl sm:text-4xl md:text-5xl font-extrabold leading-tight tracking-tight bg-gradient-to-r from-white via-gray-200 to-gray-400 bg-clip-text text-transparent drop-shadow-2xl">
                             {image.title}
                           </h1>
-                          <h2 className="text-lg sm:text-xl md:text-2xl font-light italic bg-gradient-to-r from-gray-100 via-white to-gray-700 bg-clip-text text-transparent drop-shadow-xl">
+                          <h2 className="animate-fade-in-up animate-delay-200 text-lg sm:text-xl md:text-2xl font-light italic bg-gradient-to-r from-gray-100 via-white to-gray-700 bg-clip-text text-transparent drop-shadow-xl">
                             {image.subtitle}
                           </h2>
-                          <div className="w-16 sm:w-20 md:w-24 h-1 bg-white/80 mx-auto my-4 sm:my-6"></div>
-                          <p className="text-base px-2 sm:text-lg md:text-xl   leading-relaxed max-w-3xl mx-auto opacity-95 drop-shadow-lg shadow-black/70">
+                          <div className="animate-slide-in-left animate-delay-400 w-16 sm:w-20 md:w-24 h-1 bg-white/80 mx-auto my-4 sm:my-6"></div>
+                          <p className="animate-fade-in-up animate-delay-600 text-base px-2 sm:text-lg md:text-xl   leading-relaxed max-w-3xl mx-auto opacity-95 drop-shadow-lg shadow-black/70">
                             {image.description}
                           </p>
-                          <div className="pt-4 sm:pt-6 md:pt-8">
+                          <div className="animate-fade-in-scale animate-delay-800 pt-4 sm:pt-6 md:pt-8">
                             <Link href={image.link}>
                               <Button
                                 size="lg"
