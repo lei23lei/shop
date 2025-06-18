@@ -439,11 +439,11 @@ export default function UserBar() {
           {categories.map((category) => (
             <div
               key={category.id}
-              className="group cursor-pointer relative py-2"
+              className="group cursor-pointer relative py-2 transition-all duration-300"
               onClick={() => handleCategoryClick(Number(category.id))}
             >
               <div
-                className={`px-2 font-semibold text-sm ${
+                className={`px-2 font-semibold text-sm transition-colors duration-300 ${
                   activeCategory === category.id
                     ? "text-primary"
                     : "text-header-font"
@@ -453,7 +453,7 @@ export default function UserBar() {
               </div>
               <div className="absolute bottom-0 left-0 w-full h-[3px]">
                 <div
-                  className={`h-full bg-primary transition-all duration-400 mx-auto
+                  className={`h-full bg-primary transition-all duration-500 mx-auto
                     ${
                       activeCategory === category.id
                         ? "w-[80%]"
