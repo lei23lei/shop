@@ -52,6 +52,10 @@ const PaginationLink = ({
         variant: isActive ? "outline" : "ghost",
         size,
       }),
+      {
+        "border-gradient-to-r from-purple-300  to-pink-300 dark:from-purple-800 dark:to-pink-800 shadow-md":
+          isActive,
+      },
       className
     )}
     {...props}

@@ -93,6 +93,10 @@ export const categories = [
         name: "Accessories",
         id: 15,
       },
+      {
+        name: "Bikes",
+        id: 16,
+      },
     ],
   },
 ];
