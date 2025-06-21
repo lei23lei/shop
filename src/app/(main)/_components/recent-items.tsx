@@ -52,12 +52,7 @@ export default function RecentItems({
   }
 
   if (filteredItems.length === 0) {
-    return (
-      <div className="mx-auto mt-2 lg:pt-20 mb-10">
-        <h2 className="px-14 text-xl md:text-2xl font-medium mb-4">{name}</h2>
-        <p className="px-14">No items found</p>
-      </div>
-    );
+    return null;
   }
 
   return (
