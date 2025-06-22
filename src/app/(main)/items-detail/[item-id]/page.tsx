@@ -38,6 +38,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import { addToLocalCart } from "@/lib/cart-utils";
 
 export default function ItemDetailPage({
   params,
@@ -307,7 +308,39 @@ export default function ItemDetailPage({
                   variant="default"
                   onClick={async () => {
                     if (!user) {
-                      router.push("/login");
+                      if (!selectedSize || !itemDetail) return;
+
+                      const selectedSizeObj = itemDetail.sizes.find(
+                        (size) => size.size === selectedSize
+                      );
+
+                      if (!selectedSizeObj) return;
+
+                      // Format categories string
+                      const categoriesString = itemDetail.categories
+                        .map((cat) => cat.name)
+                        .join(", ");
+
+                      // Get the last image URL (as per the format specification)
+                      const imageUrl =
+                        itemDetail.images.length > 0
+                          ? itemDetail.images[itemDetail.images.length - 1]
+                              .image_url
+                          : null;
+
+                      addToLocalCart({
+                        id: itemDetail.id,
+                        name: itemDetail.name,
+                        price: itemDetail.price,
+                        size: selectedSize,
+                        size_id: selectedSizeObj.id,
+                        quantity: quantity,
+                        total_available: selectedSizeObj.quantity,
+                        image_url: imageUrl,
+                        categories: categoriesString,
+                      });
+
+                      toast.success("Added to cart successfully");
                       return;
                     }
 
