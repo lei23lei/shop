@@ -70,15 +70,23 @@ export default function CheckoutPage() {
     if (!user) {
       const localCart = getLocalCart();
       setLocalCartData(localCart);
-      if (!localCart.items || localCart.items.length === 0) {
+    }
+  }, [user]);
+
+  // Separate useEffect for redirect logic to avoid infinite loops
+  useEffect(() => {
+    if (!user && localCartData) {
+      if (!localCartData.items || localCartData.items.length === 0) {
+        console.log("no local cart data");
         router.push("/");
       }
-    } else {
-      if (!cartData || !cartData.items || cartData.items.length === 0) {
+    } else if (user && apiCartData) {
+      if (!apiCartData.items || apiCartData.items.length === 0) {
+        console.log("no api cart data");
         router.push("/");
       }
     }
-  }, [user, cartData, router]);
+  }, [user, localCartData, apiCartData, router]);
 
   // Show loading state while checking auth or loading cart
   if (isAuthLoading || isCartLoadingForUser) {
