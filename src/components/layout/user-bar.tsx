@@ -316,7 +316,7 @@ export default function UserBar() {
       setLocalCartTotalPrice(total);
 
       toast.success("Item removed from cart");
-    } catch (error) {
+    } catch {
       toast.error("Failed to remove item from cart");
     }
   };
@@ -350,7 +350,7 @@ export default function UserBar() {
     try {
       const updatedCart = updateLocalCartItemQuantity(cartItemId, newQuantity);
       setLocalCart(updatedCart);
-    } catch (error) {
+    } catch {
       // Revert local states on error
       setLocalCartQuantities((prev) => ({
         ...prev,

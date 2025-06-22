@@ -14,10 +14,23 @@ import LoadingPage from "@/components/loading/loading-page";
 import { CheckoutFormData } from "./_components/schemas";
 import { getLocalCart, LocalCartItem } from "@/lib/cart-utils";
 
+// API cart item interface
+interface ApiCartItem {
+  id: number;
+  cart_item_id: number;
+  name: string;
+  price: string;
+  quantity: number;
+  image_url: string | null;
+  categories: string | null;
+  size: string;
+  total_available: number;
+}
+
 // Unified cart data interface
 interface UnifiedCartData {
   cart_id: number | string;
-  items: (LocalCartItem | any)[];
+  items: LocalCartItem[] | ApiCartItem[];
   total_items: number;
 }
 
@@ -65,7 +78,7 @@ export default function CheckoutPage() {
         router.push("/");
       }
     }
-  }, []);
+  }, [user, cartData, router]);
 
   // Show loading state while checking auth or loading cart
   if (isAuthLoading || isCartLoadingForUser) {

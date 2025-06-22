@@ -37,7 +37,8 @@ export default function StepThree({ orderData }: StepThreeProps) {
               Order Confirmed!
             </h2>
             <p className="text-green-700 dark:text-green-300 text-sm md:text-base">
-              Thank you for your purchase. We'll process your order shortly.
+              Thank you for your purchase. We&apos;ll process your order
+              shortly.
             </p>
           </div>
         </div>
@@ -236,7 +237,7 @@ export default function StepThree({ orderData }: StepThreeProps) {
               Need Help?
             </h3>
             <p className="text-sm text-muted-foreground">
-              We're here to assist you
+              We&apos;re here to assist you
             </p>
           </div>
         </div>

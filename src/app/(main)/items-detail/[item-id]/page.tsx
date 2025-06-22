@@ -4,7 +4,6 @@ import React from "react";
 import Image from "next/image";
 import { useGetItemDetailQuery } from "@/services/endpoints/items-endpoints";
 import { useAddToCartMutation } from "@/services/endpoints/account-endpoints";
-import { useRouter } from "next/navigation";
 import LoadingSpin from "@/components/loading/loading-spin";
 import BreadcrumbNavigation from "@/components/layout/breadcrumb";
 import { Button } from "@/components/ui/button";
@@ -45,7 +44,6 @@ export default function ItemDetailPage({
 }: {
   params: Promise<{ "item-id": string }>;
 }) {
-  const router = useRouter();
   const { user } = useAuth();
   const resolvedParams = React.use(params);
   const { data: itemDetail, isLoading } = useGetItemDetailQuery(
