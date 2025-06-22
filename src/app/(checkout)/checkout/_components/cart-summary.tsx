@@ -7,21 +7,14 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
+import { CartItem } from "@/services/endpoints/account-endpoints";
+import { LocalCartItem } from "@/lib/cart-utils";
 
-interface CartItem {
-  id: number;
-  cart_item_id: number;
-  name: string;
-  price: string;
-  quantity: number;
-  image_url: string | null;
-  categories: string | null;
-  size: string;
-  total_available: number;
-}
+// Unified cart item type
+type UnifiedCartItem = CartItem | LocalCartItem;
 
 interface CartSummaryProps {
-  cartData: { items: CartItem[] } | undefined;
+  cartData: { items: UnifiedCartItem[] } | undefined;
   totalPrice: number;
 }
 

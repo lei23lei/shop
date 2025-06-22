@@ -64,6 +64,8 @@ export const saveLocalCart = (cart: LocalCart): void => {
 
   try {
     localStorage.setItem(CART_STORAGE_KEY, JSON.stringify(cart));
+    // Dispatch custom event to notify components of cart changes
+    window.dispatchEvent(new CustomEvent("localCartUpdated"));
   } catch (error) {
     console.error("Error saving cart to localStorage:", error);
   }
@@ -173,6 +175,8 @@ export const updateLocalCartItemQuantity = (
 export const clearLocalCart = (): void => {
   if (typeof window === "undefined") return;
   localStorage.removeItem(CART_STORAGE_KEY);
+  // Dispatch custom event to notify components of cart changes
+  window.dispatchEvent(new CustomEvent("localCartUpdated"));
 };
 
 // backend response

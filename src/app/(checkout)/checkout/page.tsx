@@ -12,6 +12,14 @@ import { useAuth } from "@/contexts/auth-context";
 import { CreateOrderResponse } from "@/services/endpoints/account-endpoints";
 import LoadingPage from "@/components/loading/loading-page";
 import { CheckoutFormData } from "./_components/schemas";
+import { getLocalCart, LocalCartItem } from "@/lib/cart-utils";
+
+// Unified cart data interface
+interface UnifiedCartData {
+  cart_id: number | string;
+  items: (LocalCartItem | any)[];
+  total_items: number;
+}
 
 export default function CheckoutPage() {
   const router = useRouter();
@@ -27,27 +35,45 @@ export default function CheckoutPage() {
     city: "",
     zip_code: "",
   });
-  const { data: cartData, isLoading: isCartLoading } = useGetCartQuery();
+
+  // API cart data for logged-in users
+  const { data: apiCartData, isLoading: isCartLoading } = useGetCartQuery(
+    undefined,
+    {
+      skip: !user,
+    }
+  );
+
+  // Local cart data for guest users
+  const [localCartData, setLocalCartData] = useState<UnifiedCartData | null>(
+    null
+  );
+
+  // Determine which cart data to use
+  const cartData = user ? apiCartData : localCartData;
+  const isCartLoadingForUser = user ? isCartLoading : false;
 
   useEffect(() => {
-    if (!cartData || !cartData.items || cartData.items.length === 0) {
-      router.push("/");
+    if (!user) {
+      const localCart = getLocalCart();
+      setLocalCartData(localCart);
+      if (!localCart.items || localCart.items.length === 0) {
+        router.push("/");
+      }
+    } else {
+      if (!cartData || !cartData.items || cartData.items.length === 0) {
+        router.push("/");
+      }
     }
   }, []);
 
-  useEffect(() => {
-    if (!isAuthLoading && !user) {
-      router.push("/login?redirect=/checkout");
-    }
-  }, [user, isAuthLoading, router]);
-
   // Show loading state while checking auth or loading cart
-  if (isAuthLoading || isCartLoading) {
+  if (isAuthLoading || isCartLoadingForUser) {
     return <LoadingPage />;
   }
 
-  // If not authenticated, don't render anything (will redirect)
-  if (!user) {
+  // If no cart data, don't render anything (will redirect)
+  if (!cartData) {
     return null;
   }
 
@@ -73,8 +99,10 @@ export default function CheckoutPage() {
             onNext={() => setCurrentStep(3)}
             onBack={() => setCurrentStep(1)}
             formData={formData}
-            cartId={cartData?.cart_id ?? 0}
+            cartId={user ? (cartData?.cart_id as number) : 0}
             setOrderData={setOrderData}
+            isGuestUser={!user}
+            cartData={cartData}
           />
         );
       case 3:

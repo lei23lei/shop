@@ -23,6 +23,12 @@ import {
 } from "@/components/ui/accordion";
 import { toast } from "sonner";
 import { useTheme } from "next-themes";
+import {
+  getLocalCart,
+  removeFromLocalCart,
+  updateLocalCartItemQuantity,
+  LocalCartItem,
+} from "@/lib/cart-utils";
 
 import { CartSheet } from "@/components/cart/cart-sheet";
 
@@ -36,10 +42,27 @@ export default function UserBar() {
   });
   const [deleteCartItem] = useDeleteCartItemMutation();
   const [updateCartItem] = useUpdateCartItemMutation();
+
+  // API cart state (for logged-in users)
   const [localQuantities, setLocalQuantities] = useState<
     Record<number, number>
   >({});
   const [localTotalPrice, setLocalTotalPrice] = useState(0);
+
+  // localStorage cart state (for guest users)
+  const [localCart, setLocalCart] = useState<{
+    items: LocalCartItem[];
+    total_items: number;
+  }>({
+    items: [],
+    total_items: 0,
+  });
+  const [localCartQuantities, setLocalCartQuantities] = useState<
+    Record<string, number>
+  >({});
+  const [localCartTotalPrice, setLocalCartTotalPrice] = useState(0);
+
+  // UI state
   const [prevScrollPos, setPrevScrollPos] = useState(0);
   const [visible, setVisible] = useState(true);
   const [activeCategory, setActiveCategory] = useState<number | null>(null);
@@ -59,6 +82,100 @@ export default function UserBar() {
     setIsClient(true);
     setIsMounted(true);
   }, []);
+
+  // Load localStorage cart when user is not logged in
+  useEffect(() => {
+    if (!user) {
+      const cart = getLocalCart();
+      setLocalCart(cart);
+
+      // Initialize quantities
+      const quantities = cart.items.reduce((acc, item) => {
+        acc[item.cart_item_id] = item.quantity;
+        return acc;
+      }, {} as Record<string, number>);
+      setLocalCartQuantities(quantities);
+
+      // Calculate total price
+      const total = cart.items.reduce(
+        (sum, item) => sum + parseFloat(item.price) * item.quantity,
+        0
+      );
+      setLocalCartTotalPrice(total);
+    }
+  }, [user]);
+
+  // Listen for localStorage changes to update cart count immediately
+  useEffect(() => {
+    if (!user) {
+      const handleStorageChange = (e: StorageEvent) => {
+        if (e.key === "local_cart") {
+          const cart = getLocalCart();
+          setLocalCart(cart);
+
+          const quantities = cart.items.reduce((acc, item) => {
+            acc[item.cart_item_id] = item.quantity;
+            return acc;
+          }, {} as Record<string, number>);
+          setLocalCartQuantities(quantities);
+
+          const total = cart.items.reduce(
+            (sum, item) => sum + parseFloat(item.price) * item.quantity,
+            0
+          );
+          setLocalCartTotalPrice(total);
+        }
+      };
+
+      // Listen for storage events (cross-tab changes)
+      window.addEventListener("storage", handleStorageChange);
+
+      // Also create a custom event listener for same-tab updates
+      const handleCustomCartUpdate = () => {
+        const cart = getLocalCart();
+        setLocalCart(cart);
+
+        const quantities = cart.items.reduce((acc, item) => {
+          acc[item.cart_item_id] = item.quantity;
+          return acc;
+        }, {} as Record<string, number>);
+        setLocalCartQuantities(quantities);
+
+        const total = cart.items.reduce(
+          (sum, item) => sum + parseFloat(item.price) * item.quantity,
+          0
+        );
+        setLocalCartTotalPrice(total);
+      };
+
+      window.addEventListener("localCartUpdated", handleCustomCartUpdate);
+
+      return () => {
+        window.removeEventListener("storage", handleStorageChange);
+        window.removeEventListener("localCartUpdated", handleCustomCartUpdate);
+      };
+    }
+  }, [user]);
+
+  // Refresh localStorage cart when cart is opened (to catch any updates from item detail page)
+  useEffect(() => {
+    if (!user && isCartOpen) {
+      const cart = getLocalCart();
+      setLocalCart(cart);
+
+      const quantities = cart.items.reduce((acc, item) => {
+        acc[item.cart_item_id] = item.quantity;
+        return acc;
+      }, {} as Record<string, number>);
+      setLocalCartQuantities(quantities);
+
+      const total = cart.items.reduce(
+        (sum, item) => sum + parseFloat(item.price) * item.quantity,
+        0
+      );
+      setLocalCartTotalPrice(total);
+    }
+  }, [user, isCartOpen]);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -96,7 +213,7 @@ export default function UserBar() {
     };
   }, [prevScrollPos, user]);
 
-  // Initialize local quantities and total price when cart data changes
+  // Initialize local quantities and total price when cart data changes (for logged-in users)
   useEffect(() => {
     if (cartData?.items) {
       const initialQuantities = cartData.items.reduce((acc, item) => {
@@ -126,6 +243,7 @@ export default function UserBar() {
     setIsMobileMenuOpen(!isMobileMenuOpen);
   };
 
+  // API cart functions (for logged-in users)
   const handleDeleteItem = async (cartItemId: number) => {
     try {
       await deleteCartItem(cartItemId).unwrap();
@@ -177,6 +295,72 @@ export default function UserBar() {
       });
   };
 
+  // localStorage cart functions (for guest users)
+  const handleLocalDeleteItem = (cartItemId: string) => {
+    try {
+      const updatedCart = removeFromLocalCart(cartItemId);
+      setLocalCart(updatedCart);
+
+      // Update quantities
+      const quantities = updatedCart.items.reduce((acc, item) => {
+        acc[item.cart_item_id] = item.quantity;
+        return acc;
+      }, {} as Record<string, number>);
+      setLocalCartQuantities(quantities);
+
+      // Update total price
+      const total = updatedCart.items.reduce(
+        (sum, item) => sum + parseFloat(item.price) * item.quantity,
+        0
+      );
+      setLocalCartTotalPrice(total);
+
+      toast.success("Item removed from cart");
+    } catch (error) {
+      toast.error("Failed to remove item from cart");
+    }
+  };
+
+  const handleLocalUpdateQuantity = (
+    cartItemId: string,
+    newQuantity: number
+  ) => {
+    const cartItem = localCart.items.find(
+      (item) => item.cart_item_id === cartItemId
+    );
+    if (!cartItem) return;
+
+    if (newQuantity < 1) return;
+    if (newQuantity > cartItem.total_available) {
+      toast.error(`Only ${cartItem.total_available} items available`);
+      return;
+    }
+
+    const oldQuantity = localCartQuantities[cartItemId] ?? cartItem.quantity;
+    const priceDiff = parseFloat(cartItem.price) * (newQuantity - oldQuantity);
+
+    // Update local states immediately
+    setLocalCartQuantities((prev) => ({
+      ...prev,
+      [cartItemId]: newQuantity,
+    }));
+    setLocalCartTotalPrice((prev) => prev + priceDiff);
+
+    // Update localStorage
+    try {
+      const updatedCart = updateLocalCartItemQuantity(cartItemId, newQuantity);
+      setLocalCart(updatedCart);
+    } catch (error) {
+      // Revert local states on error
+      setLocalCartQuantities((prev) => ({
+        ...prev,
+        [cartItemId]: cartItem.quantity,
+      }));
+      setLocalCartTotalPrice((prev) => prev - priceDiff);
+      toast.error("Failed to update cart");
+    }
+  };
+
   // Handle theme toggle with better system theme support
   const handleThemeToggle = () => {
     setIsAnimating(true);
@@ -196,6 +380,14 @@ export default function UserBar() {
 
   // Get the actual theme being displayed (resolves system theme)
   const currentTheme = resolvedTheme || theme;
+
+  // Determine which cart data to use for CartSheet
+  const displayCartData = user ? cartData : { items: localCart.items };
+  const displayQuantities = user ? localQuantities : localCartQuantities;
+  const displayTotalPrice = user ? localTotalPrice : localCartTotalPrice;
+  const displayCartCount = user
+    ? cartCount
+    : { total_items: localCart.total_items };
 
   return (
     <div
@@ -250,13 +442,15 @@ export default function UserBar() {
           <CartSheet
             isCartOpen={isCartOpen}
             setIsCartOpen={setIsCartOpen}
-            cartData={cartData}
-            localQuantities={localQuantities}
-            localTotalPrice={localTotalPrice}
-            handleDeleteItem={handleDeleteItem}
-            handleUpdateQuantity={handleUpdateQuantity}
+            cartData={displayCartData}
+            localQuantities={displayQuantities}
+            localTotalPrice={displayTotalPrice}
+            handleDeleteItem={user ? handleDeleteItem : handleLocalDeleteItem}
+            handleUpdateQuantity={
+              user ? handleUpdateQuantity : handleLocalUpdateQuantity
+            }
             user={user}
-            cartCount={cartCount}
+            cartCount={displayCartCount}
           />
           <Button
             variant="ghost"
@@ -489,13 +683,15 @@ export default function UserBar() {
           <CartSheet
             isCartOpen={isCartOpen}
             setIsCartOpen={setIsCartOpen}
-            cartData={cartData}
-            localQuantities={localQuantities}
-            localTotalPrice={localTotalPrice}
-            handleDeleteItem={handleDeleteItem}
-            handleUpdateQuantity={handleUpdateQuantity}
+            cartData={displayCartData}
+            localQuantities={displayQuantities}
+            localTotalPrice={displayTotalPrice}
+            handleDeleteItem={user ? handleDeleteItem : handleLocalDeleteItem}
+            handleUpdateQuantity={
+              user ? handleUpdateQuantity : handleLocalUpdateQuantity
+            }
             user={user}
-            cartCount={cartCount}
+            cartCount={displayCartCount}
           />
         </div>
         {/* expandable categories */}

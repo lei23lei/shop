@@ -13,25 +13,7 @@ import {
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Badge } from "@/components/ui/badge";
 import { Quantity } from "@/components/cart/quantity";
-import {
-  getLocalCart,
-  removeFromLocalCart,
-  updateLocalCartItemQuantity,
-  LocalCartItem,
-} from "@/lib/cart-utils";
-import { toast } from "sonner";
-
-interface CartItem {
-  id: number;
-  cart_item_id: number;
-  name: string;
-  price: string;
-  quantity: number;
-  image_url: string | null;
-  categories: string | null;
-  size: string;
-  total_available: number;
-}
+import { User } from "@/contexts/auth-context";
 
 // Unified cart item interface that can handle both types
 interface UnifiedCartItem {
@@ -46,19 +28,18 @@ interface UnifiedCartItem {
   total_available: number;
 }
 
-import { User } from "@/contexts/auth-context";
-
 interface CartSheetProps {
   isCartOpen: boolean;
   setIsCartOpen: (open: boolean) => void;
-  cartData: { items: CartItem[] } | undefined;
-  localQuantities: Record<number, number>;
+  cartData: { items: UnifiedCartItem[] } | undefined;
+  localQuantities: Record<string | number, number>;
   localTotalPrice: number;
-  handleDeleteItem: (cartItemId: number) => Promise<void>;
-  handleUpdateQuantity: (
-    cartItemId: number,
-    newQuantity: number
-  ) => Promise<void>;
+  handleDeleteItem:
+    | ((cartItemId: number) => Promise<void>)
+    | ((cartItemId: string) => void);
+  handleUpdateQuantity:
+    | ((cartItemId: number, newQuantity: number) => Promise<void>)
+    | ((cartItemId: string, newQuantity: number) => void);
   user: User | null;
   cartCount: { total_items: number } | undefined;
 }
@@ -74,159 +55,47 @@ export function CartSheet({
   user,
   cartCount,
 }: CartSheetProps) {
-  // Local state for localStorage cart
-  const [localCart, setLocalCart] = React.useState<{
-    items: LocalCartItem[];
-    total_items: number;
-  }>({
-    items: [],
-    total_items: 0,
-  });
-  const [localCartQuantities, setLocalCartQuantities] = React.useState<
-    Record<string, number>
-  >({});
-  const [localCartTotalPrice, setLocalCartTotalPrice] = React.useState(0);
-
-  // Load localStorage cart when component mounts or when user changes
-  React.useEffect(() => {
-    if (!user) {
-      const cart = getLocalCart();
-      setLocalCart(cart);
-
-      // Initialize quantities
-      const quantities = cart.items.reduce((acc, item) => {
-        acc[item.cart_item_id] = item.quantity;
-        return acc;
-      }, {} as Record<string, number>);
-      setLocalCartQuantities(quantities);
-
-      // Calculate total price
-      const total = cart.items.reduce(
-        (sum, item) => sum + parseFloat(item.price) * item.quantity,
-        0
-      );
-      setLocalCartTotalPrice(total);
-    }
-  }, [user, isCartOpen]);
-
-  // Handle localStorage cart item deletion
-  const handleLocalDeleteItem = (cartItemId: string) => {
-    try {
-      const updatedCart = removeFromLocalCart(cartItemId);
-      setLocalCart(updatedCart);
-
-      // Update quantities
-      const quantities = updatedCart.items.reduce((acc, item) => {
-        acc[item.cart_item_id] = item.quantity;
-        return acc;
-      }, {} as Record<string, number>);
-      setLocalCartQuantities(quantities);
-
-      // Update total price
-      const total = updatedCart.items.reduce(
-        (sum, item) => sum + parseFloat(item.price) * item.quantity,
-        0
-      );
-      setLocalCartTotalPrice(total);
-
-      toast.success("Item removed from cart");
-    } catch (error) {
-      toast.error("Failed to remove item from cart");
-    }
-  };
-
-  // Handle localStorage cart item quantity update
-  const handleLocalUpdateQuantity = (
-    cartItemId: string,
-    newQuantity: number
-  ) => {
-    const cartItem = localCart.items.find(
-      (item) => item.cart_item_id === cartItemId
-    );
-    if (!cartItem) return;
-
-    if (newQuantity < 1) return;
-    if (newQuantity > cartItem.total_available) {
-      toast.error(`Only ${cartItem.total_available} items available`);
-      return;
-    }
-
-    const oldQuantity = localCartQuantities[cartItemId] ?? cartItem.quantity;
-    const priceDiff = parseFloat(cartItem.price) * (newQuantity - oldQuantity);
-
-    // Update local states immediately
-    setLocalCartQuantities((prev) => ({
-      ...prev,
-      [cartItemId]: newQuantity,
-    }));
-    setLocalCartTotalPrice((prev) => prev + priceDiff);
-
-    // Update localStorage
-    try {
-      const updatedCart = updateLocalCartItemQuantity(cartItemId, newQuantity);
-      setLocalCart(updatedCart);
-    } catch (error) {
-      // Revert local states on error
-      setLocalCartQuantities((prev) => ({
-        ...prev,
-        [cartItemId]: cartItem.quantity,
-      }));
-      setLocalCartTotalPrice((prev) => prev - priceDiff);
-      toast.error("Failed to update cart");
-    }
-  };
-
-  // Convert cart items to unified format
-  const getUnifiedCartItems = (): UnifiedCartItem[] => {
-    if (user && cartData) {
-      return cartData.items.map((item) => ({
-        ...item,
-        cart_item_id: item.cart_item_id,
-      }));
-    } else {
-      return localCart.items.map((item) => ({
-        ...item,
-        cart_item_id: item.cart_item_id,
-      }));
-    }
-  };
-
   // Get quantity for an item
   const getItemQuantity = (item: UnifiedCartItem): number => {
-    if (user) {
-      return localQuantities[item.cart_item_id as number] ?? item.quantity;
-    } else {
-      return localCartQuantities[item.cart_item_id as string] ?? item.quantity;
-    }
+    return localQuantities[item.cart_item_id] ?? item.quantity;
   };
 
-  // Handle item deletion
+  // Handle item deletion - pass the correct type based on user status
   const handleItemDelete = (item: UnifiedCartItem) => {
     if (user) {
-      handleDeleteItem(item.cart_item_id as number);
+      (handleDeleteItem as (cartItemId: number) => Promise<void>)(
+        item.cart_item_id as number
+      );
     } else {
-      handleLocalDeleteItem(item.cart_item_id as string);
+      (handleDeleteItem as (cartItemId: string) => void)(
+        item.cart_item_id as string
+      );
     }
   };
 
-  // Handle item quantity update
+  // Handle item quantity update - pass the correct type based on user status
   const handleItemQuantityUpdate = (
     item: UnifiedCartItem,
     newQuantity: number
   ) => {
     if (user) {
-      handleUpdateQuantity(item.cart_item_id as number, newQuantity);
+      (
+        handleUpdateQuantity as (
+          cartItemId: number,
+          newQuantity: number
+        ) => Promise<void>
+      )(item.cart_item_id as number, newQuantity);
     } else {
-      handleLocalUpdateQuantity(item.cart_item_id as string, newQuantity);
+      (
+        handleUpdateQuantity as (
+          cartItemId: string,
+          newQuantity: number
+        ) => void
+      )(item.cart_item_id as string, newQuantity);
     }
   };
 
-  // Determine which cart data to use
-  const displayCartItems = getUnifiedCartItems();
-  const displayTotalPrice = user ? localTotalPrice : localCartTotalPrice;
-  const displayCartCount = user
-    ? cartCount
-    : { total_items: localCart.total_items };
+  const displayCartItems = cartData?.items || [];
 
   return (
     <div className="relative">
@@ -331,7 +200,7 @@ export function CartSheet({
                 <div className="flex justify-between items-center mb-4">
                   <span className="font-medium text-sm">Total Price:</span>
                   <span className="font-medium text-sm">
-                    ${displayTotalPrice.toFixed(2)}
+                    ${localTotalPrice.toFixed(2)}
                   </span>
                 </div>
                 <Link href="/checkout">
@@ -344,13 +213,13 @@ export function CartSheet({
           </div>
         </SheetContent>
       </Sheet>
-      {displayCartCount && displayCartCount.total_items > 0 && (
+      {cartCount && cartCount.total_items > 0 && (
         <Badge
           variant="destructive"
           onClick={() => setIsCartOpen(true)}
           className="absolute -top-2 -right-3 cursor-pointer h-5 w-5 p-0 flex items-center justify-center"
         >
-          <p className=""> {displayCartCount.total_items}</p>
+          <p className=""> {cartCount.total_items}</p>
         </Badge>
       )}
     </div>

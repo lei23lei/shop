@@ -229,6 +229,48 @@ interface GetUserOrdersResponse {
   total_orders: number;
 }
 
+interface GuestCheckoutRequest {
+  cart: {
+    items: Array<{
+      id: number;
+      size_id: number;
+      quantity: number;
+    }>;
+  };
+  shipping_address: string;
+  shipping_phone: string;
+  shipping_email: string;
+  first_name: string;
+  last_name: string;
+  zip_code: string;
+  city: string;
+}
+
+interface GuestCheckoutResponse {
+  message: string;
+  order: {
+    id: number;
+    status: string;
+    total_price: string;
+    shipping_address: string;
+    shipping_phone: string;
+    shipping_email: string;
+    first_name: string;
+    last_name: string;
+    zip_code: string;
+    city: string;
+    created_at: string;
+    items: Array<{
+      id: number;
+      item_name: string;
+      size: string;
+      quantity: number;
+      price: string;
+      image_url: string | null;
+    }>;
+  };
+}
+
 export const accountApi = api.injectEndpoints({
   endpoints: (builder) => ({
     register: builder.mutation<RegisterResponse, RegisterRequest>({
@@ -372,6 +414,16 @@ export const accountApi = api.injectEndpoints({
       providesTags: (result) =>
         result ? [{ type: "Items", id: "USER_ORDERS" }] : [],
     }),
+    guestCheckout: builder.mutation<
+      GuestCheckoutResponse,
+      GuestCheckoutRequest
+    >({
+      query: (data) => ({
+        url: "/guest-checkout/",
+        method: "POST",
+        body: data,
+      }),
+    }),
   }),
 });
 
@@ -391,4 +443,5 @@ export const {
   useUpdateCartItemMutation,
   useCreateOrderMutation,
   useGetUserOrdersQuery,
+  useGuestCheckoutMutation,
 } = accountApi;

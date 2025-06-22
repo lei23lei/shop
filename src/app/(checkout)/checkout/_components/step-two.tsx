@@ -3,10 +3,16 @@ import { Button } from "@/components/ui/button";
 import {
   useGetCartQuery,
   useCreateOrderMutation,
+  useGuestCheckoutMutation,
+  CartItem,
 } from "@/services/endpoints/account-endpoints";
 import { CreateOrderResponse } from "@/services/endpoints/account-endpoints";
 import { toast } from "sonner";
 import { CheckoutFormData } from "./schemas";
+import { LocalCartItem, clearLocalCart } from "@/lib/cart-utils";
+
+// Unified cart item type
+type UnifiedCartItem = CartItem | LocalCartItem;
 
 interface StepTwoProps {
   onNext: () => void;
@@ -14,6 +20,11 @@ interface StepTwoProps {
   formData: CheckoutFormData;
   cartId: number;
   setOrderData: (data: CreateOrderResponse) => void;
+  isGuestUser?: boolean;
+  cartData?: {
+    items: UnifiedCartItem[];
+    total_items: number;
+  };
 }
 
 export default function StepTwo({
@@ -22,17 +33,98 @@ export default function StepTwo({
   formData,
   cartId,
   setOrderData,
+  isGuestUser = false,
+  cartData: propCartData,
 }: StepTwoProps) {
-  const { data: cartData } = useGetCartQuery();
-  const [createOrder, { isLoading }] = useCreateOrderMutation();
+  // Use provided cart data or fetch from API for logged-in users
+  const { data: apiCartData } = useGetCartQuery(undefined, {
+    skip: isGuestUser,
+  });
+  const cartData = isGuestUser ? propCartData : apiCartData;
+
+  const [createOrder, { isLoading: isCreatingOrder }] =
+    useCreateOrderMutation();
+  const [guestCheckout, { isLoading: isGuestCheckoutLoading }] =
+    useGuestCheckoutMutation();
+
+  const isLoading = isCreatingOrder || isGuestCheckoutLoading;
 
   const totalPrice =
     cartData?.items.reduce(
-      (sum, item) => sum + parseFloat(item.price) * item.quantity,
+      (sum: number, item: UnifiedCartItem) =>
+        sum + parseFloat(item.price) * item.quantity,
       0
     ) ?? 0;
 
   const handleProceedToPayment = async () => {
+    if (isGuestUser) {
+      try {
+        // Prepare guest checkout data
+        const guestCheckoutData = {
+          cart: {
+            items:
+              cartData?.items.map((item) => ({
+                id: item.id,
+                size_id: "size_id" in item ? item.size_id : 0,
+                quantity: item.quantity,
+              })) || [],
+          },
+          shipping_address: formData.shipping_address,
+          shipping_phone: formData.shipping_phone,
+          shipping_email: formData.shipping_email,
+          first_name: formData.first_name,
+          last_name: formData.last_name,
+          zip_code: formData.zip_code,
+          city: formData.city,
+        };
+
+        const response = await guestCheckout(guestCheckoutData).unwrap();
+
+        // Clear localStorage cart after successful order
+        clearLocalCart();
+
+        // Convert guest checkout response to match CreateOrderResponse format
+        const orderData: CreateOrderResponse = {
+          message: response.message,
+          order: {
+            id: response.order.id,
+            status: response.order.status as
+              | "Pending"
+              | "Processing"
+              | "Shipped"
+              | "Delivered",
+            total_price: response.order.total_price,
+            shipping_address: response.order.shipping_address,
+            shipping_phone: response.order.shipping_phone,
+            shipping_email: response.order.shipping_email,
+            first_name: response.order.first_name,
+            last_name: response.order.last_name,
+            zip_code: response.order.zip_code,
+            city: response.order.city,
+            created_at: response.order.created_at,
+            items: response.order.items.map((item) => ({
+              id: item.id,
+              item_name: item.item_name,
+              size: item.size,
+              quantity: item.quantity,
+              price: item.price,
+              image_url: item.image_url,
+            })),
+          },
+        };
+
+        setOrderData(orderData);
+        toast.success(
+          "Order created successfully! Check your email for payment instructions."
+        );
+        onNext();
+      } catch (error) {
+        console.error("Failed to create guest order:", error);
+        toast.error("Failed to create order. Please try again.");
+      }
+      return;
+    }
+
     try {
       const response = await createOrder({
         cart_id: cartId,
@@ -50,6 +142,16 @@ export default function StepTwo({
   return (
     <div className="bg-card rounded-lg shadow-sm p-4 md:p-6">
       <h3 className="mb-4 text-foreground">Order Confirmation</h3>
+
+      {/* Guest User Notice */}
+      {isGuestUser && (
+        <div className="mb-6 p-4 bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg">
+          <p className="text-blue-800 dark:text-blue-200 text-sm">
+            You are checking out as a guest. You will receive order confirmation
+            and payment instructions via email.
+          </p>
+        </div>
+      )}
 
       {/* Shipping Information */}
       <div className="mb-8">
@@ -71,7 +173,7 @@ export default function StepTwo({
       <div className="mb-8">
         <h4 className="text-foreground">Order Summary</h4>
         <div className="space-y-4 mt-2">
-          {cartData?.items.map((item) => (
+          {cartData?.items.map((item: UnifiedCartItem) => (
             <div
               key={item.cart_item_id}
               className="flex flex-col  md:justify-between md:items-start gap-1"
@@ -110,8 +212,16 @@ export default function StepTwo({
         <Button variant="outline" onClick={onBack} className="w-full md:w-auto">
           Edit
         </Button>
-        <Button onClick={handleProceedToPayment} className="w-full md:w-auto">
-          {isLoading ? "Processing..." : "Proceed to Payment"}
+        <Button
+          onClick={handleProceedToPayment}
+          className="w-full md:w-auto"
+          disabled={isLoading}
+        >
+          {isLoading
+            ? "Processing..."
+            : isGuestUser
+            ? "Place Order"
+            : "Proceed to Payment"}
         </Button>
       </div>
     </div>
