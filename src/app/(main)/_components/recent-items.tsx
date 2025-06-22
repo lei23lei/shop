@@ -42,10 +42,7 @@ export default function RecentItems({
 
   if (isLoading || !itemsData?.results) {
     return (
-      <div className="mx-auto mt-2 lg:pt-20 mb-8">
-        <div className="px-4 md:px-14 mb-4 text-xl md:text-2xl font-medium">
-          {name}
-        </div>
+      <div className="mx-auto mt-2 md:pt-28   mb-8">
         <div className="flex justify-center min-h-[300px] items-center">
           <LoadingSpin />
         </div>
