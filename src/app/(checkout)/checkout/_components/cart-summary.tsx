@@ -74,7 +74,7 @@ export function CartSummary({ cartData, totalPrice }: CartSummaryProps) {
       </div>
 
       {/* Mobile View */}
-      <div className="md:hidden w-full bg-card rounded-lg shadow-sm">
+      <div className="md:hidden w-[95%] md:max-w-2xl mx-auto bg-card rounded-lg shadow-sm">
         <Accordion type="single" collapsible className="w-full">
           <AccordionItem value="cart-summary" className="border-none">
             <AccordionTrigger className="px-6 py-4 hover:no-underline">

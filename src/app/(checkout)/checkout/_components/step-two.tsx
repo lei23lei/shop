@@ -140,7 +140,7 @@ export default function StepTwo({
   };
 
   return (
-    <div className="bg-card rounded-lg shadow-sm p-4 md:p-6">
+    <div className="w-[95%] md:max-w-2xl mx-auto bg-card rounded-lg shadow-sm p-4 md:p-6">
       <h3 className="mb-4 text-foreground">Order Confirmation</h3>
 
       {/* Guest User Notice */}

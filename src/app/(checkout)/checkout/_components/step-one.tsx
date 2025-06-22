@@ -47,7 +47,7 @@ export default function StepOne({
   }
 
   return (
-    <div className="bg-card rounded-lg shadow-sm p-4 md:p-6">
+    <div className="w-[95%] md:max-w-2xl mx-auto bg-card rounded-lg shadow-sm p-4 md:p-6">
       <h3 className="mb-4 text-foreground">Shipping Information</h3>
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
