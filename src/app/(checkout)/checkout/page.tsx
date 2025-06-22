@@ -86,7 +86,7 @@ export default function CheckoutPage() {
         router.push("/");
       }
     }
-  }, [user, localCartData, apiCartData, router]);
+  }, [user, localCartData, isCartLoading, router]);
 
   // Show loading state while checking auth or loading cart
   if (isAuthLoading || isCartLoadingForUser) {
