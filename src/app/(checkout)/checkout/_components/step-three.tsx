@@ -37,8 +37,8 @@ export default function StepThree({ orderData }: StepThreeProps) {
               Order Confirmed!
             </h2>
             <p className="text-green-700 dark:text-green-300 text-sm md:text-base">
-              We'll send you a confirmation email shortly. Please allow up to 5
-              minutes for delivery and remember to check your spam folder.
+              We&apos;ll send you a confirmation email shortly. Please allow up
+              to 5 minutes for delivery and remember to check your spam folder.
             </p>
           </div>
         </div>
