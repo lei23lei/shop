@@ -12,6 +12,22 @@ interface RegisterResponse {
 interface LoginRequest {
   email: string;
   password: string;
+  guest_cart?: {
+    cart_id: string;
+    items: Array<{
+      id: number;
+      cart_item_id: string;
+      name: string;
+      price: string;
+      size: string;
+      size_id: number;
+      quantity: number;
+      total_available: number;
+      image_url: string | null;
+      categories: string | null;
+    }>;
+    total_items: number;
+  };
 }
 
 interface LoginResponse {
@@ -28,6 +44,35 @@ interface LoginResponse {
   tokens: {
     access: string;
     refresh: string;
+  };
+  cart_merge?: {
+    success: boolean;
+    total_guest_items: number;
+    added_items: Array<{
+      item_name: string;
+      size: string;
+      quantity: number;
+    }>;
+    updated_items: Array<{
+      item_name: string;
+      size: string;
+      old_quantity: number;
+      added_quantity: number;
+      final_quantity: number;
+    }>;
+    failed_items: Array<{
+      item_name?: string;
+      item_id?: number;
+      size?: string;
+      size_id?: number;
+      requested_quantity?: number;
+      existing_quantity?: number;
+      final_quantity?: number;
+      available_quantity?: number;
+      quantity?: number;
+      reason: string;
+    }>;
+    message: string;
   };
 }
 

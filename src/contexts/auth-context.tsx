@@ -5,6 +5,8 @@ import {
   useLoginMutation,
   useVerifyQuery,
 } from "@/services/endpoints/account-endpoints";
+import { getLocalCart, clearLocalCart } from "@/lib/cart-utils";
+import { toast } from "sonner";
 
 export interface User {
   id: number;
@@ -76,10 +78,17 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
   const login = async (email: string, password: string) => {
     try {
-      const response = await loginMutation({
+      // Get guest cart from localStorage before login
+      const guestCart = getLocalCart();
+      const hasGuestItems = guestCart.items.length > 0;
+
+      const loginData = {
         email,
         password,
-      }).unwrap();
+        ...(hasGuestItems && { guest_cart: guestCart }),
+      };
+
+      const response = await loginMutation(loginData).unwrap();
 
       setUser(response.user);
       setTokens(response.tokens);
@@ -87,6 +96,35 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       localStorage.setItem("access_token", response.tokens.access);
       localStorage.setItem("refresh_token", response.tokens.refresh);
       localStorage.setItem("user", JSON.stringify(response.user));
+
+      // Handle cart merge feedback
+      if (response.cart_merge && hasGuestItems) {
+        const { added_items, updated_items, failed_items, message } =
+          response.cart_merge;
+
+        // Show success message
+        toast.success(message);
+
+        // Show details if there were updates or failures
+        if (updated_items.length > 0) {
+          toast.info(
+            `Updated ${updated_items.length} existing item${
+              updated_items.length > 1 ? "s" : ""
+            } in your cart`
+          );
+        }
+
+        if (failed_items.length > 0) {
+          toast.warning(
+            `${failed_items.length} item${
+              failed_items.length > 1 ? "s" : ""
+            } couldn't be added due to stock limitations`
+          );
+        }
+
+        // Clear guest cart after successful merge
+        clearLocalCart();
+      }
     } catch (error) {
       console.error("Login failed:", error);
       throw error;
