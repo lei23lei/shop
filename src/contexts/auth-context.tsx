@@ -99,8 +99,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
 
       // Handle cart merge feedback
       if (response.cart_merge && hasGuestItems) {
-        const { added_items, updated_items, failed_items, message } =
-          response.cart_merge;
+        const { updated_items, failed_items, message } = response.cart_merge;
 
         // Show success message
         toast.success(message);
