@@ -22,7 +22,7 @@ export default function StepThree({ orderData }: StepThreeProps) {
   };
 
   return (
-    <div className="w-[95%] md:max-w-2xl mx-auto space-y-6 mb-6">
+    <div className="w-[95%] md:max-w-2xl mx-auto space-y-2 md:space-y-4 mb-6">
       {/* Success Header */}
       <div className="bg-gradient-to-br from-green-50 to-emerald-50 dark:from-green-950/30 dark:to-emerald-950/30 rounded-xl p-6 md:p-8 border border-green-200 dark:border-green-800">
         <div className="flex flex-col items-center text-center space-y-4">
