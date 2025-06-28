@@ -26,7 +26,7 @@ export default function Content() {
   return (
     <div
       id="content-section"
-      className="max-w-6xl mx-auto px-4 sm:px-6 relative my-8 sm:my-16 md:h-[530px] md:px-2 md:mb-20"
+      className="max-w-6xl mx-auto px-4 sm:px-6 relative my-12 sm:my-24 md:h-[530px] md:px-2 "
     >
       <motion.div
         initial={{ opacity: 0, scale: 0.8 }}
