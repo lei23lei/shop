@@ -112,6 +112,43 @@ export default function Header() {
           }
         }
 
+        @keyframes slideInDown {
+          from {
+            opacity: 0;
+            transform: translateY(-50px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+
+        @keyframes zoomIn {
+          from {
+            opacity: 0;
+            transform: scale(0.8);
+          }
+          to {
+            opacity: 1;
+            transform: scale(1);
+          }
+        }
+
+        @keyframes typewriter {
+          from {
+            width: 0;
+          }
+          to {
+            width: 100%;
+          }
+        }
+
+        @keyframes blink {
+          50% {
+            border-color: transparent;
+          }
+        }
+
         .animate-fade-in-up {
           animation: fadeInUp 0.8s ease-out forwards;
         }
@@ -122,6 +159,14 @@ export default function Header() {
 
         .animate-slide-in-left {
           animation: slideInFromLeft 0.7s ease-out forwards;
+        }
+
+        .animate-slide-in-down {
+          animation: slideInDown 1s ease-out forwards;
+        }
+
+        .animate-zoom-in {
+          animation: zoomIn 0.8s ease-out forwards;
         }
 
         .animate-float {
@@ -145,6 +190,16 @@ export default function Header() {
 
         .animate-delay-800 {
           animation-delay: 0.8s;
+          opacity: 0;
+        }
+
+        .animate-delay-1000 {
+          animation-delay: 1s;
+          opacity: 0;
+        }
+
+        .animate-delay-1200 {
+          animation-delay: 1.2s;
           opacity: 0;
         }
 
@@ -209,28 +264,27 @@ export default function Header() {
                       <div className="absolute inset-0 bg-gradient-to-r from-black/40 via-transparent to-black/40"></div>
 
                       {/* Text overlay with improved layout and animations */}
-                      <div className="absolute inset-0 flex flex-col justify-center items-center text-center text-white px-4 sm:px-8 md:px-16 lg:px-24 z-20">
+                      <div className="absolute inset-0 flex flex-col justify-center items-center text-center text-white px-4 sm:px-8 md:px-16 lg:px-24 z-20 animate-fade-in-scale">
                         <div className="max-w-4xl space-y-4 sm:space-y-6">
-                          <h1 className="animate-fade-in-up text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold leading-tight tracking-tight bg-gradient-to-r from-white via-gray-200 to-gray-400 bg-clip-text text-transparent drop-shadow-2xl animate-float">
+                          <h1 className="animate-slide-in-down text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-light leading-tight tracking-wide text-white/95 drop-shadow-lg">
                             {image.title}
                           </h1>
-                          <h2 className="animate-fade-in-up animate-delay-200 text-lg sm:text-xl md:text-2xl lg:text-3xl font-light italic bg-gradient-to-r from-gray-100 via-white to-gray-200 bg-clip-text text-transparent drop-shadow-xl">
+                          <h2 className="animate-fade-in-up animate-delay-400 text-lg sm:text-xl md:text-2xl lg:text-3xl font-extralight tracking-wider text-white/80 drop-shadow-md">
                             {image.subtitle}
                           </h2>
-                          <div className="animate-slide-in-left animate-delay-400 w-16 sm:w-20 md:w-24 lg:w-32 h-1 bg-gradient-to-r from-transparent via-white/80 to-transparent mx-auto my-4 sm:my-6 rounded-full"></div>
-                          <p className="animate-fade-in-up animate-delay-600 text-base px-2 sm:text-lg md:text-xl lg:text-2xl leading-relaxed max-w-3xl mx-auto opacity-95 drop-shadow-lg shadow-black/70">
+                          <div className="animate-slide-in-left animate-delay-600 w-16 sm:w-20 md:w-24 lg:w-32 h-0.5 bg-white/60 mx-auto my-4 sm:my-6 rounded-full"></div>
+                          <p className="animate-zoom-in animate-delay-800 text-base px-2 sm:text-lg md:text-xl lg:text-2xl leading-relaxed max-w-3xl mx-auto text-white/75 font-light">
                             {image.description}
                           </p>
-                          <div className="animate-fade-in-scale animate-delay-800 pt-4 sm:pt-6 md:pt-8">
+                          <div className="animate-fade-in-scale animate-delay-1200 pt-4 sm:pt-6 md:pt-8">
                             <Link href={image.link}>
                               <Button
                                 size="lg"
-                                className="bg-white/95  dark:bg-black/95 text-black dark:text-white hover:bg-white hover:scale-110 hover:-translate-y-1 font-bold px-8 py-4 sm:px-10 sm:py-5 md:px-12 md:py-6 text-base sm:text-lg md:text-xl rounded-full shadow-2xl hover:shadow-3xl transition-all duration-500  backdrop-blur-sm transform relative overflow-hidden group"
+                                className="bg-white/10 hover:bg-white/20 dark:bg-white/10 text-white  hover:scale-105 hover:-translate-y-0.5 font-semibold px-8 py-4 sm:px-10 sm:py-5 md:px-12 md:py-6 text-base sm:text-lg md:text-xl rounded-full shadow-lg hover:shadow-xl transition-all duration-300 backdrop-blur-sm transform relative overflow-hidden group"
                               >
                                 <span className="relative z-10">
                                   Explore Collection
                                 </span>
-                                <div className="absolute inset-0 bg-gradient-to-r from-white/0 via-white/20 to-white/0 transform -translate-x-full group-hover:translate-x-full transition-transform duration-1000"></div>
                               </Button>
                             </Link>
                           </div>
