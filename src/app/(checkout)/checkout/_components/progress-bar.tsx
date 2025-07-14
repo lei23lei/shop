@@ -52,7 +52,7 @@ export default function ProgressBar({ currentStep = 1 }: ProgressBarProps) {
                   <div
                     className={`relative top-2 w-8 h-8 md:w-10 md:h-10 rounded-full flex items-center justify-center transition-all duration-500 ease-out shadow-lg transform ${
                       isCompleted
-                        ? "bg-gradient-to-br from-primary to-primary/90 border-2 border-primary/50 scale-105 hover:scale-110"
+                        ? "bg-gradient-to-br from-primary to-primary border-2 border-primary/50 scale-105 hover:scale-110"
                         : isCurrent
                         ? "bg-gradient-to-br from-background to-background/90 border-3 border-primary shadow-primary/25 scale-110 hover:scale-115"
                         : "bg-gradient-to-br from-muted to-muted/80 border-2 border-muted-foreground/30 hover:scale-105"
