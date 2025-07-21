@@ -88,6 +88,11 @@ export default function CheckoutPage() {
     }
   }, [user, localCartData, isCartLoading, router]);
 
+  // Scroll to top when step changes
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }, [currentStep]);
+
   // Show loading state while checking auth or loading cart
   if (isAuthLoading || isCartLoadingForUser) {
     return <LoadingPage />;
@@ -135,7 +140,7 @@ export default function CheckoutPage() {
   };
 
   return (
-    <div className="min-h-screen bg-background">
+    <div className="min-h-screen bg-background pb-4 md:pb-8">
       <ProgressBar currentStep={currentStep} />
       <div className="flex flex-col-reverse md:flex-row mt-4 md:mt-6items-start justify-center gap-4 md:gap-10">
         <div className="w-full md:w-[600px]">{renderStep()}</div>
