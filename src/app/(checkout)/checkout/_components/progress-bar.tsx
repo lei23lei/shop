@@ -13,10 +13,10 @@ export default function ProgressBar({ currentStep = 1 }: ProgressBarProps) {
   ];
 
   return (
-    <div className="w-full pt-8 md:pt-16 max-w-4xl mx-auto px-4 md:py-8">
+    <div className="w-full pt-2 md:pt-4 max-w-4xl mx-auto px-4 ">
       <div className="relative">
         {/* Progress bar background */}
-        <div className="absolute top-1/2 left-8 right-8 h-1 bg-gradient-to-r from-muted-foreground/10 to-muted-foreground/20 rounded-full -translate-y-1/2 shadow-inner">
+        <div className="absolute top-1/3 left-8 right-8 h-1 bg-gradient-to-r from-muted-foreground/10 to-muted-foreground/20 rounded-full -translate-y-1/2 shadow-inner">
           {/* Active progress line */}
           <div
             className="h-full bg-gradient-to-r from-primary via-primary/90 to-primary/80 rounded-full transition-all duration-700 ease-out shadow-lg relative overflow-hidden"
@@ -118,7 +118,7 @@ export default function ProgressBar({ currentStep = 1 }: ProgressBarProps) {
       </div>
 
       {/* Progress percentage indicator */}
-      <div className="mt-6 text-center">
+      <div className="mt-2 md:mt-4 text-center">
         <div className="inline-flex items-center space-x-2 px-3 py-1 bg-muted/50 rounded-full">
           <div className="w-2 h-2 rounded-full bg-primary animate-pulse" />
           <span className="text-xs font-medium text-muted-foreground">
