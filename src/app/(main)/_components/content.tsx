@@ -51,7 +51,7 @@ export default function Content() {
         transition={{ duration: 0.8, ease: "easeOut" }}
         className="md:absolute md:right-2 contrast-75 perspective-1000"
       >
-        <div className="relative w-full md:w-[850px] group transform-gpu">
+        <div className="relative w-full sm:w-[600px] md:w-[700px] lg:w-[850px] group transform-gpu">
           <div className="absolute inset-0 bg-gradient-to-br from-orange-400/20 via-pink-500/20 to-purple-600/20 rounded-lg blur-2xl transform scale-105 group-hover:scale-110 transition-transform duration-500"></div>
 
           <Image
@@ -78,7 +78,7 @@ export default function Content() {
         }
         transition={{ duration: 0.8, delay: 0.3, ease: "easeOut" }}
         className="flex flex-col md:z-20 md:absolute md:left-0 md:top-[320px] bg-white/95 dark:bg-gray-900/95 backdrop-blur-md items-center 
-          space-y-4 sm:space-y-5 p-4 sm:p-6 md:p-8 md:px-12 shadow-2xl rounded-2xl border border-gray-100/50 dark:border-gray-800/50 mt-6 sm:mt-8 md:mt-0
+          space-y-4 sm:space-y-5 pt-0 p-4 sm:pb-4 mt:pt-2 md:pb-6 md:px-12 shadow-2xl rounded-2xl border border-gray-100/50 dark:border-gray-800/50 mt-6 sm:mt-8 md:mt-0
           before:absolute before:inset-0 before:bg-gradient-to-br before:from-orange-500/5 before:via-pink-500/5 before:to-purple-500/5 before:rounded-2xl"
       >
         <div className="absolute inset-0 bg-gradient-to-br from-orange-500/5 via-pink-500/5 to-purple-500/5 rounded-2xl"></div>
