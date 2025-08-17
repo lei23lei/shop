@@ -20,7 +20,7 @@ export default function HomeDialog() {
       // Show dialog after a short delay for better UX
       const timer = setTimeout(() => {
         setShowWelcomeDialog(true);
-      }, 1500);
+      }, 3500);
       return () => clearTimeout(timer);
     }
   }, []);

@@ -51,15 +51,15 @@ export default function Content() {
         transition={{ duration: 0.8, ease: "easeOut" }}
         className="md:absolute md:right-2 contrast-75 perspective-1000"
       >
-        <div className="relative group transform-gpu">
+        <div className="relative w-full md:w-[850px] group transform-gpu">
           <div className="absolute inset-0 bg-gradient-to-br from-orange-400/20 via-pink-500/20 to-purple-600/20 rounded-lg blur-2xl transform scale-105 group-hover:scale-110 transition-transform duration-500"></div>
 
           <Image
             src="/images/men-top.png"
-            width={700}
-            height={700}
+            width={3000}
+            height={3000}
             alt="men-top"
-            className="relative w-full h-auto object-cover rounded-lg transition-all duration-500 group-hover:scale-105 group-hover:shadow-2xl transform-gpu"
+            className="relative w-full object-cover rounded-lg transition-all duration-500 group-hover:scale-105 group-hover:shadow-2xl transform-gpu"
           />
 
           {/* Overlay effects */}
@@ -78,31 +78,23 @@ export default function Content() {
         }
         transition={{ duration: 0.8, delay: 0.3, ease: "easeOut" }}
         className="flex flex-col md:z-20 md:absolute md:left-0 md:top-[320px] bg-white/95 dark:bg-gray-900/95 backdrop-blur-md items-center 
-          space-y-4 sm:space-y-5 p-6 sm:p-8 md:p-12 shadow-2xl rounded-2xl border border-gray-100/50 dark:border-gray-800/50 mt-6 sm:mt-8 md:mt-0
+          space-y-4 sm:space-y-5 p-4 sm:p-6 md:p-8 md:px-12 shadow-2xl rounded-2xl border border-gray-100/50 dark:border-gray-800/50 mt-6 sm:mt-8 md:mt-0
           before:absolute before:inset-0 before:bg-gradient-to-br before:from-orange-500/5 before:via-pink-500/5 before:to-purple-500/5 before:rounded-2xl"
       >
         <div className="absolute inset-0 bg-gradient-to-br from-orange-500/5 via-pink-500/5 to-purple-500/5 rounded-2xl"></div>
 
         <motion.h2
-          initial={{ opacity: 0, y: 30 }}
-          animate={isVisible ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
-          transition={{ duration: 0.6, delay: 0.5 }}
           className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl md:text-left text-center max-w-md uppercase font-black 
             bg-gradient-to-r from-orange-600 via-pink-600 to-purple-600 bg-clip-text text-transparent
             relative z-10"
         >
-          <span className="relative text-foreground">
+          <span className="relative text-foreground text-2xl md:text-3xl lg:text-4xl">
             Elevate Your Style
             <div className="absolute -bottom-2 left-0 w-full h-1 bg-gradient-to-r from-orange-500 via-pink-500 to-purple-500 rounded-full transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></div>
           </span>
         </motion.h2>
 
-        <motion.p
-          initial={{ opacity: 0, y: 30 }}
-          animate={isVisible ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
-          transition={{ duration: 0.6, delay: 0.7 }}
-          className="max-w-md md:text-left text-center text-gray-700 dark:text-gray-200 text-base sm:text-lg md:leading-relaxed leading-relaxed relative z-10"
-        >
+        <motion.p className="max-w-md md:text-left text-center text-gray-700 dark:text-gray-200 text-base sm:text-lg md:leading-relaxed leading-relaxed relative z-10">
           Discover premium men&apos;s fashion that defines modern masculinity.
           From sharp business attire to casual weekend wear, find pieces that
           reflect your{" "}
@@ -121,9 +113,6 @@ export default function Content() {
           className="w-full sm:w-auto flex justify-center relative z-10"
         >
           <motion.button
-            initial={{ opacity: 0, y: 30 }}
-            animate={isVisible ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
-            transition={{ duration: 0.6, delay: 0.9 }}
             className="group relative px-6 py-3 sm:px-8 sm:py-4 md:px-10 md:py-5 
               bg-gradient-to-r from-orange-500 via-pink-500 to-purple-500 
               text-white font-bold rounded-full 
@@ -133,7 +122,7 @@ export default function Content() {
               shadow-lg hover:shadow-2xl
               before:absolute before:inset-0 before:bg-gradient-to-r before:from-orange-400 before:via-pink-400 before:to-purple-400 before:rounded-full before:blur-lg before:opacity-0 before:group-hover:opacity-50 before:transition-opacity before:duration-300 before:-z-10"
           >
-            <span className="relative z-10 flex items-center space-x-2">
+            <span className="relative z-10 text-sm md:text-base lg:text-md flex items-center space-x-2">
               <span>Shop Men&apos;s Collection</span>
               <motion.svg
                 initial={{ x: 0 }}
