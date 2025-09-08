@@ -556,7 +556,7 @@ export default function UserBar() {
       {/* Mobile Menu */}
       <div
         className={`md:hidden bg-gray-200 dark:bg-zinc-700 overflow-hidden transition-all duration-500 ease-in-out ${
-          isMobileMenuOpen ? "h-[calc(100vh-72px)]" : "h-0"
+          isMobileMenuOpen ? "h-[calc(100vh-60px)]" : "h-0"
         }`}
       >
         <div
