@@ -73,7 +73,7 @@ export const categories = [
   {
     // parent_category_id
     name: "Others",
-    image: "/images/others.webp",
+    image: "/images/others.png",
     id: 4,
     // category_id
     subcategories: [

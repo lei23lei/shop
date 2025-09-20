@@ -79,22 +79,22 @@ export default function Content() {
         transition={{ duration: 0.8, delay: 0.3, ease: "easeOut" }}
         className="flex flex-col md:z-20 md:absolute md:left-0 md:top-[320px] liquid-glass-light bg-white/95 dark:bg-gray-900/95 backdrop-blur-md items-center 
           space-y-4 sm:space-y-5 pt-0 p-4 sm:pb-4 mt:pt-2 md:pb-6 md:px-12 shadow-2xl rounded-2xl border border-gray-100/50 dark:border-gray-800/50 mt-6 sm:mt-8 md:mt-0
-          before:absolute before:inset-0 before:bg-gradient-to-br before:from-orange-500/5 before:via-pink-500/5 before:to-purple-500/5 before:rounded-2xl"
+          before:absolute before:inset-0 before:bg-gradient-to-br before:from-orange-300/5 before:via-pink-300/5 before:to-purple-300/5 before:rounded-2xl"
       >
-        <div className="absolute inset-0 bg-gradient-to-br from-orange-500/5 via-pink-500/5 to-purple-500/5 rounded-2xl"></div>
+        <div className="absolute inset-0 bg-gradient-to-br from-orange-300/5 via-pink-300/5 to-purple-300/5 rounded-2xl"></div>
 
         <motion.h2
           className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl md:text-left text-center max-w-md uppercase font-black 
-            bg-gradient-to-r from-orange-600 via-pink-600 to-purple-600 bg-clip-text text-transparent
+            bg-gradient-to-r from-orange-400 via-pink-400 to-purple-400 bg-clip-text text-transparent
             relative z-10"
         >
-          <span className="relative text-foreground text-2xl md:text-3xl lg:text-4xl">
+          <span className="relative text-foreground font-bold text-2xl ">
             Elevate Your Style
             <div className="absolute -bottom-2 left-0 w-full h-1 bg-gradient-to-r from-orange-500 via-pink-500 to-purple-500 rounded-full transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300"></div>
           </span>
         </motion.h2>
 
-        <motion.p className="max-w-md md:text-left text-center text-gray-700 dark:text-gray-200 text-base sm:text-lg md:leading-relaxed leading-relaxed relative z-10">
+        <motion.p className="max-w-md md:text-left text-center text-gray-700 dark:text-gray-200 text-base  md:leading-relaxed leading-relaxed relative z-10">
           Discover premium men&apos;s fashion that defines modern masculinity.
           From sharp business attire to casual weekend wear, find pieces that
           reflect your{" "}
@@ -123,7 +123,7 @@ export default function Content() {
               shadow-lg hover:shadow-2xl
               before:absolute before:inset-0 before:bg-gradient-to-r before:from-orange-400 before:via-pink-400 before:to-purple-400 before:rounded-full before:blur-lg before:opacity-0 before:group-hover:opacity-50 before:transition-opacity before:duration-300 before:-z-10"
           >
-            <span className="relative z-10 text-sm md:text-base lg:text-md flex items-center space-x-2">
+            <span className="relative z-10 text-sm  flex items-center space-x-2">
               <span className="text-primary">Shop Men&apos;s Collection</span>
               <motion.svg
                 initial={{ x: 0 }}

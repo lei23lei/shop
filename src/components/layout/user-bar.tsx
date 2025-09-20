@@ -564,7 +564,7 @@ export default function UserBar() {
             isMobileMenuOpen ? "opacity-100" : "opacity-0"
           }`}
         >
-          <Accordion type="single" collapsible className="w-full pb-4">
+          <Accordion type="single" collapsible className="w-full  pb-4">
             {categories.map((category) => (
               <AccordionItem value={category.id.toString()} key={category.id}>
                 <AccordionTrigger className="text-base  hover:no-underline">
@@ -675,7 +675,7 @@ export default function UserBar() {
             <Input
               type="search"
               placeholder="Search..."
-              className="w-[200px] h-[35px] pl-8 text-black bg-white/90 focus:w-[350px] transition-all duration-1000 ease-in-out !ring-0 !ring-offset-0 !focus-visible:ring-0 !focus-visible:ring-offset-0 !focus:ring-0 !focus:ring-offset-0 !outline-none text-base sm:text-sm"
+              className="w-[200px] h-[35px] border-white/40 pl-8 text-black bg-white/90 focus:w-[350px] transition-all duration-1000 ease-in-out !ring-0 !ring-offset-0 !focus-visible:ring-0 !focus-visible:ring-offset-0 !focus:ring-0 !focus:ring-offset-0 !outline-none text-base sm:text-sm"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
             />

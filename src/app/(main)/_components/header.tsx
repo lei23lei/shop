@@ -266,14 +266,12 @@ export default function Header() {
                       {/* Text overlay with improved layout and animations */}
                       <div className="absolute inset-0 flex flex-col justify-center items-center text-center text-white px-4 sm:px-8 md:px-16 lg:px-24 z-20 animate-fade-in-scale">
                         <div className="max-w-4xl space-y-4 sm:space-y-6">
-                          <h1 className="animate-slide-in-down text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-light leading-tight tracking-wide text-white/95 drop-shadow-lg">
+                          <h1 className="animate-slide-in-down  text-xl sm:text-2xl md:text-3xl lg:text-4xl font-medium leading-tight tracking-wide text-white/95 drop-shadow-lg">
                             {image.title}
                           </h1>
-                          <h2 className="animate-fade-in-up animate-delay-400 text-lg sm:text-xl md:text-2xl lg:text-3xl font-extralight tracking-wider text-white/80 drop-shadow-md">
-                            {image.subtitle}
-                          </h2>
+
                           <div className="animate-slide-in-left animate-delay-600 w-16 sm:w-20 md:w-24 lg:w-32 h-0.5 bg-white/60 mx-auto my-4 sm:my-6 rounded-full"></div>
-                          <p className="animate-zoom-in animate-delay-800 text-base px-2 sm:text-lg md:text-xl lg:text-2xl leading-relaxed max-w-3xl mx-auto text-white/75 font-light">
+                          <p className="animate-zoom-in animate-delay-800 text-base px-2 sm:text-sm md:text-md lg:text-lg leading-relaxed max-w-3xl mx-auto text-white/75 font-light">
                             {image.description}
                           </p>
                           <div className="animate-fade-in-scale animate-delay-1200 pt-4 sm:pt-6 md:pt-8">
@@ -283,9 +281,9 @@ export default function Header() {
                                 variant="glass"
                                 className="  !rounded-full dark:bg-white/10 text-white  hover:scale-105 hover:-translate-y-0.5 font-semibold px-8 py-4 sm:px-10 sm:py-5 md:px-12 md:py-6 text-base sm:text-lg md:text-xl shadow-lg hover:shadow-xl transition-all duration-300 backdrop-blur-sm transform relative overflow-hidden group"
                               >
-                                <span className="relative z-10">
+                                <p className="relative z-10 text-sm sm:text-md ">
                                   Explore Collection
-                                </span>
+                                </p>
                               </Button>
                             </Link>
                           </div>

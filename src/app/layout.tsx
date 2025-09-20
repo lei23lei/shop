@@ -1,11 +1,11 @@
 import type { Metadata } from "next";
-import { Maven_Pro } from "next/font/google";
+import { Arimo } from "next/font/google";
 import "./globals.css";
 import RootLayoutClient from "./root-layout-client";
 
-const mavenPro = Maven_Pro({
-  weight: ["400", "500", "600", "700", "800", "900"],
-  variable: "--font-maven-pro",
+const ff = Arimo({
+  weight: ["400", "500", "600", "700"],
+  variable: "--font-alan-sans",
   subsets: ["latin"],
 });
 
@@ -113,7 +113,7 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body
-        className={`${mavenPro.variable} font-maven-pro bg-background overflow-x-hidden antialiased`}
+        className={`${ff.variable} font-alan-sans bg-background overflow-x-hidden antialiased`}
       >
         <RootLayoutClient>{children}</RootLayoutClient>
       </body>

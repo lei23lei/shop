@@ -186,10 +186,10 @@ export function CartSheet({
                       </p>
                     </div>
                     <Button
-                      variant="outline"
+                      variant="glass"
                       onClick={() => setIsCartOpen(false)}
                     >
-                      Start Shopping
+                      <p className="text-foreground">Start Shopping</p>
                     </Button>
                   </div>
                 )}
