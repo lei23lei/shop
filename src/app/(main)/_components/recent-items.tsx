@@ -74,7 +74,7 @@ export default function RecentItems({
               className="basis-1/2 md:basis-1/3 lg:basis-1/4 xl:basis-1/5"
             >
               <Link href={`/items-detail/${item.id}`}>
-                <Card className="overflow-hidden transition-shadow duration-200 hover:shadow-lg cursor-pointer">
+                <Card className="overflow-hidden liquid-glass-light transition-shadow duration-200 hover:shadow-lg cursor-pointer">
                   <CardContent className="flex flex-col p-2 md:p-3">
                     <div className="relative aspect-square overflow-hidden rounded-lg">
                       <Image
@@ -89,7 +89,7 @@ export default function RecentItems({
                       <h4 className="font-semibold line-clamp-1">
                         {item.name}
                       </h4>
-                      <p className="text-sm text-gray-500">
+                      <p className="text-sm text-muted-foreground">
                         {item.categories[0]}
                       </p>
                       <p className="font-medium">${item.price}</p>

@@ -251,19 +251,19 @@ export default function ItemDetailPage({
                                   setSelectedSize(size.size)
                                 }
                                 className={cn(
-                                  "relative flex cursor-pointer items-center justify-center p-2 border border-muted-foreground/1 shadow-sm rounded-md transition-all min-w-[50px] sm:min-w-[60px]",
+                                  "relative flex cursor-pointer  items-center liquid-glass-button justify-center h-8 border border-muted-foreground/1 shadow-sm rounded-md transition-all min-w-[50px] sm:min-w-[60px]",
                                   size.quantity === 0
                                     ? "opacity-100 cursor-not-allowed bg-neutral-100 dark:bg-neutral-800 text-neutral-400 dark:text-neutral-500 border-neutral-200 dark:border-neutral-700"
                                     : selectedSize === size.size
-                                    ? "border-2 bg-neutral-900 text-white"
+                                    ? "border-2 !bg-neutral-400 text-white"
                                     : "hover:border-foreground/70"
                                 )}
                               >
-                                <span className="text-sm sm:text-base font-medium">
+                                <span className="text-sm sm:text-base font-medium text-foreground">
                                   {size.size}
                                 </span>
                                 {size.quantity === 0 && (
-                                  <X className="absolute inset-0 w-full h-full text-neutral-400 dark:text-neutral-500 opacity-50" />
+                                  <X className="absolute inset-0 w-full h-full text-neutral-500 dark:text-neutral-300 opacity-50" />
                                 )}
                               </div>
                             </TooltipTrigger>

@@ -77,7 +77,7 @@ export default function Content() {
             : { opacity: 0, x: -100, y: 50 }
         }
         transition={{ duration: 0.8, delay: 0.3, ease: "easeOut" }}
-        className="flex flex-col md:z-20 md:absolute md:left-0 md:top-[320px] bg-white/95 dark:bg-gray-900/95 backdrop-blur-md items-center 
+        className="flex flex-col md:z-20 md:absolute md:left-0 md:top-[320px] liquid-glass-light bg-white/95 dark:bg-gray-900/95 backdrop-blur-md items-center 
           space-y-4 sm:space-y-5 pt-0 p-4 sm:pb-4 mt:pt-2 md:pb-6 md:px-12 shadow-2xl rounded-2xl border border-gray-100/50 dark:border-gray-800/50 mt-6 sm:mt-8 md:mt-0
           before:absolute before:inset-0 before:bg-gradient-to-br before:from-orange-500/5 before:via-pink-500/5 before:to-purple-500/5 before:rounded-2xl"
       >
@@ -114,21 +114,22 @@ export default function Content() {
         >
           <motion.button
             className="group relative px-6 py-3 sm:px-8 sm:py-4 md:px-10 md:py-5 
-              bg-gradient-to-r from-orange-500 via-pink-500 to-purple-500 
-              text-white font-bold rounded-full 
-              hover:from-orange-600 hover:via-pink-600 hover:to-purple-600 
-              transition-all duration-300 transform hover:scale-105 hover:-translate-y-1
+              liquid-glass-button
+              !bg-white/10
+              text-white font-bold !rounded-full 
+             
+              transition-all duration-300 transform 
               text-sm sm:text-base md:text-lg
               shadow-lg hover:shadow-2xl
               before:absolute before:inset-0 before:bg-gradient-to-r before:from-orange-400 before:via-pink-400 before:to-purple-400 before:rounded-full before:blur-lg before:opacity-0 before:group-hover:opacity-50 before:transition-opacity before:duration-300 before:-z-10"
           >
             <span className="relative z-10 text-sm md:text-base lg:text-md flex items-center space-x-2">
-              <span>Shop Men&apos;s Collection</span>
+              <span className="text-primary">Shop Men&apos;s Collection</span>
               <motion.svg
                 initial={{ x: 0 }}
                 animate={{ x: isVisible ? 0 : -10 }}
                 transition={{ duration: 0.3 }}
-                className="w-5 h-5 group-hover:translate-x-1 transition-transform duration-300"
+                className="w-5 text-primary h-5 group-hover:translate-x-1 transition-transform duration-300"
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"

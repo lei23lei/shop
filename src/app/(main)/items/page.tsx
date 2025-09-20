@@ -102,7 +102,7 @@ function ItemsContent() {
             <div className="grid grid-cols-2 md:grid-cols-3 2xl:grid-cols-4 gap-2 md:gap-4">
               {itemsData?.results.map((item) => (
                 <Link href={`/items-detail/${item.id}`} key={item.id}>
-                  <Card className="overflow-hidden transition-shadow duration-200 hover:shadow-lg cursor-pointer group">
+                  <Card className="overflow-hidden liquid-glass-heavy transition-shadow duration-200 hover:shadow-lg cursor-pointer group">
                     <CardContent className="p-0">
                       <div className="relative aspect-square overflow-hidden">
                         <Image
@@ -160,6 +160,9 @@ function ItemsContent() {
                         handlePageChange(pageNum);
                       }}
                       isActive={page === pageNum}
+                      className={`${
+                        page === pageNum ? "liquid-glass-light !rounded-xl" : ""
+                      }`}
                     >
                       {pageNum}
                     </PaginationLink>

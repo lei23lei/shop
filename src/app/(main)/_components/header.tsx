@@ -280,7 +280,8 @@ export default function Header() {
                             <Link href={image.link}>
                               <Button
                                 size="lg"
-                                className="bg-white/10 hover:bg-white/20 dark:bg-white/10 text-white  hover:scale-105 hover:-translate-y-0.5 font-semibold px-8 py-4 sm:px-10 sm:py-5 md:px-12 md:py-6 text-base sm:text-lg md:text-xl rounded-full shadow-lg hover:shadow-xl transition-all duration-300 backdrop-blur-sm transform relative overflow-hidden group"
+                                variant="glass"
+                                className="  !rounded-full dark:bg-white/10 text-white  hover:scale-105 hover:-translate-y-0.5 font-semibold px-8 py-4 sm:px-10 sm:py-5 md:px-12 md:py-6 text-base sm:text-lg md:text-xl shadow-lg hover:shadow-xl transition-all duration-300 backdrop-blur-sm transform relative overflow-hidden group"
                               >
                                 <span className="relative z-10">
                                   Explore Collection

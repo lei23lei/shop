@@ -121,7 +121,7 @@ export function CartSheet({
                       return (
                         <div
                           key={item.cart_item_id}
-                          className="flex flex-row bg-header-background rounded-md p-2 gap-4"
+                          className="flex flex-row liquid-glass-light !pt-3  rounded-md p-2 gap-4"
                         >
                           <Link href={`/items-detail/${item.id}`}>
                             <div className="relative w-24 h-24 overflow-hidden rounded-md">
@@ -204,7 +204,7 @@ export function CartSheet({
                   </span>
                 </div>
                 <Link href="/checkout">
-                  <Button className="w-full font-extrabold bg-zinc-950/80 hover:bg-zinc-950/60 dark:bg-zinc-950 dark:hover:bg-zinc-950/60 text-zinc-100">
+                  <Button className="w-full  font-extrabold bg-zinc-950/80 hover:bg-zinc-950/60 dark:bg-zinc-950 dark:hover:bg-zinc-950/60 text-zinc-100">
                     <p className="text-sm">Checkout</p>
                   </Button>
                 </Link>
