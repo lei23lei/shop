@@ -75,7 +75,7 @@ export function LoginForm() {
   }
 
   return (
-    <Card className="w-[90%] md:w-full  max-w-md">
+    <Card className="w-[90%] md:w-full liquid-glass-heavy  max-w-md">
       <CardHeader className="space-y-1 ">
         <CardTitle className="text-xl md:text-2xl font-bold text-center">
           Login
@@ -127,10 +127,13 @@ export function LoginForm() {
             </div>
             <Button
               type="submit"
+              variant="glass"
               className="w-full"
               disabled={isAuthLoading || isLoading}
             >
-              {isAuthLoading || isLoading ? "Signing in..." : "Sign in"}
+              <p className="text-foreground">
+                {isAuthLoading || isLoading ? "Signing in..." : "Sign in"}
+              </p>
             </Button>
           </form>
         </Form>

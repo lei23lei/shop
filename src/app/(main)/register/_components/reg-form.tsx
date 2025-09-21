@@ -122,7 +122,7 @@ export default function RegForm() {
   }
 
   return (
-    <Card className="w-[90%] md:w-full  max-w-md">
+    <Card className="w-[90%] md:w-full liquid-glass-heavy  max-w-md">
       <CardHeader className="space-y-1 px-0">
         <CardTitle className="text-xl md:text-2xl  font-bold text-center">
           Create an account
@@ -226,12 +226,15 @@ export default function RegForm() {
             </div>
             <Button
               type="submit"
+              variant="glass"
               className="w-full"
               disabled={isAuthLoading || isLoading}
             >
-              {isAuthLoading || isLoading
-                ? "Creating account..."
-                : "Create account"}
+              <p className="text-foreground">
+                {isAuthLoading || isLoading
+                  ? "Creating account..."
+                  : "Create account"}
+              </p>
             </Button>
           </form>
         </Form>

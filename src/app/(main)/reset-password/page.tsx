@@ -100,7 +100,7 @@ function ResetPasswordForm() {
 
   return (
     <div className="container min-h-[700px] flex items-center justify-center mx-auto p-4">
-      <Card className="w-full max-w-md">
+      <Card className="w-full liquid-glass-heavy max-w-md">
         <CardHeader className="space-y-1">
           <CardTitle className="text-2xl font-bold text-center">
             Reset Password
@@ -194,8 +194,15 @@ function ResetPasswordForm() {
                   </li>
                 </ul>
               </div>
-              <Button type="submit" className="w-full" disabled={isLoading}>
-                {isLoading ? "Resetting Password..." : "Reset Password"}
+              <Button
+                type="submit"
+                variant="glass"
+                className="w-full"
+                disabled={isLoading}
+              >
+                <p className="text-foreground">
+                  {isLoading ? "Resetting Password..." : "Reset Password"}
+                </p>
               </Button>
               <div className="text-center text-sm">
                 <Button

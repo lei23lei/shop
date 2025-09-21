@@ -68,7 +68,7 @@ export default function ForGetPwdPage() {
 
   return (
     <div className="container min-h-[700px] flex items-center justify-center mx-auto p-4">
-      <Card className="w-full max-w-md">
+      <Card className="w-full liquid-glass-heavy max-w-md">
         <CardHeader className="space-y-1">
           <CardTitle className="text-2xl font-bold text-center">
             {isSuccess ? "Check Your Email" : "Reset Password"}
@@ -94,11 +94,11 @@ export default function ForGetPwdPage() {
                 again.
               </div>
               <Button
-                variant="outline"
+                variant="glass"
                 className="w-full"
                 onClick={() => setIsSuccess(false)}
               >
-                Try Again
+                <p className="text-foreground">Try Again</p>
               </Button>
               <div className="text-center text-sm">
                 <Button
@@ -134,8 +134,15 @@ export default function ForGetPwdPage() {
                     </FormItem>
                   )}
                 />
-                <Button type="submit" className="w-full" disabled={isLoading}>
-                  {isLoading ? "Sending Reset Link..." : "Send Reset Link"}
+                <Button
+                  type="submit"
+                  variant="glass"
+                  className="w-full"
+                  disabled={isLoading}
+                >
+                  <p className="text-foreground">
+                    {isLoading ? "Sending Reset Link..." : "Send Reset Link"}
+                  </p>
                 </Button>
                 <div className="text-center text-sm">
                   <Button

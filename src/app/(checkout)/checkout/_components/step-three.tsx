@@ -33,7 +33,7 @@ export default function StepThree({ orderData }: StepThreeProps) {
           </div>
 
           <div className="space-y-2">
-            <h2 className="text-2xl md:text-3xl font-bold text-green-800 dark:text-green-200">
+            <h2 className="text-xl md:text-2xl  font-bold text-green-800 dark:text-green-200">
               Order Confirmed!
             </h2>
             <p className="text-green-700 dark:text-green-300 text-sm md:text-base">
