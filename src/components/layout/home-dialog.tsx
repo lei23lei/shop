@@ -1,123 +1,115 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
-import { Button } from "@/components/ui/button";
-import { Gift, ShoppingBag, Sparkles } from "lucide-react";
+import { Mail, Linkedin, Globe } from "lucide-react";
 
-export default function HomeDialog() {
-  const [showWelcomeDialog, setShowWelcomeDialog] = useState(false);
+import { Button } from "@/components/ui/button";
+
+export default function VersionDialog() {
+  const [isOpen, setIsOpen] = useState(false);
 
   useEffect(() => {
-    // Check if user has seen the welcome dialog before
-    const hasSeenWelcome = localStorage.getItem("hasSeenWelcome");
-    if (!hasSeenWelcome) {
+    // Check if user has seen this version before and if enough time has passed
+    const lastSeenKey = `lastSeenVersion_1`;
+    const lastSeen = localStorage.getItem(lastSeenKey);
+
+    const now = Date.now();
+    const twoDaysInMs = 2 * 24 * 60 * 60 * 1000; // 2 days in milliseconds
+
+    // Show dialog if:
+    // 1. User has never seen this version, OR
+    // 2. It's been more than 2 days since last seen
+    const shouldShow = !lastSeen || now - parseInt(lastSeen) > twoDaysInMs;
+
+    if (shouldShow) {
       // Show dialog after a short delay for better UX
-      const timer = setTimeout(() => {
-        setShowWelcomeDialog(true);
-      }, 3500);
-      return () => clearTimeout(timer);
+      setTimeout(() => {
+        setIsOpen(true);
+      }, 2000);
     }
   }, []);
 
-  const handleCloseDialog = () => {
-    setShowWelcomeDialog(false);
-    // Mark that user has seen the welcome dialog
-    localStorage.setItem("hasSeenWelcome", "true");
+  const handleClose = () => {
+    setIsOpen(false);
+    // Mark this version as seen with current timestamp
+    localStorage.setItem(`lastSeenVersion_1`, Date.now().toString());
   };
 
-  const handleStartShopping = () => {
-    handleCloseDialog();
-    // Optional: Navigate to a specific category or scroll to products
-    // window.scrollTo({ top: window.innerHeight, behavior: "smooth" });
-  };
+  if (!isOpen) return null;
 
   return (
-    <Dialog open={showWelcomeDialog} onOpenChange={setShowWelcomeDialog}>
-      <DialogContent
-        className="max-w-[95%] rounded-lg md:max-w-lg border-0 bg-gradient-to-br from-white to-gray-50 dark:from-gray-900 dark:to-gray-800"
-        onOpenAutoFocus={(e) => {
-          e.preventDefault();
-          // Focus the title instead for better accessibility
-          const target = e.currentTarget as HTMLElement;
-          const title = target?.querySelector(
-            '[role="heading"]'
-          ) as HTMLElement;
-          if (title) {
-            title.focus();
-          }
-        }}
-      >
-        <DialogHeader className="text-center space-y-4">
-          <div className="mx-auto w-12 h-12 md:w-16 md:h-16 bg-gradient-to-r from-pink-300 to-purple-600 rounded-full flex items-center justify-center">
-            <Sparkles className="w-6 h-6 md:w-8 md:h-8 text-white" />
-          </div>
-
-          <DialogTitle
-            className="text-xl md:text-3xl font-bold text-center bg-gradient-to-r from-gray-900 to-gray-600 dark:from-gray-100 dark:to-gray-400 bg-clip-text text-transparent focus:outline-none"
-            tabIndex={0}
-          >
+    <div className="fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-4">
+      <div className="w-full max-w-[90%] sm:max-w-md liquid-glass-light fixed left-[50%] top-[50%] z-50 translate-x-[-50%] translate-y-[-50%] gap-4 border bg-background p-4 sm:p-6 shadow-lg duration-200 animate-in fade-in-0 zoom-in-95 rounded-lg sm:rounded-lg max-h-[90vh] overflow-y-auto">
+        <div className="flex flex-col items-center justify-center gap-2">
+          <h2 className="text-xl sm:text-2xl font-bold text-primary">
             Welcome to Peter&apos;s Shop!
-          </DialogTitle>
-        </DialogHeader>
-
-        <div className="text-center space-y-2 md:space-y-4 pt-2">
-          <div className="bg-blue-50 dark:bg-blue-900/20 rounded-lg p-4 border border-blue-200 dark:border-blue-800">
-            <p className="text-sm md:text-base text-gray-700 dark:text-gray-300 leading-relaxed">
+          </h2>
+          <div className="text-center space-y-3 sm:space-y-4 flex flex-col w-full">
+            <p className="text-sm sm:text-base text-gray-300">
               Our website is hosted in the East US. If you&apos;re visiting from
-              another country, the speed might be a little bit slow. Sorry for
-              the inconvenience and enjoy your shopping!
+              another country, the speed might be a little bit slow.
             </p>
+            {/* Collaboration Section */}
+            <div className="mt-4 sm:mt-6 p-4 sm:p-6 bg-gradient-to-br from-black/30 to-black/10 rounded-xl border border-white/20 backdrop-blur-sm">
+              <div className="text-center mb-3 sm:mb-4">
+                <h3 className="text-base sm:text-lg font-semibold text-white mb-2">
+                  🤝 Want to Collaborate?
+                </h3>
+              </div>
+
+              <div className="space-y-3">
+                {/* Email */}
+                <a
+                  href="mailto:leeli.petertam@gmail.com"
+                  className="flex items-center justify-center gap-2 p-2.5 sm:p-3 bg-blue-500/20 hover:bg-blue-500/30 rounded-lg border border-blue-400/30 hover:border-blue-400/50 transition-all duration-300 group"
+                >
+                  <Mail className="w-4 h-4 sm:w-5 sm:h-5 text-blue-300 group-hover:text-blue-200 flex-shrink-0" />
+                  <span className="text-xs sm:text-sm text-blue-300 group-hover:text-blue-200 font-medium text-center truncate">
+                    leeli.petertam@gmail.com
+                  </span>
+                </a>
+                <p className="text-xs sm:text-sm text-gray-300 text-center">
+                  More exciting projects coming soon! 🚀
+                </p>
+
+                {/* Social Links */}
+                <div className="flex flex-col sm:flex-row gap-2 sm:gap-3">
+                  <a
+                    href="https://www.linkedin.com/in/leeli-peter/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex-1 flex items-center justify-center gap-2 p-2.5 sm:p-3 bg-blue-600/20 hover:bg-blue-600/30 rounded-lg border border-blue-500/30 hover:border-blue-500/50 transition-all duration-300 group"
+                  >
+                    <Linkedin className="w-4 h-4 sm:w-5 sm:h-5 text-blue-300 group-hover:text-blue-200 flex-shrink-0" />
+                    <span className="text-xs sm:text-sm text-blue-300 group-hover:text-blue-200 font-medium">
+                      LinkedIn
+                    </span>
+                  </a>
+                  <a
+                    href="https://myprofile-eosin.vercel.app/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex-1 flex items-center justify-center gap-2 p-2.5 sm:p-3 bg-purple-600/20 hover:bg-purple-600/30 rounded-lg border border-purple-500/30 hover:border-purple-500/50 transition-all duration-300 group"
+                  >
+                    <Globe className="w-4 h-4 sm:w-5 sm:h-5 text-purple-300 group-hover:text-purple-200 flex-shrink-0" />
+                    <span className="text-xs sm:text-sm text-purple-300 group-hover:text-purple-200 font-medium">
+                      Portfolio
+                    </span>
+                  </a>
+                </div>
+              </div>
+            </div>
+
+            <Button
+              variant="glass"
+              onClick={handleClose}
+              className="mt-4 w-full sm:w-auto"
+            >
+              Continue Shopping
+            </Button>
           </div>
-
-          <div className="grid grid-cols-3 gap-4 py-2">
-            <div className="flex flex-col items-center space-y-2">
-              <div className="w-12 h-12 bg-blue-100 dark:bg-blue-900/30 rounded-full flex items-center justify-center">
-                <ShoppingBag className="w-6 h-6 text-blue-600 dark:text-blue-400" />
-              </div>
-              <span className="text-xs md:text-sm font-medium text-gray-600 dark:text-gray-400">
-                Quality Products
-              </span>
-            </div>
-
-            <div className="flex flex-col items-center space-y-2">
-              <div className="w-12 h-12 bg-green-100 dark:bg-green-900/30 rounded-full flex items-center justify-center">
-                <Gift className="w-6 h-6 text-green-600 dark:text-green-400" />
-              </div>
-              <span className="text-xs md:text-sm font-medium text-gray-600 dark:text-gray-400">
-                Special Offers
-              </span>
-            </div>
-
-            <div className="flex flex-col items-center space-y-2">
-              <div className="w-12 h-12 bg-purple-100 dark:bg-purple-900/30 rounded-full flex items-center justify-center">
-                <Sparkles className="w-6 h-6 text-purple-600 dark:text-purple-400" />
-              </div>
-              <span className="text-xs md:text-sm font-medium text-gray-600 dark:text-gray-400">
-                Premium Experience
-              </span>
-            </div>
-          </div>
-
-          <p className="text-xs md:text-sm text-gray-500 dark:text-gray-400">
-            From fashion to food, find everything you need in one place
-          </p>
         </div>
-
-        <div className="flex flex-col gap-3 pt-6">
-          <Button
-            onClick={handleStartShopping}
-            className="w-full h-10  md:h-12 text-sm md:text-base font-semibold bg-gradient-to-r from-pink-300 to-purple-600 hover:from-pink-400 hover:to-purple-700 text-white border-0"
-          >
-            Start Shopping
-          </Button>
-        </div>
-      </DialogContent>
-    </Dialog>
+      </div>
+    </div>
   );
 }

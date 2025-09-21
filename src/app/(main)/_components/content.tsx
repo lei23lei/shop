@@ -51,15 +51,15 @@ export default function Content() {
         transition={{ duration: 0.8, ease: "easeOut" }}
         className="md:absolute md:right-2 contrast-75 perspective-1000"
       >
-        <div className="relative w-full sm:w-[600px] md:w-[700px] lg:w-[850px] group transform-gpu">
+        <div className="relative w-full sm:w-[600px] md:w-[650px] lg:w-[700px] group transform-gpu">
           <div className="absolute inset-0 bg-gradient-to-br from-orange-400/20 via-pink-500/20 to-purple-600/20 rounded-lg blur-2xl transform scale-105 group-hover:scale-110 transition-transform duration-500"></div>
 
           <Image
             src="/images/men-top.png"
-            width={3000}
-            height={3000}
+            width={1000}
+            height={1000}
             alt="men-top"
-            className="relative w-full object-cover rounded-lg transition-all duration-500 group-hover:scale-105 group-hover:shadow-2xl transform-gpu"
+            className="relative w-full object-cover rounded-lg transition-all duration-500   transform-gpu"
           />
 
           {/* Overlay effects */}
@@ -94,7 +94,7 @@ export default function Content() {
           </span>
         </motion.h2>
 
-        <motion.p className="max-w-md md:text-left text-center text-gray-700 dark:text-gray-200 text-base  md:leading-relaxed leading-relaxed relative z-10">
+        <motion.p className="max-w-md md:text-left text-center text-gray-700 dark:text-gray-200 text-sm sm:text-base  md:leading-relaxed leading-relaxed relative z-10">
           Discover premium men&apos;s fashion that defines modern masculinity.
           From sharp business attire to casual weekend wear, find pieces that
           reflect your{" "}

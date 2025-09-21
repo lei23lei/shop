@@ -1,9 +1,8 @@
 "use client";
 
 import React, { useEffect, useState, useRef, FormEvent } from "react";
-import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Search, ChevronRight, MoonStar, Sun } from "lucide-react";
+import { Search, ChevronRight } from "lucide-react";
 import { categories } from "@/lib/data";
 import Image from "next/image";
 import Link from "next/link";
@@ -22,7 +21,7 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { toast } from "sonner";
-import { useTheme } from "next-themes";
+import DarkModeButton from "./darkmode-button";
 import {
   getLocalCart,
   removeFromLocalCart,
@@ -74,8 +73,6 @@ export default function UserBar() {
   const router = useRouter();
   const SCROLL_THRESHOLD = 100;
   const [isCartOpen, setIsCartOpen] = React.useState(false);
-  const { theme, setTheme, resolvedTheme, systemTheme } = useTheme();
-  const [isAnimating, setIsAnimating] = useState(false);
 
   // Ensure client-side only rendering for user-dependent content
   useEffect(() => {
@@ -361,26 +358,6 @@ export default function UserBar() {
     }
   };
 
-  // Handle theme toggle with better system theme support
-  const handleThemeToggle = () => {
-    setIsAnimating(true);
-    setTimeout(() => {
-      if (theme === "system") {
-        // If currently on system, switch to the opposite of system preference
-        setTheme(systemTheme === "dark" ? "light" : "dark");
-      } else {
-        // Toggle between light and dark
-        setTheme(theme === "dark" ? "light" : "dark");
-      }
-      setTimeout(() => {
-        setIsAnimating(false);
-      }, 300);
-    }, 200);
-  };
-
-  // Get the actual theme being displayed (resolves system theme)
-  const currentTheme = resolvedTheme || theme;
-
   // Determine which cart data to use for CartSheet
   const displayCartData = user ? cartData : { items: localCart.items };
   const displayQuantities = user ? localQuantities : localCartQuantities;
@@ -452,37 +429,7 @@ export default function UserBar() {
             user={user}
             cartCount={displayCartCount}
           />
-          <Button
-            variant="ghost"
-            size="icon"
-            onClick={handleThemeToggle}
-            className="h-8 w-8 overflow-hidden rounded-full transition-colors hover:bg-white dark:hover:bg-zinc-500"
-            disabled={isAnimating}
-          >
-            {isMounted && (
-              <div
-                className={`transform transition-all duration-500 ${
-                  currentTheme === "dark" ? "rotate-0" : "rotate-180"
-                }`}
-                style={{ transformOrigin: "center" }}
-              >
-                {currentTheme === "dark" ? (
-                  <MoonStar
-                    className={`h-4 w-4 text-yellow-300 ${
-                      isAnimating ? "scale-90" : "scale-[1.4]"
-                    } transition-transform duration-300`}
-                  />
-                ) : (
-                  <Sun
-                    className={`h-4 w-4 text-amber-800 ${
-                      isAnimating ? "scale-90" : "scale-[1.4]"
-                    } transition-transform duration-300`}
-                  />
-                )}
-              </div>
-            )}
-            <span className="sr-only">Toggle dark mode</span>
-          </Button>
+          <DarkModeButton />
           <button
             className={`hamburger  mt-1.5 focus:outline-none ${
               isMobileMenuOpen ? "open" : ""
@@ -519,37 +466,7 @@ export default function UserBar() {
               )}
             </>
           )}
-          <Button
-            variant="ghost"
-            size="icon"
-            onClick={handleThemeToggle}
-            className="h-8 w-8 overflow-hidden rounded-full transition-colors hover:bg-white dark:hover:bg-zinc-500"
-            disabled={isAnimating}
-          >
-            {isMounted && (
-              <div
-                className={`transform transition-all duration-500 ${
-                  currentTheme === "dark" ? "rotate-0" : "rotate-180"
-                }`}
-                style={{ transformOrigin: "center" }}
-              >
-                {currentTheme === "dark" ? (
-                  <MoonStar
-                    className={`h-4 w-4 text-yellow-300 ${
-                      isAnimating ? "scale-90" : "scale-[1.4]"
-                    } transition-transform duration-300`}
-                  />
-                ) : (
-                  <Sun
-                    className={`h-4 w-4 text-orange-800 ${
-                      isAnimating ? "scale-90" : "scale-[1.4]"
-                    } transition-transform duration-300`}
-                  />
-                )}
-              </div>
-            )}
-            <span className="sr-only">Toggle dark mode</span>
-          </Button>
+          <DarkModeButton />
         </div>
       </div>
 
