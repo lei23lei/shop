@@ -68,7 +68,7 @@ export default function UserBar() {
   const [searchQuery, setSearchQuery] = useState("");
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isClient, setIsClient] = useState(false);
-  const [isMounted, setIsMounted] = useState(false);
+
   const menuRef = useRef<HTMLDivElement>(null);
   const router = useRouter();
   const SCROLL_THRESHOLD = 100;
@@ -77,7 +77,6 @@ export default function UserBar() {
   // Ensure client-side only rendering for user-dependent content
   useEffect(() => {
     setIsClient(true);
-    setIsMounted(true);
   }, []);
 
   // Load localStorage cart when user is not logged in
@@ -409,7 +408,7 @@ export default function UserBar() {
             <Input
               type="search"
               placeholder="Search"
-              className="w-[120px] pl-8 bg-white/90 text-black focus:w-[280px]  transition-all duration-1000 ease-in-out !ring-0 !ring-offset-0 !focus-visible:ring-0 !focus-visible:ring-offset-0 !focus:ring-0 !focus:ring-offset-0 !outline-none "
+              className="w-[120px] rounded-2xl pl-8 bg-white/90 border-white/60 text-black focus:w-[280px]  transition-all duration-1000 ease-in-out !ring-0 !ring-offset-0 !focus-visible:ring-0 !focus-visible:ring-offset-0 !focus:ring-0 !focus:ring-offset-0 !outline-none "
               value={searchQuery}
               onChange={(e) => {
                 setSearchQuery(e.target.value);
@@ -592,7 +591,7 @@ export default function UserBar() {
             <Input
               type="search"
               placeholder="Search..."
-              className="w-[200px] h-[35px] border-white/40 pl-8 text-black bg-white/90 focus:w-[350px] transition-all duration-1000 ease-in-out !ring-0 !ring-offset-0 !focus-visible:ring-0 !focus-visible:ring-offset-0 !focus:ring-0 !focus:ring-offset-0 !outline-none text-base sm:text-sm"
+              className="w-[200px] rounded-2xl h-[35px] border-white/10 pl-8 text-black bg-white/90 focus:w-[350px] transition-all duration-1000 ease-in-out !ring-0 !ring-offset-0 !focus-visible:ring-0 !focus-visible:ring-offset-0 !focus:ring-0 !focus:ring-offset-0 !outline-none text-base sm:text-sm"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
             />
