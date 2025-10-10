@@ -381,7 +381,7 @@ export default function ItemDetailPage({
         </div>
         {/* Details (Color and Additional Details) */}
         {itemDetail.details && (
-          <div className="pt-6 sm:pt-10 mb-6 md:mb-8 ">
+          <div className="pt-6 sm:pt-10 mb-6 md:mb-10 lg:mb-14">
             <Accordion type="single" collapsible className="w-full">
               <AccordionItem value="details">
                 <AccordionTrigger className="text-lg sm:text-xl md:text-2xl font-medium">
